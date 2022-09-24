@@ -20,11 +20,11 @@ public class Operations {
         v1.value = input;
     }
 
-    public void result2(int outputVar1, int OutputVar2, double input1, double input2){
+    public void result2(int outputVar1, int outputVar2, double input1, double input2){
         Var v1 = var(outputVar1);
         Var v2 = var(outputVar1);
-        Var v3 = var(OutputVar2);
-        Var v4 = var(OutputVar2);
+        Var v3 = var(outputVar2);
+        Var v4 = var(outputVar2);
         v1.value = input1;
         v2.value = input2;
         v3.value = input1;

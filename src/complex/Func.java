@@ -2,8 +2,8 @@ package src;
 
 public enum Func
 {
-    add("+", (r1, r2) -> r1 + r2, (i1, i2) -> i1 + i2),
-    sub("-", (r1, r2) -> r1 - r2, (i1, i2) -> i1 - i2),
+    add("+", (r1, i1, r2, i2) -> r1 + r2, (r1, i1,r2, i2) -> i1 + i2),
+    sub("-", (r1, i1, r2, i2) -> r1 - r2, (r1, i1, r2, i2) -> i1 - i2),
     mul("*", (r1, i1, r2, i2) -> r1*r2 - i1*i2, (r1, r2, i1, i2) -> r1*i1 + r2*i2),
     div("/", (r1, i1, r2, i2) -> (r1*r2 + i1*i2)/(r2*r2 + i2*i2), (r1, r2, i1, i2) -> (r2*i1 - r1*i2)/(r2*r2 + i2*i2)), 
     pow("^", 
@@ -16,9 +16,7 @@ public enum Func
     cos("cos", (r, i) -> Math.cos(r)*Math.cosh(i), (r, i) -> -Math.sin(r)*Math.sinh(i)),
     tan("tan", 
     (r, i) -> Math.tan(r)/(Math.cosh(i)*Math.cosh(i)*(1+Math.tan(r)*Math.tan(r)*Math.tanh(i)*Math.tanh(i))),
-    (r, i) -> Math.tanh(i)/(Math.cos(r)*Math.cos(r)*(1+Math.tan(r)*Math.tan(r)*Math.tanh(i)*Math.tanh(i)))),
-    Re("Re", (r, i) -> r),
-    Im("Im", (r, i) -> i);
+    (r, i) -> Math.tanh(i)/(Math.cos(r)*Math.cos(r)*(1+Math.tan(r)*Math.tan(r)*Math.tanh(i)*Math.tanh(i))));
 
     public static final Func[] all = values();
 
@@ -54,6 +52,7 @@ public enum Func
         this.SingleInputCheck = false;
         this.SingleOutputCheck = false;
     }
+    
     Func(String symbol, Lambda2 SingleOutputIn){
         this.symbol = symbol;
         this.SingleOutput = SingleOutputIn;
