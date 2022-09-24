@@ -2,13 +2,13 @@
 displayName: "Complex Function"
 
 #the internal name of the mod
-name: "complex-func"
+name: "complex-function"
 
 #your name
 author: "Triple-Toxic"
 
 #the fully qualified main class of the mod
-main: "complex.ComplexFunc"
+main: "complex.ComplexFunction"
 
 #the mod subtitle as seen in the mod dialog
 subtitle: "C"
