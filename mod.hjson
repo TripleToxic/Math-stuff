@@ -1,0 +1,24 @@
+#the mod name as displayed in-game
+displayName: "Complex Function"
+
+#the internal name of the mod
+name: "complex-func"
+
+#your name
+author: "Triple-Toxic"
+
+#the fully qualified main class of the mod
+main: "complex.ComplexFunc"
+
+
+subtitle: "C"
+
+description: "Expand calculation into the complex world"
+
+version: 1.0.0
+
+minGameVersion: 138
+
+java: true
+
+repo: "TripleToxic/ComplexFunction"
