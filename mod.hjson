@@ -10,15 +10,20 @@ author: "Triple-Toxic"
 #the fully qualified main class of the mod
 main: "complex.ComplexFunc"
 
-
+#the mod subtitle as seen in the mod dialog
 subtitle: "C"
 
+#the mod description as seen in the mod dialog
 description: "Expand calculation into the complex world"
 
+#the mod version
 version: 1.0.0
 
+#minimum game version required to run this mod
 minGameVersion: 138
 
+#is a java mod
 java: true
 
-repo: "TripleToxic/ComplexFunction"
+#the repository of the mod
+repo: "TripleToxic/Complex-Function"
