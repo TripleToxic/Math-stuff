@@ -1,18 +1,10 @@
 package stuff;
 
+import mindustry.logic.LExecutor;
 public class Operations {
     public Var[] vars = {};
     public Var var(int outputVar){
         return vars[outputVar];
-    }
-
-    private static boolean invalid(double i){
-        return Double.isNaN(i) || Double.isInfinite(i);
-    }
-
-    public double num(int outputVar){
-        Var v = var(outputVar);
-        return  invalid(v.value) ? 0 : v.value;
     }
 
     public void result1(int outputVar, double input){
@@ -43,9 +35,10 @@ public class Operations {
         }
     }
     public interface Run{
-        void run(Operations exec);
+        void run(Operations exec, LExecutor executor);
     }
-    public static class Function implements Run {
+
+    public static class Function implements Run{
         public Func Op = Func.add;
         public int r1, r2, i1, i2, RealOutput, ImaginaryOutput;
 
@@ -62,17 +55,17 @@ public class Operations {
         Function(){}
 
         @Override
-        public void run(Operations exec){
+        public void run(Operations exec, LExecutor executor){
             if (Op.SingleInputCheck){
                 if (Op.SingleOutputCheck){
-                    exec.result1(RealOutput, Op.SingleOutput.get(exec.num(r1), exec.num(i1)));
+                    exec.result1(RealOutput, Op.SingleOutput.get(executor.num(r1), executor.num(i1)));
                 }
                 else{
-                    exec.result2(RealOutput, ImaginaryOutput, Op.Func2.get(exec.num(r1), exec.num(i1)), Op.Func3.get(exec.num(r1), exec.num(i1)));
+                    exec.result2(RealOutput, ImaginaryOutput, Op.Func2.get(executor.num(r1), executor.num(i1)), Op.Func3.get(executor.num(r1), executor.num(i1)));
                 }
             }
             else{
-                exec.result2(RealOutput, ImaginaryOutput, Op.Func4.get(exec.num(r1), exec.num(i1), exec.num(r2), exec.num(i2)), Op.Func5.get(exec.num(r1), exec.num(i1), exec.num(r2), exec.num(i2)));
+                exec.result2(RealOutput, ImaginaryOutput, Op.Func4.get(executor.num(r1), executor.num(i1), executor.num(r2), executor.num(i2)), Op.Func5.get(executor.num(r1), executor.num(i1), executor.num(r2), executor.num(i2)));
             }
         }
     }
