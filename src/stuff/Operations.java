@@ -1,4 +1,4 @@
-package complex;
+package stuff;
 
 public class Operations {
     public Var[] vars = {};
