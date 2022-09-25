@@ -8,7 +8,7 @@ name: "complex-function"
 author: "Triple-Toxic"
 
 #the fully qualified main class of the mod
-main: "complex.Complex-Function"
+main: "complex.ComplexFunction"
 
 #the mod subtitle as seen in the mod dialog
 subtitle: "C"
@@ -17,7 +17,7 @@ subtitle: "C"
 description: "Expand calculation into the complex world"
 
 #the mod version
-version: 1.0.0
+version: 1.0
 
 #minimum game version required to run this mod
 minGameVersion: 138
