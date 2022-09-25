@@ -1,15 +1,12 @@
 package stuff;
 
 import mindustry.logic.LExecutor;
-public class Operations {
-    public Var[] vars = {};
-    public Var var(int outputVar){
-        return vars[outputVar];
-    }
 
+public class Operations extends LExecutor{
+    
     public void result1(int outputVar, double input){
         Var v1 = var(outputVar);
-        v1.value = input;
+        v1.numval = input;
     }
 
     public void result2(int outputVar1, int OutputVar2, double input1, double input2){
@@ -17,23 +14,12 @@ public class Operations {
         Var v2 = var(outputVar1);
         Var v3 = var(OutputVar2);
         Var v4 = var(OutputVar2);
-        v1.value = input1;
-        v2.value = input2;
-        v3.value = input1;
-        v4.value = input2;
+        v1.numval = input1;
+        v2.numval = input2;
+        v3.numval = input1;
+        v4.numval = input2;
     }
 
-    public static class Var{
-        public final String name;
-        
-        public boolean Bool;
-        
-        public double value;
-
-        public Var(String name){
-            this.name = name;
-        }
-    }
     public interface Run{
         void run(Operations exec, LExecutor executor);
     }
