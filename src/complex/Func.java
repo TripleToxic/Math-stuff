@@ -28,9 +28,6 @@ public enum Func
     public final String symbol;
     public final boolean SingleOutputCheck, SingleInputCheck;
 
-    
-    
-    
     Func(String symbol, Lambda2 Func2In, Lambda2 Func3In){
         this.symbol = symbol;
         this.SingleOutput = null;
