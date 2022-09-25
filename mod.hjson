@@ -7,6 +7,9 @@ name: "complex-function"
 #your name
 author: "Triple-Toxic"
 
+#the repository of the mod
+repo: "TripleToxic/ComplexFunction"
+
 #the fully qualified main class of the mod
 main: "stuff.ComplexFunction"
 
@@ -24,6 +27,3 @@ minGameVersion: 138
 
 #is a java mod
 java: true
-
-#the repository of the mod
-repo: "TripleToxic/ComplexFunction"
