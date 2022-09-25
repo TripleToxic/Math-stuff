@@ -8,7 +8,7 @@ name: "complex-function"
 author: "Triple-Toxic"
 
 #the fully qualified main class of the mod
-main: "src.ComplexFunction"
+main: "complex.ComplexFunction"
 
 #the mod subtitle as seen in the mod dialog
 subtitle: "C"
