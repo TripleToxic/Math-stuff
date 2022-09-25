@@ -1,4 +1,4 @@
-package stuff;
+package logic;
 
 import mindustry.logic.LExecutor;
 
