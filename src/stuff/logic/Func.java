@@ -1,4 +1,4 @@
-package stuff;
+package logic;
 
 public enum Func
 {
