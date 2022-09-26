@@ -106,5 +106,4 @@ public class OperationStatements {
         LAssembler.customParsers.put(name, func);
         LogicIO.allStatements.add(prov);
     }
-
 }
