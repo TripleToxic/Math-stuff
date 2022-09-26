@@ -11,7 +11,7 @@ author: "Triple-Toxic"
 repo: "TripleToxic/ComplexFunction"
 
 #the fully qualified main class of the mod
-main: "stuff.ComplexFunction"
+main: "stuff.Run"
 
 #the mod subtitle as seen in the mod dialog
 subtitle: "C"
