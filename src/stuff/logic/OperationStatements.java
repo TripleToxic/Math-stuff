@@ -9,7 +9,6 @@ import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
 
 import static mindustry.Vars.*;
-import static mindustry.logic.LCanvas.*;
 
 import stuff.logic.Operations.*;
 import stuff.logic.*;
@@ -19,6 +18,18 @@ public class OperationStatements {
     public static class OperationsStatements extends LStatement{
         public Func Op = Func.add;
         public String RealOutput = "Re", ImaginaryOutput = "Im", r1 = "r1", i1 = "i1", r2 = "r2", i2 = "i2";
+
+        public OperationsStatements(String Op, String RealOutput, String ImaginaryOutput, String r1, String i1, String r2, String i2){
+            try{
+                this.Op = Func.valueOf(Op);
+            }catch(Throwable ignored){}
+            this.RealOutput = RealOutput;
+            this.ImaginaryOutput = ImaginaryOutput;
+            this.r1 = r1;
+            this.i1 = i1;
+            this.r2 = r2;
+            this.i2 = i2;
+        }
 
         @Override
         public void build(Table table){
@@ -74,7 +85,6 @@ public class OperationStatements {
             return (LInstruction) new Function(Op, b.var(r1), b.var(i1), b.var(r2), b.var(i2), b.var(RealOutput), b.var(ImaginaryOutput));
         }
 
-        @Override
         public LCategory category(){
             return LCategory.operation;
         }
@@ -99,12 +109,13 @@ public class OperationStatements {
                 ;
         }
     }
+
     public static void load(){
-        registerStatement("Complex Operation", args -> new OperationStatements(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), OperationStatements::new);
+        registerStatement("Complex Operation", args -> new OperationsStatements(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), OperationsStatements::new);
     }
+
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov){
         LAssembler.customParsers.put(name, func);
         LogicIO.allStatements.add(prov);
     }
-    
 }

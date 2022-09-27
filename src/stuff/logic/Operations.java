@@ -1,6 +1,5 @@
 package stuff.logic;
 
-
 import mindustry.logic.LExecutor;
 
 public class Operations extends LExecutor{
