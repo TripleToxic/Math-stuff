@@ -72,4 +72,5 @@ public enum Func{
     interface Lambda3{
         double get(double r1, double i1, double r2, double i2);
     }
+    
 }
