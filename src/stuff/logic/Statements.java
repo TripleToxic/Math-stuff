@@ -40,8 +40,6 @@ public class Statements {
                 fields(table, ImaginaryOutput, str -> ImaginaryOutput = str);
             }
             table.add(" = ");
-
-            if (Op.SingleInputCheck){
                 table.button(b -> {
                     b.label(() -> Op.symbol);
                     b.clicked(() -> showSelect(b, Func.all, Op, o -> {
@@ -49,25 +47,16 @@ public class Statements {
                         rebuild(table);
                     }, 2, c -> c.size(80f, 40f)));
                 }, Styles.logict, () -> {}).size(80f, 40f).pad(4f).color(table.color);
-                fields(table, r1, str -> r1 = str);
-                table.add("+");
-                fields(table, "i", i1, str -> i1 = str);
-            }else{
-                row(table); 
-                fields(table, r1, str -> r1 = str);
-                table.add("+");
-                fields(table, "i", i1, str -> i1 = str);
-                table.button(b -> {
-                  b.label(() -> Op.symbol);
-                    b.clicked(() -> showSelect(b, Func.all, Op, o -> {
-                      Op = o;
-                      rebuild(table);
-                    }, 2, c -> c.size(80f, 40f)));
-                }, Styles.logict, () -> {}).size(80f, 40f).pad(4f).color(table.color);
+            if (Op.SingleInputCheck == false){row(table);} 
+            fields(table, r1, str -> r1 = str);
+            table.add("+");
+            fields(table, "i", i1, str -> i1 = str);
+            if (Op.SingleInputCheck == false){   
                 fields(table, r2, str -> r2 = str);
                 table.add("+");
                 fields(table, "i", i2, str -> i2 = str);
             }
+        
         }
 
         @Override
