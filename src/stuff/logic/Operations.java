@@ -24,11 +24,11 @@ public class Operations extends LExecutor{
         void run(Operations exec);
     }
 
-    public static class Function implements Run{
+    public static class Function implements Run, LInstruction{
         public Func Op = Func.add;
         public int r1, r2, i1, i2, RealOutput, ImaginaryOutput;
 
-        public Function(Func Op, int r1, int r2, int i1, int i2, int RealOutput, int ImaginaryOutput){
+        public Function(Func Op, int r1, int i1, int r2, int i2, int RealOutput, int ImaginaryOutput){
             this.Op = Op;
             this.r1 = r1;
             this.r2 = r2;
@@ -53,6 +53,11 @@ public class Operations extends LExecutor{
             else{
                 exec.result2(RealOutput, ImaginaryOutput, Op.Func4.get(exec.num(r1), exec.num(i1), exec.num(r2), exec.num(i2)), Op.Func5.get(exec.num(r1), exec.num(i1), exec.num(r2), exec.num(i2)));
             }
+        }
+
+        @Override
+        public void run(LExecutor exec) {
+            
         }  
     }
     

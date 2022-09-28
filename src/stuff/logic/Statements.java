@@ -61,7 +61,7 @@ public class Statements {
 
         @Override
         public LInstruction build(LAssembler b){
-            return (LInstruction) new Function(Op, b.var(r1), b.var(i1), b.var(r2), b.var(i2), b.var(RealOutput), b.var(ImaginaryOutput));
+            return new Function(Op, b.var(r1), b.var(i1), b.var(r2), b.var(i2), b.var(RealOutput), b.var(ImaginaryOutput));
         }
 
         @Override
