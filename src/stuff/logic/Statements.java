@@ -1,13 +1,11 @@
 package stuff.logic;
 
 import arc.func.*;
-import arc.graphics.Color;
 import arc.scene.ui.layout.*;
 import mindustry.gen.*;
 import mindustry.logic.*;
 import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
-
 import stuff.logic.Operations.*;
 
 public class Statements {
@@ -24,6 +22,8 @@ public class Statements {
             this.r2 = r2;
             this.i2 = i2;
         }
+
+        public OperationsStatements(){}
 
         @Override
         public void build(Table table){
@@ -74,6 +74,7 @@ public class Statements {
             return (LInstruction) new Function(Op, b.var(r1), b.var(i1), b.var(r2), b.var(i2), b.var(RealOutput), b.var(ImaginaryOutput));
         }
 
+        @Override
         public LCategory category(){
             return LCategory.operation;
         }
@@ -97,20 +98,10 @@ public class Statements {
                 .append(ImaginaryOutput)
                 ;
         }
-
-        @Override
-        public Color color() {
-            // TODO Auto-generated method stub
-            
-            return null;
-        }
-
     }
-
-    public static Prov<LStatement> OperationsStatements;
     
     public static void load(){
-        registerStatement("ComplexOperation", args -> new OperationsStatements(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), OperationsStatements);
+        registerStatement("ComplexOperation", args -> new OperationsStatements(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), OperationsStatements::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov) {
