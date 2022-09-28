@@ -98,6 +98,13 @@ public class Statements {
                 ;
         }
 
+        @Override
+        public Color color() {
+            // TODO Auto-generated method stub
+            
+            return null;
+        }
+
     }
 
     public static Prov<LStatement> OperationsStatements;
