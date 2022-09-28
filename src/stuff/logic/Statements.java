@@ -14,7 +14,9 @@ public class Statements {
         public String RealOutput = "Re", ImaginaryOutput = "Im", r1 = "r1", i1 = "i1", r2 = "r2", i2 = "i2";
         
         public OperationsStatements(String Op, String r1, String i1, String r2, String i2, String RealOutput, String ImaginaryOutput){
-            this.Op = Func.valueOf(Op);
+            try{
+                this.Op = Func.valueOf(Op);
+            }catch(Throwable ignored){}
             this.RealOutput = RealOutput;
             this.ImaginaryOutput = ImaginaryOutput;
             this.r1 = r1;
@@ -32,7 +34,6 @@ public class Statements {
 
         void rebuild(Table table){
             table.clearChildren();
-
             fields(table, RealOutput, str -> RealOutput = str);
             if (Op.SingleOutputCheck){
             }else{
@@ -46,8 +47,8 @@ public class Statements {
                     b.clicked(() -> showSelect(b, Func.all, Op, o -> {
                         Op = o;
                         rebuild(table);
-                    }, 2, c -> c.size(140f, 40f)));
-                }, Styles.logict, () -> {}).size(140f, 40f).pad(4f).color(table.color);
+                    }, 2, c -> c.size(80f, 40f)));
+                }, Styles.logict, () -> {}).size(80f, 40f).pad(4f).color(table.color);
                 fields(table, r1, str -> r1 = str);
                 table.add("+");
                 fields(table, "i", i1, str -> i1 = str);
@@ -61,8 +62,8 @@ public class Statements {
                     b.clicked(() -> showSelect(b, Func.all, Op, o -> {
                       Op = o;
                       rebuild(table);
-                    }, 2, c -> c.size(140f, 40f)));
-                }, Styles.logict, () -> {}).size(140f, 40f).pad(4f).color(table.color);
+                    }, 2, c -> c.size(80f, 40f)));
+                }, Styles.logict, () -> {}).size(80f, 40f).pad(4f).color(table.color);
                 fields(table, r2, str -> r2 = str);
                 table.add("+");
                 fields(table, "i", i2, str -> i2 = str);
@@ -81,7 +82,7 @@ public class Statements {
 
         public void write(StringBuilder builder){
             builder
-                .append("Complex Operation")
+                .append("ComplexOperation")
                 .append(" ")
                 .append(r1)
                 .append("+")
