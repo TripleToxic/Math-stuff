@@ -114,10 +114,5 @@ public class Statements {
             LAssembler.customParsers.put(name, func);
             LogicIO.allStatements.add(prov);
         }
-
-        @Override
-        public Color color() {
-            return null;
-        }
     }
 }
