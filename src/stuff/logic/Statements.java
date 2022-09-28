@@ -102,6 +102,7 @@ public class Statements {
         public Color color(){
             return null;
         }
+
     }
 
     public static Prov<LStatement> OperationsStatements;
