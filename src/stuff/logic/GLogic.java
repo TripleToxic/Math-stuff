@@ -1,9 +1,9 @@
 package stuff.logic;
-import stuff.logic.OperationStatements.*;
+import stuff.logic.Statements.*;
 
 public class GLogic {
     public static void load(){
-        OperationsStatements.load();
+        Statements.load();
     }
     
 }
