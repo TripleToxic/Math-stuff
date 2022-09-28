@@ -18,9 +18,7 @@ public class OperationStatements {
         public String RealOutput = "Re", ImaginaryOutput = "Im", r1 = "r1", i1 = "i1", r2 = "r2", i2 = "i2";
         
         public OperationsStatements(String Op, String RealOutput, String ImaginaryOutput, String r1, String i1, String r2, String i2){
-            try{
-                this.Op = Func.valueOf(Op);
-            }catch(Throwable ignored){}
+            this.Op = Func.valueOf(Op);
             this.RealOutput = RealOutput;
             this.ImaginaryOutput = ImaginaryOutput;
             this.r1 = r1;
