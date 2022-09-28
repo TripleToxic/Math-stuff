@@ -5,13 +5,10 @@ import arc.graphics.Color;
 import arc.scene.ui.layout.*;
 import mindustry.gen.*;
 import mindustry.logic.*;
-import mindustry.logic.LStatement.*;
 import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
 
 import stuff.logic.Operations.*;
-import stuff.logic.*;
-import stuff.logic.Func.*;
 
 public class Statements {
     public static class OperationsStatements extends LStatement{
