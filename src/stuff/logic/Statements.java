@@ -18,7 +18,7 @@ public class Statements {
         public Func Op = Func.add;
         public String RealOutput = "Re", ImaginaryOutput = "Im", r1 = "r1", i1 = "i1", r2 = "r2", i2 = "i2";
         
-        public OperationsStatements(String Op, String RealOutput, String ImaginaryOutput, String r1, String i1, String r2, String i2){
+        public OperationsStatements(String Op, String r1, String i1, String r2, String i2, String RealOutput, String ImaginaryOutput){
             this.Op = Func.valueOf(Op);
             this.RealOutput = RealOutput;
             this.ImaginaryOutput = ImaginaryOutput;
