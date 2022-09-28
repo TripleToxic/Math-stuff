@@ -5,6 +5,7 @@ import arc.graphics.Color;
 import arc.scene.ui.layout.*;
 import mindustry.gen.*;
 import mindustry.logic.*;
+import mindustry.logic.LStatement.*;
 import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
 
@@ -107,7 +108,7 @@ public class Statements {
         }
 
         public static void load(){
-            registerStatement("Complex Operation", args -> new OperationsStatements(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), OperationsStatements::new);
+            registerStatement("ComplexOperation", args -> new OperationsStatements(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), OperationsStatements::new);
         }
 
         public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov) {
