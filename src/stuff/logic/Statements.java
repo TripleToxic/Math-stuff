@@ -98,11 +98,6 @@ public class Statements {
                 ;
         }
 
-        @Override
-        public Color color(){
-            return null;
-        }
-
     }
 
     public static Prov<LStatement> OperationsStatements;
