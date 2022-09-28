@@ -21,7 +21,7 @@ public class Run extends Mod {
     }
 
     public void loadContent(){
-        GLogic.load();
+        Statements.load();
     }
     
 }
