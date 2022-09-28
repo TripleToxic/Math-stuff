@@ -37,8 +37,8 @@ public class Statements {
             table.clearChildren();
 
             fields(table, RealOutput, str -> RealOutput = str);
-            if (Op.SingleOutputCheck){}
-            else{
+            if (Op.SingleOutputCheck){
+            }else{
                 fields(table, ImaginaryOutput, str -> ImaginaryOutput = str);
             }
             table.add(" = ");
@@ -51,31 +51,25 @@ public class Statements {
                         rebuild(table);
                     }, 2, c -> c.size(140f, 40f)));
                 }, Styles.logict, () -> {}).size(140f, 40f).pad(4f).color(table.color);
-                
                 fields(table, r1, str -> r1 = str);
                 table.add("+");
                 fields(table, "i", i1, str -> i1 = str);
             }else{
-            row(table); 
-            fields(table, r1, str -> r1 = str);
-            table.add("+");
-            fields(table, "i", i1, str -> i1 = str);
-
-            table.button(b -> {
-                b.label(() -> Op.symbol);
-                b.clicked(() -> showSelect(b, Func.all, Op, o -> {
-                    Op = o;
-                    rebuild(table);
-                }, 2, c -> c.size(140f, 40f)));
-            }, Styles.logict, () -> {}).size(140f, 40f).pad(4f).color(table.color);
+                row(table); 
+                fields(table, r1, str -> r1 = str);
+                table.add("+");
+                fields(table, "i", i1, str -> i1 = str);
+                table.button(b -> {
+                  b.label(() -> Op.symbol);
+                    b.clicked(() -> showSelect(b, Func.all, Op, o -> {
+                      Op = o;
+                      rebuild(table);
+                    }, 2, c -> c.size(140f, 40f)));
+                }, Styles.logict, () -> {}).size(140f, 40f).pad(4f).color(table.color);
+                fields(table, r2, str -> r2 = str);
+                table.add("+");
+                fields(table, "i", i2, str -> i2 = str);
             }
-            
-
-            fields(table, r2, str -> r2 = str);
-            table.add("+");
-            fields(table, "i", i2, str -> i2 = str);
-
-            
         }
 
         @Override
@@ -106,7 +100,13 @@ public class Statements {
                 .append(ImaginaryOutput)
                 ;
         }
+
+        @Override
+        public Color color(){
+            return null;
+        }
     }
+    
     public static void load(){
         registerStatement("ComplexOperation", args -> new OperationsStatements(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), OperationsStatements::new);
     }
