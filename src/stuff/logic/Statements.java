@@ -106,8 +106,10 @@ public class Statements {
             return null;
         }
     }
+
+    public static Prov<LStatement> OperationsStatements;
     
-    public static void load(Prov<LStatement> OperationsStatements){
+    public static void load(){
         registerStatement("ComplexOperation", args -> new OperationsStatements(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), OperationsStatements);
     }
 
