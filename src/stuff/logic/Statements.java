@@ -72,9 +72,6 @@ public class Statements {
         public void write(StringBuilder builder){
             builder
                 .append("C-Operation")
-                .append(RealOutput)
-                .append(" ")
-                .append(ImaginaryOutput)
                 .append(" ")
                 .append(r1)
                 .append(" ")
@@ -85,6 +82,9 @@ public class Statements {
                 .append(r2)
                 .append(" ")
                 .append(i2)
+                .append(RealOutput)
+                .append(" ")
+                .append(ImaginaryOutput)
                 ;
         }
 
