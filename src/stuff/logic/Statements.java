@@ -69,40 +69,22 @@ public class Statements {
             return LCategory.operation;
         }
         public void write(StringBuilder builder){
-            if(Op.SingleInputCheck){
-                builder
-                    .append("OperationC")
-                    .append(Op.symbol)
-                    .append(r1)
-                    .append(" ")
-                    .append(i1)
-                    .append(" ")
-                    .append(r2)
-                    .append(" ")
-                    .append(i2)
-                    .append(" ")
-                    .append(RealOutput)
-                    .append(" ")
-                    .append(ImaginaryOutput)
-                    ;
-            }else{
-                builder
-                    .append("OperationC")
-                    .append(r1)
-                    .append(" ")
-                    .append(i1)
-                    .append(" ")
-                    .append(r2)
-                    .append(" ")
-                    .append(Op.symbol)
-                    .append(" ")
-                    .append(i2)
-                    .append(" ")
-                    .append(RealOutput)
-                    .append(" ")
-                    .append(ImaginaryOutput)
-                    ;
-            }
+            builder
+                .append("OperationC ")
+                .append(i1)
+                .append(" ")
+                .append(r2)
+                .append(" ")
+                .append(Op.symbol)
+                .append(" ")
+                .append(i2)
+                .append(" ")
+                .append(RealOutput)
+                .append(" ")
+                .append(ImaginaryOutput)
+                .append(r1)
+                ;
+            
         }
         @Override
         public LInstruction build(LAssembler builder) {
