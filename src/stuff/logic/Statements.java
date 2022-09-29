@@ -65,8 +65,7 @@ public class Statements {
             }, Styles.logict, () -> {}).size(64f, 40f).pad(4f).color(table.color);
         }
 
-        @Override
-        public LInstruction build(LAssembler b){
+        public Run build(NewAssembler b){
             return new Function(Op, b.var(r1), b.var(i1), b.var(r2), b.var(i2), b.var(RealOutput), b.var(ImaginaryOutput));
         }
 
@@ -93,6 +92,11 @@ public class Statements {
                 .append(RealOutput)
                 .append(ImaginaryOutput)
                 ;
+        }
+
+        @Override
+        public LInstruction build(LAssembler builder) {
+            return null;
         }
     }
     
