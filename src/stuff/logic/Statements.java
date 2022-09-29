@@ -34,10 +34,10 @@ public class Statements {
 
         void rebuild(Table table){
             table.clearChildren();
-            fields(table, RealOutput, str -> RealOutput = str);
+            field2(table, RealOutput, str -> RealOutput = str);
             if (Op.SingleOutputCheck){
             }else{
-                fields(table, ImaginaryOutput, str -> ImaginaryOutput = str);
+                field2(table, ImaginaryOutput, str -> ImaginaryOutput = str);
             }
             table.add(" = ");
             if (Op.SingleInputCheck){Button(table, table);
@@ -72,6 +72,9 @@ public class Statements {
         public void write(StringBuilder builder){
             builder
                 .append("C-Operation")
+                .append(RealOutput)
+                .append(" ")
+                .append(ImaginaryOutput)
                 .append(" ")
                 .append(r1)
                 .append(" ")
@@ -82,9 +85,6 @@ public class Statements {
                 .append(r2)
                 .append(" ")
                 .append(i2)
-                .append(RealOutput)
-                .append(" ")
-                .append(ImaginaryOutput)
                 ;
         }
 
