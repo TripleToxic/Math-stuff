@@ -71,7 +71,7 @@ public class Statements {
 
         public void write(StringBuilder builder){
             builder
-                .append("C-Operation")
+                .append("OperationC")
                 .append(" ")
                 .append(r1)
                 .append(" ")
@@ -96,7 +96,7 @@ public class Statements {
     }
     
     public static void load(){
-        registerStatement("C-Operation", args -> new OperationsStatements(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), OperationsStatements::new);
+        registerStatement("OperationC", args -> new OperationsStatements(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), OperationsStatements::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov) {
