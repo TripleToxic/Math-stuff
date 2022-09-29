@@ -21,7 +21,7 @@ public class Operations extends LExecutor{
     }
 
     public interface Run{
-        void run(Operations exec);
+        void run(Operations exec, LExecutor execute);
     }
 
     public static class Function implements Run, LInstruction{
@@ -41,7 +41,7 @@ public class Operations extends LExecutor{
         Function(){}
 
         @Override
-        public void run(Operations exec){
+        public void run(Operations exec, LExecutor execute){
             if (Op.SingleInputCheck){
                 if (Op.SingleOutputCheck){
                     exec.result1(RealOutput, Op.SingleOutput.get(exec.num(r1), exec.num(i1)));
