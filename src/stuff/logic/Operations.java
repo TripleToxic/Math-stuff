@@ -21,10 +21,10 @@ public class Operations extends LExecutor{
     }
 
     public interface Run{
-        void run(Operations exec, LExecutor execute);
+        void run(Operations exec);
     }
 
-    public static class Function implements Run, LInstruction{
+    public static class Function implements Run{
         public Func Op = Func.add;
         public int r1, r2, i1, i2, RealOutput, ImaginaryOutput;
 
@@ -41,7 +41,7 @@ public class Operations extends LExecutor{
         Function(){}
 
         @Override
-        public void run(Operations exec, LExecutor execute){
+        public void run(Operations exec){
             if (Op.SingleInputCheck){
                 if (Op.SingleOutputCheck){
                     exec.result1(RealOutput, Op.SingleOutput.get(exec.num(r1), exec.num(i1)));
@@ -54,11 +54,6 @@ public class Operations extends LExecutor{
                 exec.result2(RealOutput, ImaginaryOutput, Op.Func4.get(exec.num(r1), exec.num(i1), exec.num(r2), exec.num(i2)), Op.Func5.get(exec.num(r1), exec.num(i1), exec.num(r2), exec.num(i2)));
             }
         }
-
-        @Override
-        public void run(LExecutor exec) {
-            
-        }  
     }
     
 }

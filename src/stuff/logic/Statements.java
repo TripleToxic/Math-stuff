@@ -40,18 +40,13 @@ public class Statements {
                 fields(table, ImaginaryOutput, str -> ImaginaryOutput = str);
             }
             table.add(" = ");
-            if (Op.SingleInputCheck){
-                Button(table, table);
+            if (Op.SingleInputCheck){Button(table, table);}
+            row(table);
+            fields(table, r1, str -> r1 = str);
+            table.add("+");
+            fields(table, "i", i1, str -> i1 = str);
+            if (Op.SingleInputCheck != true){
                 row(table);
-                fields(table, r1, str -> r1 = str);
-                table.add("+");
-                fields(table, "i", i1, str -> i1 = str);
-            }else{
-                row(table);
-                fields(table, r1, str -> r1 = str);
-                table.add("+");
-                row(table);
-                fields(table, "i", i1, str -> i1 = str);
                 Button(table, table);
                 row(table);
                 fields(table, r2, str -> r2 = str);
@@ -100,7 +95,7 @@ public class Statements {
         }
 
         @Override
-        public LInstruction build(LAssembler builde) {
+        public LInstruction build(LAssembler builder) {
             return null;
         }
     }
