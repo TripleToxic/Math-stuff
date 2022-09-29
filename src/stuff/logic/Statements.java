@@ -39,6 +39,7 @@ public class Statements {
             }else{
                 fields(table, ImaginaryOutput, str -> ImaginaryOutput = str);
             }
+            table.add(" = ");
             if (Op.SingleInputCheck){
                 Button(table, table);
                 fields(table, r1, str -> r1 = str);
@@ -62,7 +63,7 @@ public class Statements {
                     Op = o;
                     rebuild(parent);
                 }));
-            }, Styles.logict, () -> {}).size(64f, 40f).pad(4f).color(table.color);
+            }, Styles.logict, () -> {}).size(40f, 40f).pad(4f).color(table.color);
         }
 
         public Run build(NewAssembler b){
@@ -89,13 +90,14 @@ public class Statements {
                 .append("+")
                 .append(i2)
                 .append("i")
+                .append(" ")
                 .append(RealOutput)
                 .append(ImaginaryOutput)
                 ;
         }
 
         @Override
-        public LInstruction build(LAssembler builder) {
+        public LInstruction build(LAssembler builde) {
             return null;
         }
     }
