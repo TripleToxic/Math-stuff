@@ -34,10 +34,10 @@ public class Statements {
 
         void rebuild(Table table){
             table.clearChildren();
-            field(table, RealOutput, str -> RealOutput = str);
+            fields(table, RealOutput, str -> RealOutput = str);
             if (Op.SingleOutputCheck){
             }else{
-                field(table, ImaginaryOutput, str -> ImaginaryOutput = str);
+                fields(table, ImaginaryOutput, str -> ImaginaryOutput = str);
             }
             table.add(" = ");
             if (Op.SingleInputCheck){Button(table, table);
