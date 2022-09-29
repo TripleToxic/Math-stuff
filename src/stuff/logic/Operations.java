@@ -3,10 +3,18 @@ package stuff.logic;
 import mindustry.logic.LExecutor;
 
 public class Operations extends LExecutor{
+
+    public static boolean invalid(double v){
+        return Double.isNaN(v) || Double.isInfinite(v);
+    }
     
     public void result1(int outputVar, double input){
         Var v1 = var(outputVar);
-        v1.numval = input;
+        if(v1.constant) return;
+        if(invalid(input)){v1.objval = null;}else{
+            v1.objval = null;
+            v1.numval = input;
+        }
     }
 
     public void result2(int outputVar1, int OutputVar2, double input1, double input2){
@@ -14,10 +22,30 @@ public class Operations extends LExecutor{
         Var v2 = var(outputVar1);
         Var v3 = var(OutputVar2);
         Var v4 = var(OutputVar2);
-        v1.numval = input1;
-        v2.numval = input2;
-        v3.numval = input1;
-        v4.numval = input2;
+        if(v1.constant)return;
+        if(v2.constant)return;
+        if(v3.constant)return;
+        if(v4.constant)return;
+        if(invalid(input1)){
+            v1.objval = null;
+            v3.objval = null;
+        }
+        else{
+            v1.numval = input1;
+            v3.numval = input1;
+            v1.objval = null;
+            v3.objval = null;
+        }
+        if(invalid(input2)){
+            v2.objval = null;
+            v4.objval = null;
+        }
+        else{
+            v2.numval = input2;
+            v4.numval = input2;
+            v2.objval = null;
+            v4.objval = null;
+        }
     }
 
     public interface Run{
