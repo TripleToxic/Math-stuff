@@ -43,15 +43,13 @@ public class Statements {
             if (Op.SingleInputCheck){Button(table, table);}
             row(table);
             fields(table, r1, str -> r1 = str);
-            table.add("+");
-            fields(table, "i", i1, str -> i1 = str);
+            fields(table, i1, str -> i1 = str);
             if (Op.SingleInputCheck != true){
                 row(table);
                 Button(table, table);
                 row(table);
                 fields(table, r2, str -> r2 = str);
-                table.add("+");
-                fields(table, "i", i2, str -> i2 = str);
+                fields(table, i2, str -> i2 = str);
             }
         }
         void Button(Table table, Table parent){
@@ -75,20 +73,14 @@ public class Statements {
 
         public void write(StringBuilder builder){
             builder
-                .append("ComplexOperation")
+                .append("C-Operation")
                 .append(" ")
                 .append(r1)
-                .append("+")
                 .append(i1)
-                .append("i")
-                .append(" ")
                 .append(Op.symbol)
                 .append(" ")
                 .append(r2)
-                .append("+")
                 .append(i2)
-                .append("i")
-                .append(" ")
                 .append(RealOutput)
                 .append(" ")
                 .append(ImaginaryOutput)
@@ -102,7 +94,7 @@ public class Statements {
     }
     
     public static void load(){
-        registerStatement("ComplexOperation", args -> new OperationsStatements(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), OperationsStatements::new);
+        registerStatement("C-Operation", args -> new OperationsStatements(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), OperationsStatements::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov) {
