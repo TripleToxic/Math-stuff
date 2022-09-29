@@ -10,7 +10,7 @@ public class NewAssembler extends LAssembler {
         NewAssembler asm = new NewAssembler();
 
         Seq<LStatement> st = read(data, privileged);
-
+        // Use Run.class
         asm.instructions = st.map(l -> l.build(asm)).filter(l -> l != null).toArray(Run.class);
         return asm;
     }

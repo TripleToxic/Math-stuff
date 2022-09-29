@@ -9,7 +9,7 @@ import mindustry.ui.*;
 import stuff.logic.Operations.*;
 
 public class Statements {
-    public static class OperationsStatements extends LStatement{
+    public static class OperationsStatements extends ShortStatement{
         public Func Op = Func.add;
         public String RealOutput = "Re", ImaginaryOutput = "Im", r1 = "r1", i1 = "i1", r2 = "r2", i2 = "i2";
         
@@ -61,10 +61,10 @@ public class Statements {
                     Op = o;
                     rebuild(parent);
                 }));
-            }, Styles.logict, () -> {}).size(64f, 40f).pad(4f).color(table.color);
+            }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
 
-        public Run build(NewAssembler b){
+        public Run Build(NewAssembler b){
             return new Function(Op, b.var(r1), b.var(i1), b.var(r2), b.var(i2), b.var(RealOutput), b.var(ImaginaryOutput));
         }
 
@@ -90,6 +90,7 @@ public class Statements {
                 .append("i")
                 .append(" ")
                 .append(RealOutput)
+                .append(" ")
                 .append(ImaginaryOutput)
                 ;
         }
