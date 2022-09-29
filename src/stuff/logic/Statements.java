@@ -34,22 +34,20 @@ public class Statements {
 
         void rebuild(Table table){
             table.clearChildren();
-            fields(table, RealOutput, str -> RealOutput = str);
+            field(table, RealOutput, str -> RealOutput = str);
             if (Op.SingleOutputCheck){
             }else{
-                fields(table, ImaginaryOutput, str -> ImaginaryOutput = str);
+                field(table, ImaginaryOutput, str -> ImaginaryOutput = str);
             }
             table.add(" = ");
-            if (Op.SingleInputCheck){Button(table, table);}
-            row(table);
-            fields(table, r1, str -> r1 = str);
-            fields(table, i1, str -> i1 = str);
+            if (Op.SingleInputCheck){Button(table, table);
+            }else{row(table);}
+            field2(table, r1, str -> r1 = str);
+            field2(table, i1, str -> i1 = str);
             if (Op.SingleInputCheck != true){
-                row(table);
                 Button(table, table);
-                row(table);
-                fields(table, r2, str -> r2 = str);
-                fields(table, i2, str -> i2 = str);
+                field2(table, r2, str -> r2 = str);
+                field2(table, i2, str -> i2 = str);
             }
         }
         void Button(Table table, Table parent){
@@ -76,10 +74,13 @@ public class Statements {
                 .append("C-Operation")
                 .append(" ")
                 .append(r1)
+                .append(" ")
                 .append(i1)
+                .append(" ")
                 .append(Op.symbol)
                 .append(" ")
                 .append(r2)
+                .append(" ")
                 .append(i2)
                 .append(RealOutput)
                 .append(" ")
