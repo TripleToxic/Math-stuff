@@ -42,6 +42,7 @@ public class Statements {
             table.add(" = ");
             if (Op.SingleInputCheck){
                 Button(table, table);
+                row(table);
                 fields(table, r1, str -> r1 = str);
                 table.add("+");
                 fields(table, "i", i1, str -> i1 = str);
@@ -49,8 +50,10 @@ public class Statements {
                 row(table);
                 fields(table, r1, str -> r1 = str);
                 table.add("+");
+                row(table);
                 fields(table, "i", i1, str -> i1 = str);
                 Button(table, table);
+                row(table);
                 fields(table, r2, str -> r2 = str);
                 table.add("+");
                 fields(table, "i", i2, str -> i2 = str);
@@ -63,7 +66,7 @@ public class Statements {
                     Op = o;
                     rebuild(parent);
                 }));
-            }, Styles.logict, () -> {}).size(40f, 40f).pad(4f).color(table.color);
+            }, Styles.logict, () -> {}).size(64f, 40f).pad(4f).color(table.color);
         }
 
         public Run build(NewAssembler b){
