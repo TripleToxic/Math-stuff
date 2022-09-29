@@ -72,6 +72,7 @@ public class Statements {
         public void write(StringBuilder builder){
             builder
                 .append("OperationC")
+                .append(" ")
                 .append(r1)
                 .append(" ")
                 .append(i1)
