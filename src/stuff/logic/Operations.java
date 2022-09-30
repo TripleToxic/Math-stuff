@@ -16,6 +16,7 @@ public class Operations{
             this.i1 = i1;
             this.i2 = i2;
             this.RealOutput = RealOutput;
+            this.ImaginaryOutput = ImaginaryOutput;
         }
 
         Function(){}
