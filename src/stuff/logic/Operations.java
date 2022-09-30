@@ -7,15 +7,6 @@ public class Operations extends LExecutor{
     public static boolean invalid(double v){
         return Double.isNaN(v) || Double.isInfinite(v);
     }
-    
-    public void result1(int outputVar, double input){
-        Var v1 = var(outputVar);
-        if(v1.constant) return;
-        if(invalid(input)){v1.objval = null;}else{
-            v1.objval = null;
-            v1.numval = input;
-        }
-    }
 
     public void result2(int outputVar1, int OutputVar2, double input1, double input2){
         Var v1 = var(outputVar1);
@@ -26,10 +17,24 @@ public class Operations extends LExecutor{
         if(v2.constant)return;
         if(v3.constant)return;
         if(v4.constant)return;
-        v1.numval = input1;
-        v3.numval = input1;
-        v2.numval = input2;
-        v4.numval = input2;
+        if(invalid(input1)){
+            v1.objval = null;
+            v3.objval = null;
+        }else{
+            v1.numval = input1;
+            v3.numval = input1;
+            v1.objval = null;
+            v3.objval = null;
+        }
+        if(invalid(input2)){
+            v2.objval = null;
+            v4.objval = null;
+        }else{
+            v2.numval = input2;
+            v4.numval = input2;
+            v2.objval = null;
+            v4.objval = null;
+        }
     }
 
     public interface Run{
@@ -56,13 +61,11 @@ public class Operations extends LExecutor{
         public void run(Operations exec, LExecutor execute){
             if (Op.SingleInputCheck){
                 if (Op.SingleOutputCheck){
-                    exec.result1(RealOutput, Op.SingleOutput.get(execute.num(r1), execute.num(i1)));
-                }
-                else{
+                    execute.setnum(RealOutput, Op.SingleOutput.get(execute.num(r1), execute.num(i1)));
+                }else{
                     exec.result2(RealOutput, ImaginaryOutput, Op.Func2.get(execute.num(r1), execute.num(i1)), Op.Func3.get(execute.num(r1), execute.num(i1)));
                 }
-            }
-            else{
+            }else{
                 exec.result2(RealOutput, ImaginaryOutput, Op.Func4.get(execute.num(r1), execute.num(i1), execute.num(r2), execute.num(i2)), Op.Func5.get(execute.num(r1), execute.num(i1), execute.num(r2), execute.num(i2)));
             }
         }
