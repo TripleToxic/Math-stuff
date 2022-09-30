@@ -60,8 +60,8 @@ public class Statements {
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
 
-        public Run Build(NewAssembler b){
-            return new Function(Op, b.var(r1), b.var(i1), b.var(r2), b.var(i2), b.var(RealOutput), b.var(ImaginaryOutput));
+        public LInstruction build(LAssembler b){
+            return (LInstruction) new Function(Op, b.var(r1), b.var(i1), b.var(r2), b.var(i2), b.var(RealOutput), b.var(ImaginaryOutput));
         }
 
         @Override
@@ -89,11 +89,10 @@ public class Statements {
         }
 
         @Override
-        public LInstruction build(LAssembler builder){
+        public Run Build(NewAssembler builder) {
             return null;
         }
     }
-    
     public static void load(){
         registerStatement("Complex", args -> new ComplexOperationsStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationsStatement::new);
     }
