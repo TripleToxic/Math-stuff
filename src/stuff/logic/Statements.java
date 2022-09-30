@@ -61,7 +61,7 @@ public class Statements {
         }
 
         public LInstruction build(LAssembler b){
-            return (LInstruction) new Function(Op, b.var(r1), b.var(i1), b.var(r2), b.var(i2), b.var(RealOutput), b.var(ImaginaryOutput));
+            return new Function(Op, b.var(r1), b.var(i1), b.var(r2), b.var(i2), b.var(RealOutput), b.var(ImaginaryOutput));
         }
 
         @Override
@@ -86,11 +86,6 @@ public class Statements {
                 .append(ImaginaryOutput)
                 ;
             
-        }
-
-        @Override
-        public Run Build(NewAssembler builder) {
-            return null;
         }
     }
     public static void load(){
