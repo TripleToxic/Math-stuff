@@ -71,7 +71,9 @@ public class Statements {
         public void write(StringBuilder builder){
             builder
                 .append("OperationC ")
-                .append(Op.getSymbol())
+                .append(Op.name())
+                .append(" ")
+                .append(r1)
                 .append(" ")
                 .append(i1)
                 .append(" ")
@@ -82,7 +84,6 @@ public class Statements {
                 .append(RealOutput)
                 .append(" ")
                 .append(ImaginaryOutput)
-                .append(r1)
                 ;
             
         }
