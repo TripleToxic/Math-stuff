@@ -71,11 +71,11 @@ public class Statements {
         public void write(StringBuilder builder){
             builder
                 .append("OperationC ")
+                .append(Op.getSymbol())
+                .append(" ")
                 .append(i1)
                 .append(" ")
                 .append(r2)
-                .append(" ")
-                .append(Op.symbol)
                 .append(" ")
                 .append(i2)
                 .append(" ")
