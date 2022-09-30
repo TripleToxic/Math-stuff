@@ -69,6 +69,5 @@ public class Operations extends LExecutor{
                 exec.result2(RealOutput, ImaginaryOutput, Op.Func4.get(execute.num(r1), execute.num(i1), execute.num(r2), execute.num(i2)), Op.Func5.get(execute.num(r1), execute.num(i1), execute.num(r2), execute.num(i2)));
             }
         }
-    }
-    
+    }  
 }
