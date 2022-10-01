@@ -27,8 +27,8 @@ public enum Func{
     (r, i) -> -Ilog(r + Rsqrt(r*r - i*i + 1, 2*r*i), i + Isqrt(r*r - i*i + 1, 2*r*i)),
     (r, i) -> Rlog(r + Rsqrt(r*r - i*i + 1, 2*r*i), i + Isqrt(r*r - i*i + 1, 2*r*i))),
     atan("atan", (r, i) -> -Ilog(Rdiv(r, i+1, -r, 1-i), Idiv(r, i+1, -r, 1-i))/2d, (r, i) -> Rlog(Rdiv(r, i+1, -r, 1-i), Idiv(r, i+1, -r, 1-i))/2d),
-    cartesian("(r, theta)", (r, theta) -> r*cos(theta),(r, theta) -> r*sin(theta)),
-    polar("(r, i)", (r, i) -> hypot(r, i), (r, i) -> atan2(i, r)),
+    cartesian("(ca<pol)", (r, theta) -> r*cos(theta),(r, theta) -> r*sin(theta)),
+    polar("(pol<ca)", (r, i) -> hypot(r, i), (r, i) -> atan2(i, r)),
     pi("π", (r) -> PI),
     e("e", (r) -> E),
     ;
