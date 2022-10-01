@@ -34,4 +34,12 @@ public class AdditionalFunction {
     public static double Idiv(double r1, double i1, double r2, double i2){
         return (r2*i1 - r1*i2)/(r2*r2 + i2*i2);
     }
+
+    public static double RCexpR(double r, double i, double b){
+        return pow(hypot(r, i), b)*cos(b*atan2(i, r));
+    }
+
+    public static double ICexpR(double r, double i, double b){
+        return pow(hypot(r, i), b)*sin(b*atan2(i, r));
+    }
 }
