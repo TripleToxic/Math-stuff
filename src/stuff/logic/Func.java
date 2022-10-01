@@ -2,30 +2,33 @@ package stuff.logic;
 
 import static stuff.AdditionalFunction.*;
 
+import stuff.AdditionalFunction;
+
 import static java.lang.Math.*;
 
 public enum Func{
     add("+", (r1, i1, r2, i2) -> r1 + r2, (r1, i1, r2, i2) -> i1 + i2),
     sub("-", (r1, i1, r2, i2) -> r1 - r2, (r1, i1, r2, i2) -> i1 - i2),
     mul("*", (r1, i1, r2, i2) -> r1*r2 - i1*i2, (r1, r2, i1, i2) -> r1*i1 + r2*i2),
-    div("/", (r1, i1, r2, i2) -> (r1*r2 + i1*i2)/(r2*r2 + i2*i2), (r1, i1, r2, i2) -> (r2*i1 - r1*i2)/(r2*r2 + i2*i2)), 
+    div("/", AdditionalFunction::Rdiv, AdditionalFunction::Idiv), 
     pow("^",
     (r1, i1, r2, i2) -> pow(hypot(r1, i1), r2) * exp(-atan2(i1, r1)*i2) * cos(r2*atan2(i1, r1)+i2*log(hypot(r1, i1))), 
     (r1, i1, r2, i2) -> pow(hypot(r1, i1), r2) * exp(-atan2(i1, r1)*i2) * sin(r2*atan2(i1, r1)+i2*log(hypot(r1, i1)))), 
-    ln("ln", (r, i) -> log(sqrt(r*r + i*i)), (r, i) -> atan2(i, r)),
-    arg("angle", (r, i) -> atan2(i, r)),
+    ln("ln", AdditionalFunction::Rlog, AdditionalFunction::Ilog),
     sin("sin", (r, i) -> sin(r)*cosh(i), (r, i) -> sinh(i)*cos(r)),
     cos("cos", (r, i) -> cos(r)*cosh(i), (r, i) -> -sin(r)*sinh(i)),
     tan("tan",
     (r, i) -> tan(r)/(cosh(i)*cosh(i)*(1+tan(r)*tan(r)*tanh(i)*tanh(i))),
     (r, i) -> tanh(i)/(cos(r)*cos(r)*(1+tan(r)*tan(r)*tanh(i)*tanh(i)))),
     asin("asin",
-    (r, i) -> acos(pow(sqrt((r*r)/(i*i+1))+1, -1)),
-    (r, i) -> asinh(sqrt(pow((r)/(sin(acos(pow(sqrt((r*r)/(i*i+1))+1, -1)))), 2)-1))),
+    (r, i) -> PI/2d + Ilog(r + Rsqrt(r*r - i*i + 1, 2*r*i), i + Isqrt(r*r - i*i + 1, 2*r*i)),
+    (r, i) -> -Rlog(r + Rsqrt(r*r - i*i + 1, 2*r*i), i + Isqrt(r*r - i*i + 1, 2*r*i))),
     acos("acos",
-    (r, i) -> asin(pow(sqrt(((r*r)/i*i+1))+1, -1)),
-    (r, i) -> asinh(sqrt(pow((r)/(cos(asin(pow(sqrt(((r*r)/i*i+1))+1, -1)))), 2) - 1))),
-    atan("atan", (r, i) -> (PI/2.0) + (atan2(1-i, -r)-atan2(i+1, r))/2, (r, i) -> (log(hypot(r, i+1))- log(hypot(r, 1-i)))/2),
+    (r, i) -> -Ilog(r + Rsqrt(r*r - i*i - 1, 2*r*i), i + Isqrt(r*r - i*i - 1, 2*r*i)),
+    (r, i) -> Rlog(r + Rsqrt(r*r - i*i - 1, 2*r*i), i + Isqrt(r*r - i*i - 1, 2*r*i))),
+    atan("atan", (r, i) -> -Ilog(Rdiv(r, i+1, -r, 1-i), Idiv(r, i+1, -r, 1-i))/2d, (r, i) -> Rlog(Rdiv(r, i+1, -r, 1-i), Idiv(r, i+1, -r, 1-i))/2d),
+    cartesian("(x, y)", (r, theta) -> r*cos(theta),(r, theta) -> r*sin(theta)),
+    polar("(r, θ)", (r, i) -> hypot(r, i), (r, i) -> atan2(i, r)),
     pi("π", (r) -> PI),
     e("e", (r) -> E),
     ;
