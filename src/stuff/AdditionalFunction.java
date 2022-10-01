@@ -7,17 +7,16 @@ public class AdditionalFunction {
         return log(x + sqrt(x*x + 1));
     }
     /** arc cosh of a variable x */
-    /** return NaN when x < 1 */
     public static double acosh(double x){
         return log(x + sqrt(x*x - 1));
     }
 
     public static double Rsqrt(double r, double i){
-        return sqrt(hypot(r, i))*cos(atan2(i, r)/2f);
+        return sqrt(hypot(r, i))*cos(atan2(i, r)/2d);
     }
 
     public static double Isqrt(double r, double i){
-        return sqrt(hypot(r, i))*sin(atan2(i, r)/2f);
+        return sqrt(hypot(r, i))*sin(atan2(i, r)/2d);
     }
 
     public static double Rlog(double r, double i){
