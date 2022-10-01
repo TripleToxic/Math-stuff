@@ -20,11 +20,11 @@ public enum Func{
     (r, i) -> tan(r)/(cosh(i)*cosh(i)*(1+tan(r)*tan(r)*tanh(i)*tanh(i))),
     (r, i) -> tanh(i)/(cos(r)*cos(r)*(1+tan(r)*tan(r)*tanh(i)*tanh(i)))),
     asin("asin",
-    (r, i) -> acos(1.0/sqrt((r*r)/(i*i+1))+1),
-    (r, i) -> asinh(sqrt((r*r)/pow(1.0/sqrt((r*r)/(i*i+1))+1, 2) - 1))),
+    (r, i) -> acos(pow(sqrt((r*r)/(i*i+1))+1, -1)),
+    (r, i) -> asinh(sqrt(pow((r)/(sqrt((r*r)/(i*i+1))), 2)+1) - 1)),
     acos("acos",
     (r, i) -> asin(1.0/sqrt((r*r)/(i*i+1))+1),
-    (r, i) -> asinh(sqrt((r*r)/pow(cos(asin((1.0/sqrt((r*r)/(i*i+1))+1))), 2) - 1))),
+    (r, i) -> asinh(sqrt(pow((r)/(pow(cos(asin(sqrt((r*r)/(i*i+1))+1)), 2)), 2) - 1))),
     atan("atan", (r, i) -> (PI/2.0) + (atan2(1-i, -r)-atan2(i+1, r))/2, (r, i) -> (log(hypot(r, i+1))- log(hypot(r, 1-i)))/2),
     pi("π", (r) -> PI),
     e("e", (r) -> E),
@@ -89,7 +89,7 @@ public enum Func{
         this.Func4 = null;
         this.Func5 = null;
         this.SingleInputCheck = false;
-        this.SingleOutputCheck = false;
+        this.SingleOutputCheck = true;
         this.isConstant = true;
     }
     

@@ -38,15 +38,17 @@ public class Statements {
             if(Op.isConstant){
                 table.add(" = ");
                 Button(table, table);
-            }else if (Op.SingleOutputCheck){}else{field2(table, ImaginaryOutput, str -> ImaginaryOutput = str);}
-            table.add(" = ");
-            if (Op.SingleInputCheck){Button(table, table);}else{row(table);}
-            field2(table, r1, str -> r1 = str);
-            field2(table, i1, str -> i1 = str);
-            if (Op.SingleInputCheck != true){
-                Button(table, table);
-                field2(table, r2, str -> r2 = str);
-                field2(table, i2, str -> i2 = str);
+            }else{ 
+                if (Op.SingleOutputCheck){}else{field2(table, ImaginaryOutput, str -> ImaginaryOutput = str);}
+                table.add(" = ");
+                if (Op.SingleInputCheck){Button(table, table);}else{row(table);}
+                field2(table, r1, str -> r1 = str);
+                field2(table, i1, str -> i1 = str);
+                if (Op.SingleInputCheck != true){
+                    Button(table, table);
+                    field2(table, r2, str -> r2 = str);
+                    field2(table, i2, str -> i2 = str);
+                }
             }
         }
         void Button(Table table, Table parent){
