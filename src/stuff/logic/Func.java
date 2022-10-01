@@ -8,7 +8,7 @@ public enum Func{
     add("+", (r1, i1, r2, i2) -> r1 + r2, (r1, i1, r2, i2) -> i1 + i2),
     sub("-", (r1, i1, r2, i2) -> r1 - r2, (r1, i1, r2, i2) -> i1 - i2),
     mul("*", (r1, i1, r2, i2) -> r1*r2 - i1*i2, (r1, r2, i1, i2) -> r1*i1 + r2*i2),
-    div("/", (r1, i1, r2, i2) -> (r1*r2 + i1*i2)/(r2*r2 + i2*i2), (r1, r2, i1, i2) -> (r2*i1 - r1*i2)/(r2*r2 + i2*i2)), 
+    div("/", (r1, i1, r2, i2) -> (r1*r2 + i1*i2)/(r2*r2 + i2*i2), (r1, i1, r2, i2) -> (r2*i1 - r1*i2)/(r2*r2 + i2*i2)), 
     pow("^",
     (r1, i1, r2, i2) -> pow(hypot(r1, i1), r2) * exp(-atan2(i1, r1)*i2) * cos(r2*atan2(i1, r1)+i2*log(hypot(r1, i1))), 
     (r1, i1, r2, i2) -> pow(hypot(r1, i1), r2) * exp(-atan2(i1, r1)*i2) * sin(r2*atan2(i1, r1)+i2*log(hypot(r1, i1)))), 
