@@ -9,11 +9,11 @@ import mindustry.ui.*;
 import stuff.logic.Operations.*;
 
 public class Statements {
-    public static class ComplexOperationsStatement extends ShortStatement{
+    public static class ComplexOperationStatement extends ShortStatement{
         public Func Op = Func.add;
         public String RealOutput = "Re", ImaginaryOutput = "Im", r1 = "r1", i1 = "i1", r2 = "r2", i2 = "i2";
         
-        public ComplexOperationsStatement(String Op, String r1, String i1, String r2, String i2, String RealOutput, String ImaginaryOutput){
+        public ComplexOperationStatement(String Op, String r1, String i1, String r2, String i2, String RealOutput, String ImaginaryOutput){
             try{
                 this.Op = Func.valueOf(Op);
             }catch(Throwable ignored){}
@@ -25,7 +25,7 @@ public class Statements {
             this.i2 = i2;
         }
 
-        public ComplexOperationsStatement(){}
+        public ComplexOperationStatement(){}
 
         @Override
         public void build(Table table){
@@ -90,7 +90,7 @@ public class Statements {
         }
     }
     public static void load(){
-        registerStatement("Complex", args -> new ComplexOperationsStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationsStatement::new);
+        registerStatement("Complex", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov) {
