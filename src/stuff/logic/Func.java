@@ -1,6 +1,9 @@
 package stuff.logic;
 
+import static stuff.AdditionalFunction.*;
+
 import static java.lang.Math.*;
+
 public enum Func{
     add("+", (r1, i1, r2, i2) -> r1 + r2, (r1, i1, r2, i2) -> i1 + i2),
     sub("-", (r1, i1, r2, i2) -> r1 - r2, (r1, i1, r2, i2) -> i1 - i2),
@@ -17,12 +20,12 @@ public enum Func{
     (r, i) -> tan(r)/(cosh(i)*cosh(i)*(1+tan(r)*tan(r)*tanh(i)*tanh(i))),
     (r, i) -> tanh(i)/(cos(r)*cos(r)*(1+tan(r)*tan(r)*tanh(i)*tanh(i)))),
     asin("asin",
-    (r, i) -> (PI/2) + atan2(r + hypot(r*r-i*i-1,2*r*i)*cos(atan2(r*r-i*i-1,2*r*i)), i + hypot(r*r-i*i-1,2*r*i)*sin(atan2(r*r-i*i-1,2*r*i))),
-    (r, i) -> -log(hypot(r + hypot(r*r-i*i-1,2*r*i)*cos(atan2(r*r-i*i-1,2*r*i)), i + hypot(r*r-i*i-1,2*r*i)*sin(atan2(r*r-i*i-1,2*r*i))))),
+    (r, i) -> acos(1.0/sqrt((r*r)/(i*i+1))+1),
+    (r, i) -> asinh(sqrt((r*r)/pow(1.0/sqrt((r*r)/(i*i+1))+1, 2) - 1))),
     acos("acos",
-    (r, i) -> atan2(r + hypot(r*r-i*i-1,2*r*i)*cos(atan2(r*r-i*i-1,2*r*i)), i + hypot(r*r-i*i-1,2*r*i)*sin(atan2(r*r-i*i-1,2*r*i))),
-    (r, i) -> -log(hypot(r + hypot(r*r-i*i-1,2*r*i)*cos(atan2(r*r-i*i-1,2*r*i)), i + hypot(r*r-i*i-1,2*r*i)*sin(atan2(r*r-i*i-1,2*r*i))))),
-    atan("atan", (r, i) -> (PI/2) + (atan2(1-i, -r)-atan2(i+1, r))/2, (r, i) -> (log(hypot(r, i+1))- log(hypot(r, 1-i)))/2),
+    (r, i) -> asin(1.0/sqrt((r*r)/(i*i+1))+1),
+    (r, i) -> asinh(sqrt((r*r)/pow(cos(asin((1.0/sqrt((r*r)/(i*i+1))+1))), 2) - 1))),
+    atan("atan", (r, i) -> (PI/2.0) + (atan2(1-i, -r)-atan2(i+1, r))/2, (r, i) -> (log(hypot(r, i+1))- log(hypot(r, 1-i)))/2),
     pi("π", (r) -> PI),
     e("e", (r) -> E),
     ;
@@ -85,8 +88,8 @@ public enum Func{
         this.Func3 = null;
         this.Func4 = null;
         this.Func5 = null;
-        this.SingleInputCheck = true;
-        this.SingleOutputCheck = true;
+        this.SingleInputCheck = false;
+        this.SingleOutputCheck = false;
         this.isConstant = true;
     }
     
