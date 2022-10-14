@@ -108,7 +108,7 @@ public class Statements {
         result = AlphabetFunction(V.n),
         a = Spam(V.n, "0"),
         b = Spam(V.n, "0");
-        public String scalar = "scalar", n = "n";
+        public String scalar = "scalar", n = "3";
        
         public VectorOperationsStatement(String Opv, String[] a, String[] b, String[] result, String scalar, String n){
             try{
@@ -131,7 +131,7 @@ public class Statements {
         void rebuild(Table table){
             table.clearChildren();
             if(Opv.scalar){
-                for(int I2=0; I2<V.n; I2++){
+                for(int I2=0; I2<Integer.parseInt(n); I2++){
                     final int inI2 = I2;
                     if(I2 == ceil(V.n/2d)){
                         field2(table, scalar, str -> scalar = str);
@@ -140,14 +140,10 @@ public class Statements {
                     field2(table, a[I2], str -> a[inI2] = str);
                     if(I2 == ceil(V.n/2d)){Button(table, table);}else{table.add(" ");}
                     field2(table, b[I2], str -> b[inI2] = str);
-                    if(I2 < 1){
-                        table.add("N = ");
-                        field2(table, n, str -> n = str);
-                    }
                     row(table);
                 }
             }else{
-                for(int I=0; I<V.n; I++){
+                for(int I=0; I<Integer.parseInt(n); I++){
                     final int inI = I;
                     field2(table, result[I], str -> result[inI] = str);
                     if(I == ceil(V.n/2d)){table.add(" = ");}else{table.add("   ");}
@@ -160,6 +156,8 @@ public class Statements {
                     }
                     row(table);
                 }
+                table.add("N = ");
+                field2(table, n, str -> n = str);
             }
         }
 
@@ -191,11 +189,11 @@ public class Statements {
             if(Opv.scalar){
                 builder.append(scalar);
             }else{
-                for(int u=0; u<V.n; u++){
+                for(int u=0; u<Integer.parseInt(n); u++){
                     builder.append(result[u]);
                 }
             }
-            for(int u=0; u<V.n; u++){
+            for(int u=0; u<Integer.parseInt(n); u++){
                 builder.append(a[u]).append(b[u]);
             }
             builder.append(n);
