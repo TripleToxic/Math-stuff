@@ -5,12 +5,14 @@ import arc.scene.ui.TextField;
 import arc.scene.ui.layout.*;
 import mindustry.logic.*;
 import mindustry.ui.Styles;
+import stuff.logic.LExecutorPlus.LInstructionPlus;
 
 public abstract class ShortStatement extends LStatement{
+    public abstract LInstructionPlus buildplus(LAssembler builder);
+    
     // Modified width from 144 to 70
-    protected Cell<TextField> field2(Table table, String value, Cons<String> setter){
-        return table.field(value, Styles.nodeField, s -> setter.get(sanitize(s)))
+    protected Cell<TextField> field2(Table table, String result, Cons<String> setter){
+        return table.field(result, Styles.nodeField, s -> setter.get(sanitize(s)))
             .size(70f, 40f).pad(2f).color(table.color).maxTextLength(LAssembler.maxTokenLength);
-
     }
 }

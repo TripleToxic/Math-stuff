@@ -1,6 +1,8 @@
 package stuff;
 import static java.lang.Math.*;
 
+import mindustry.logic.LAssembler;
+
 public class AdditionalFunction {
     /** arc sinh of a variable x */
     public static double asinh(double x){
@@ -41,5 +43,65 @@ public class AdditionalFunction {
 
     public static double ICexpR(double r, double i, double b){
         return pow(hypot(r, i), b)*sin(b*atan2(i, r));
+    }
+
+    public static double DotProc(double[] a, double[] b){
+        double dotP = 0;
+        for(int i=0; i<min(a.length, b.length); i++){
+            dotP += (a[i]*b[i]);
+        }
+        return dotP;
+    }
+
+    public static double[] AddVector(double[] a, double[] b){
+        double[] A = new double[min(a.length, b.length)];
+        for(int i=0; i<max(a.length, b.length); i++){
+            A[i] = a[i] + b[i];
+        }
+        return A;
+    }
+
+    public static double[] SubVector(double[] a, double[] b){
+        double[] A = new double[min(a.length, b.length)];
+        for(int i=0; i<max(a.length, b.length); i++){
+            A[i] = a[i] - b[i];
+        }
+        return A;
+    }
+
+    public static double[] CrossProc(double[] a, double[] b){
+        double[] A = new double[3];
+        if(min(a.length, b.length) <3){
+            for(int i=0; i<3; i++){
+                A[i] = a[(i+1)%3]*b[(i+2)%3] - a[(i+2)%3]*b[(i+1)%3];
+            }
+        }return A;
+
+    }
+
+    public static String[] AlphabetFunction(int n){
+        String example = "abcdefghijklmnopqrstuvwxyz";
+        String[] get = new String[n];
+        for(int i=0; i<n; i++){
+            get[i] = String.valueOf(example.charAt(i));
+        }
+        return get;
+    }
+
+    public static String[] Spam(int n, String p){
+        String[] get = new String[n];
+        for(int i=0; i<n; i++){
+            get[i] = p;
+        }
+        return get;
+    }
+
+    public static int[] GetVars(String[] a){
+        LAssembler L = new LAssembler();
+        int[] K = new int[a.length];
+        for(int i=0; i<a.length; i++){
+            K[i] = L.var(a[i]);
+        }
+        return K;
     }
 }
