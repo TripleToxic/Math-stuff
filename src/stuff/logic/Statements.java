@@ -202,6 +202,11 @@ public class Statements {
         }
 
         @Override
+        public LCategory category(){
+            return LCategory.operation;
+        }
+
+        @Override
         public LInstruction build(LAssembler builder) {
             return null;
         }
