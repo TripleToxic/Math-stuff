@@ -102,15 +102,9 @@ public class Statements {
     }
     
     public static class VectorOperationsStatement extends ShortStatement{
-        VFunction V = new VFunction();
+        LAssembler L = new LAssembler();
         public VFunc Opv = VFunc.addV;
         public String scalar = "scalar", n = "3";
-        public String[] 
-        result = AlphabetFunction(Integer.parseInt(n)),
-        a = Spam(Integer.parseInt(n), "0"),
-        b = Spam(Integer.parseInt(n), "0");
-        
-       
         public VectorOperationsStatement(String Opv, String[] a, String[] b, String[] result, String scalar, String n){
             try{
                 this.Opv = VFunc.valueOf(Opv);
@@ -121,6 +115,11 @@ public class Statements {
             this.scalar = scalar;
             this.n = n;
         }
+        int Line = L.var(n);
+        public String[] 
+        result = AlphabetFunction(Line),
+        a = Spam(Line, "0"),
+        b = Spam(Line, "0");
 
         public VectorOperationsStatement(){}
 
@@ -132,24 +131,24 @@ public class Statements {
         void rebuild(Table table){
             table.clearChildren();
             if(Opv.scalar){
-                for(int I2=0; I2<Integer.parseInt(n); I2++){
+                for(int I2=0; I2<Line; I2++){
                     final int inI2 = I2;
-                    if(I2 == ceil(V.n/2d)){
+                    if(I2 == ceil(Line/2)){
                         field2(table, scalar, str -> scalar = str);
                         table.add(" = ");
                     }else{table.add("   ");}
                     field2(table, a[I2], str -> a[inI2] = str);
-                    if(I2 == ceil(V.n/2d)){Button(table, table);}else{table.add(" ");}
+                    if(I2 == ceil(Line/2)){Button(table, table);}else{table.add(" ");}
                     field2(table, b[I2], str -> b[inI2] = str);
                     row(table);
                 }
             }else{
-                for(int I=0; I<Integer.parseInt(n); I++){
+                for(int I=0; I<Line; I++){
                     final int inI = I;
                     field2(table, result[I], str -> result[inI] = str);
-                    if(I == ceil(V.n/2d)){table.add(" = ");}else{table.add("   ");}
+                    if(I == ceil(Line/2)){table.add(" = ");}else{table.add("   ");}
                     field2(table, a[I], str -> a[inI] = str);
-                    if(I == ceil(V.n/2d)){Button(table, table);}else{table.add("   ");}
+                    if(I == ceil(Line/2)){Button(table, table);}else{table.add("   ");}
                     field2(table, b[I], str -> b[inI] = str);
                     row(table);
                 }
