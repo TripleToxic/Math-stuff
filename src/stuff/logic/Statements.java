@@ -97,7 +97,7 @@ public class Statements {
 
         @Override
         public LInstructionPlus buildplus(LAssembler builder) {
-            return null;
+            throw new UnsupportedOperationException("");
         }
     }
     
@@ -135,6 +135,7 @@ public class Statements {
             if(Opv.scalar){
                 for(int I2=0; I2<Line; I2++){
                     final int inI2 = I2;
+                    row(table);
                     if(I2 == ceil(Line/2)){
                         field2(table, scalar, str -> scalar = str);
                         table.add(" = ");
@@ -142,17 +143,16 @@ public class Statements {
                     field2(table, a[I2], str -> a[inI2] = str);
                     if(I2 == ceil(Line/2)){Button(table, table);}else{table.add(" ");}
                     field2(table, b[I2], str -> b[inI2] = str);
-                    row(table);
                 }
             }else{
                 for(int I=0; I<Line; I++){
                     final int inI = I;
+                    row(table);
                     field2(table, result[I], str -> result[inI] = str);
                     if(I == ceil(Line/2)){table.add(" = ");}else{table.add("   ");}
                     field2(table, a[I], str -> a[inI] = str);
                     if(I == ceil(Line/2)){Button(table, table);}else{table.add("   ");}
                     field2(table, b[I], str -> b[inI] = str);
-                    row(table);
                 }
             
             }
@@ -183,17 +183,17 @@ public class Statements {
             builder
             .append("VectorOperation")
             .append(Opv.name());
+            builder.append(n);
             if(Opv.scalar){
                 builder.append(scalar);
             }else{
-                for(int u=0; u<Integer.parseInt(n); u++){
+                for(int u=0; u<Line; u++){
                     builder.append(result[u]);
                 }
             }
-            for(int u=0; u<Integer.parseInt(n); u++){
+            for(int u=0; u<Line; u++){
                 builder.append(a[u]).append(b[u]);
             }
-            builder.append(n);
         }
 
         @Override
@@ -203,7 +203,7 @@ public class Statements {
 
         @Override
         public LInstruction build(LAssembler builder) {
-            return null;
+            throw new UnsupportedOperationException("");
         }
         
     }
