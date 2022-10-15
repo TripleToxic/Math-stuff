@@ -6,7 +6,6 @@ import mindustry.gen.*;
 import mindustry.logic.*;
 import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
-import stuff.logic.LExecutorPlus.*;
 import stuff.logic.Operations.*;
 
 import static stuff.AdditionalFunction.*;
@@ -94,11 +93,6 @@ public class Statements {
                 ;
             
         }
-
-        @Override
-        public LInstructionPlus buildplus(LAssembler builder) {
-            throw new UnsupportedOperationException("");
-        }
     }
     
     public static class VectorOperationsStatement extends ShortStatement{
@@ -169,8 +163,8 @@ public class Statements {
         }
 
         @Override
-        public LInstructionPlus buildplus(LAssembler build) {
-            return new VFunction(Opv, 
+        public LInstruction build(LAssembler build) {
+            return (LInstruction) new VFunction(Opv, 
             GetVars(a),
             GetVars(b), 
             GetVars(result), 
@@ -199,11 +193,6 @@ public class Statements {
         @Override
         public LCategory category(){
             return LCategory.operation;
-        }
-
-        @Override
-        public LInstruction build(LAssembler builder) {
-            throw new UnsupportedOperationException("");
         }
         
     }
