@@ -130,6 +130,8 @@ public class Statements {
 
         void rebuild(Table table){
             table.clearChildren();
+            table.add("N = ");
+            field2(table, n, str -> n = str);
             if(Opv.scalar){
                 for(int I2=0; I2<Line; I2++){
                     final int inI2 = I2;
@@ -154,8 +156,6 @@ public class Statements {
                 }
             
             }
-            table.add("N = ");
-            field2(table, n, str -> n = str);
         }
 
         void Button(Table table, Table parent){
