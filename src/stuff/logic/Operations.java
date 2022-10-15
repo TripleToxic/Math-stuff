@@ -58,10 +58,12 @@ public class Operations{
 
         @Override
         public void run(LExecutorPlus exec){
-            if(Opv.scalar == true){
-                exec.setnum(scalar, Opv.op1.get(exec.vect(a), exec.vect(b)));
+            if(Opv.scalar){
+                exec.setnum(scalar, Opv.op1.get(exec.vect(a), exec.vect(b), exec.numi(n)));
+            }else if(Opv.cross){
+                exec.setvect(result, Opv.op3.get(exec.vect(a), exec.vect(b)));
             }else{
-                exec.setvect(result, Opv.op2.get(exec.vect(a), exec.vect(b)));
+                exec.setvect(result, Opv.op2.get(exec.vect(a), exec.vect(b), exec.numi(n)));
             }
         }
     }

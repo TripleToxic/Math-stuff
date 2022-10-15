@@ -104,11 +104,12 @@ public class Statements {
     public static class VectorOperationsStatement extends ShortStatement{
         VFunction V = new VFunction();
         public VFunc Opv = VFunc.addV;
-        public String[] 
-        result = AlphabetFunction(V.n),
-        a = Spam(V.n, "0"),
-        b = Spam(V.n, "0");
         public String scalar = "scalar", n = "3";
+        public String[] 
+        result = AlphabetFunction(Integer.parseInt(n)),
+        a = Spam(Integer.parseInt(n), "0"),
+        b = Spam(Integer.parseInt(n), "0");
+        
        
         public VectorOperationsStatement(String Opv, String[] a, String[] b, String[] result, String scalar, String n){
             try{
@@ -150,15 +151,12 @@ public class Statements {
                     field2(table, a[I], str -> a[inI] = str);
                     if(I == ceil(V.n/2d)){Button(table, table);}else{table.add("   ");}
                     field2(table, b[I], str -> b[inI] = str);
-                    if(I < 1){
-                        table.add("N = ");
-                        field2(table, n, str -> n = str);
-                    }
                     row(table);
                 }
-                table.add("N = ");
-                field2(table, n, str -> n = str);
+            
             }
+            table.add("N = ");
+            field2(table, n, str -> n = str);
         }
 
         void Button(Table table, Table parent){
