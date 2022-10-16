@@ -42,8 +42,8 @@ public class Operations{
 
     public static class VFunction implements LInstructionPlus{
         public VFunc Opv = VFunc.addV;
-        public int[] a, b, result;
         public int scalar, n;
+        public int[] a = new int[n] , b = new int[n], result = new int[n];
 
         public VFunction(VFunc Opv, int[] a, int[] b, int[] result, int scalar, int n){
             this.Opv = Opv;

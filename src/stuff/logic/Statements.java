@@ -115,7 +115,7 @@ public class Statements {
             this.scalar = scalar;
             this.n = n;
         }
-        int Line = 3;
+        int Line = L.var(n);
         public String[] 
         result = AlphabetFunction(Line),
         a = Spam(Line, "0"),
