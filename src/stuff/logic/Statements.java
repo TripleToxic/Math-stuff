@@ -214,7 +214,7 @@ public class Statements {
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov) {
-        LAssembler.customParsers.put(name, func);
+        LAssembler.customParsers.putAll(name, func);
         LogicIO.allStatements.add(prov);
     }
 }
