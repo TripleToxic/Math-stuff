@@ -182,7 +182,6 @@ public class Statements {
         public void write(StringBuilder builder){
             builder
                 .append("Vector ")
-                .append(" ")
                 .append(Opv.name())
                 .append(" ")
                 .append(n);
