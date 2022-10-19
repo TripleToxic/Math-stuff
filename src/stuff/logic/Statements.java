@@ -210,10 +210,10 @@ public class Statements {
 
     public static void load(){
         registerStatement("Complex", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
-        registerStatement("Vector", args -> new VectorOperationsStatement(args[1], args, args, args, args[5], args[6]), VectorOperationsStatement::new);
+        registerStatement("Vector", args -> new VectorOperationsStatement(args[1], args, args, args, args[2], args[3]), VectorOperationsStatement::new);
     }
 
-    public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov) {
+    public static void registerStatement(String name, arc.func.Func<String[], ShortStatement> func, Prov<LStatement> prov) {
         LAssembler.customParsers.putAll(name, func);
         LogicIO.allStatements.add(prov);
     }
