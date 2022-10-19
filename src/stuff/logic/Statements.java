@@ -181,18 +181,20 @@ public class Statements {
 
         public void write(StringBuilder builder){
             builder
-                .append("VectorOperation")
+                .append("Vector ")
+                .append(" ")
                 .append(Opv.name())
+                .append(" ")
                 .append(n);
             if(Opv.scalar){
-                builder.append(scalar);
+                builder.append(" ").append(scalar);
             }else{
                 for(int u=0; u<Line; u++){
-                    builder.append(result[u]);
+                    builder.append(" ").append(result[u]);
                 }
             }
             for(int u=0; u<Line; u++){
-                builder.append(a[u]).append(b[u]);
+                builder.append(" ").append(a[u]).append(" ").append(b[u]);
             }
         }
 
