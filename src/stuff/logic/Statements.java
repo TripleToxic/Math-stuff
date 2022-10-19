@@ -10,7 +10,6 @@ import stuff.logic.LExecutorPlus.LInstructionPlus;
 import stuff.logic.Operations.*;
 
 import static stuff.AdditionalFunction.*;
-import static java.lang.Math.*;
 
 public class Statements {
     public static class ComplexOperationStatement extends ShortStatement{
@@ -136,12 +135,12 @@ public class Statements {
                 for(int I2=0; I2<Line; I2++){
                     final int inI2 = I2;
                     row(table);
-                    if(I2 == ceil((double)Line/2d)){
+                    if(I2 == Line/2){
                         field2(table, scalar, str -> scalar = str);
                         table.add(" = ");
                     }else{table.add("   ");}
                     field2(table, a[I2], str -> a[inI2] = str);
-                    if(I2 == ceil((double)Line/2d)){Button(table, table);}else{table.add(" ");}
+                    if(I2 == Line/2){Button(table, table);}else{table.add(" ");}
                     field2(table, b[I2], str -> b[inI2] = str);
                 }
             }else{
@@ -149,9 +148,9 @@ public class Statements {
                     final int inI = I;
                     row(table);
                     field2(table, result[I], str -> result[inI] = str);
-                    if(I == ceil((double)Line/2d)){table.add(" = ");}else{table.add("   ");}
+                    if(I == Line/2){table.add(" = ");}else{table.add("   ");}
                     field2(table, a[I], str -> a[inI] = str);
-                    if(I == ceil((double)Line/2d)){Button(table, table);}else{table.add("   ");}
+                    if(I == Line/2){Button(table, table);}else{table.add("   ");}
                     field2(table, b[I], str -> b[inI] = str);
                 }
             
@@ -165,34 +164,29 @@ public class Statements {
                     Opv = o;
                     rebuild(parent);
                 }));
-            }, Styles.logict, () -> {}).size(120f, 40f).pad(2f).color(table.color);
+            }, Styles.logict, () -> {}).size(90f, 40f).pad(2f).color(table.color);
         }
 
         @Override
         public LInstructionPlus buildplus(LAssembler build) {
-            return new VFunction(Opv, 
-            GetVars(a),
-            GetVars(b), 
-            GetVars(result), 
-            build.var(scalar),
-            build.var(n)
-            );
+            return new VFunction(Opv, GetVars(a), GetVars(b), GetVars(result), build.var(scalar), build.var(n));
         }
 
         public void write(StringBuilder builder){
             builder
-                .append("VectorOperation")
+                .append("Vector ")
                 .append(Opv.name())
+                .append(" ")
                 .append(n);
             if(Opv.scalar){
-                builder.append(scalar);
+                builder.append(" ").append(scalar);
             }else{
                 for(int u=0; u<Line; u++){
-                    builder.append(result[u]);
+                    builder.append(" ").append(result[u]);
                 }
             }
             for(int u=0; u<Line; u++){
-                builder.append(a[u]).append(b[u]);
+                builder.append(" ").append(a[u]).append(" ").append(b[u]);
             }
         }
 
