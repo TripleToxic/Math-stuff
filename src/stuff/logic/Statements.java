@@ -131,6 +131,7 @@ public class Statements {
             table.clearChildren();
             table.add("N = ");
             field2(table, n, str -> n = str);
+            Line = L.var(n);
             if(Opv.scalar){
                 for(int I2=0; I2<Line; I2++){
                     final int inI2 = I2;
@@ -138,7 +139,7 @@ public class Statements {
                     if(I2 == Line/2){
                         field2(table, scalar, str -> scalar = str);
                         table.add(" = ");
-                    }else{table.add("   ");}
+                    }else{table.add("     ");}
                     field2(table, a[I2], str -> a[inI2] = str);
                     if(I2 == Line/2){Button(table, table);}else{table.add(" ");}
                     field2(table, b[I2], str -> b[inI2] = str);
@@ -176,8 +177,10 @@ public class Statements {
             builder
                 .append("Vector ")
                 .append(Opv.name())
-                .append(" ")
-                .append(n);
+                .append(" ");
+            for(int u=0; u<Line; u++){
+                builder.append(" ").append(a[u]).append(" ").append(b[u]);
+            }
             if(Opv.scalar){
                 builder.append(" ").append(scalar);
             }else{
@@ -185,9 +188,7 @@ public class Statements {
                     builder.append(" ").append(result[u]);
                 }
             }
-            for(int u=0; u<Line; u++){
-                builder.append(" ").append(a[u]).append(" ").append(b[u]);
-            }
+            builder.append(n);
         }
 
         @Override
