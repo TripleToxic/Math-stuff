@@ -129,30 +129,33 @@ public class Statements {
 
         void rebuild(Table table){
             table.clearChildren();
-            table.add("N = ");
-            field2(table, n, str -> n = str);
+            if(Opv.cross == false){
+                table.add("N = ");
+                field2(table, n, str -> n = str);
+                row(table);
+            }
             Line = L.var(n);
             if(Opv.scalar){
                 for(int I2=0; I2<Line; I2++){
                     final int inI2 = I2;
-                    row(table);
                     if(I2 == Line/2){
                         field2(table, scalar, str -> scalar = str);
                         table.add(" = ");
-                    }else{table.add("     ");}
+                    }else{table.add("        ");}
                     field2(table, a[I2], str -> a[inI2] = str);
                     if(I2 == Line/2){Button(table, table);}else{table.add(" ");}
                     field2(table, b[I2], str -> b[inI2] = str);
+                    row(table);
                 }
             }else{
                 for(int I=0; I<Line; I++){
                     final int inI = I;
-                    row(table);
                     field2(table, result[I], str -> result[inI] = str);
                     if(I == Line/2){table.add(" = ");}else{table.add("   ");}
                     field2(table, a[I], str -> a[inI] = str);
                     if(I == Line/2){Button(table, table);}else{table.add("   ");}
                     field2(table, b[I], str -> b[inI] = str);
+                    row(table);
                 }
             
             }
@@ -174,21 +177,18 @@ public class Statements {
         }
 
         public void write(StringBuilder builder){
-            builder
-                .append("Vector ")
-                .append(Opv.name())
-                .append(" ");
-            for(int u=0; u<Line; u++){
-                builder.append(" ").append(a[u]).append(" ").append(b[u]);
+            builder.append("Vector ").append(Opv.name()).append(" ");
+            for(int i=0; i<Line; i++){
+                builder.append(" ").append(a[i]).append(" ").append(b[i]);
             }
             if(Opv.scalar){
                 builder.append(" ").append(scalar);
             }else{
-                for(int u=0; u<Line; u++){
-                    builder.append(" ").append(result[u]);
+                for(int i=0; i<Line; i++){
+                    builder.append(" ").append(result[i]);
                 }
             }
-            builder.append(n);
+            builder.append(" ").append(n);
         }
 
         @Override

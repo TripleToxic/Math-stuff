@@ -4,27 +4,27 @@ import static java.lang.Math.*;
 import mindustry.logic.LAssembler;
 
 public class AdditionalFunction {
-    /** arc sinh of a variable x */
+    /** @return arc sinh of x*/
     public static double asinh(double x){
         return log(x + sqrt(x*x + 1));
     }
-    /** arc cosh of a variable x */
+    /** @return arc cosh of x*/
     public static double acosh(double x){
         return log(x + sqrt(x*x - 1));
     }
-
+    /** @return real part of the sqrt function of a complex number*/
     public static double Rsqrt(double r, double i){
         return sqrt(hypot(r, i))*cos(atan2(i, r)/2d);
     }
-
+    /** @return imaginary part of the sqrt function of a complex number*/
     public static double Isqrt(double r, double i){
         return sqrt(hypot(r, i))*sin(atan2(i, r)/2d);
     }
-
+    /** @return real part of the natural log function of a complex number*/
     public static double Rlog(double r, double i){
         return log(hypot(r, i));
     }
-
+    /** @return imaginary part of the natural log function of a complex number*/
     public static double Ilog(double r, double i){
         return atan2(i, r);
     }
@@ -71,11 +71,10 @@ public class AdditionalFunction {
 
     public static double[] CrossProc(double[] a, double[] b){
         double[] A = new double[3];
-        if(min(a.length, b.length) < 3){
-            for(int i=0; i<3; i++){
-                A[i] = a[(i+1)%3]*b[(i+2)%3] - a[(i+2)%3]*b[(i+1)%3];
-            }
-        }return A;
+        for(int i=0; i<3; i++){
+            if(min(a.length, b.length) >= 3){A[i] = a[(i+1)%3]*b[(i+2)%3] - a[(i+2)%3]*b[(i+1)%3];}else{A[i] = 0;}
+        }
+        return A;
 
     }
 
