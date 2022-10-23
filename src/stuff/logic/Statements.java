@@ -178,7 +178,7 @@ public class Statements {
         }
 
         public void write(StringBuilder builder){
-            builder.append("Vector ").append(Opv.name()).append(" ");
+            builder.append("Vector ").append(Opv.name());
             for(int i=0; i<Line; i++){
                 builder.append(" ").append(a[i]).append(" ").append(b[i]);
             }
@@ -205,8 +205,8 @@ public class Statements {
         registerStatement("Vector", args -> new VectorOperationsStatement(args[1], args, args, args, args[2], args[3]), VectorOperationsStatement::new);
     }
 
-    public static void registerStatement(String name, arc.func.Func<String[], ShortStatement> func, Prov<LStatement> prov) {
-        LAssembler.customParsers.putAll(name, func);
+    public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov) {
+        LAssemblerPlus.customParsers.put(name, func);
         LogicIO.allStatements.add(prov);
     }
 }
