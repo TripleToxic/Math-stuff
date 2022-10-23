@@ -1,8 +1,6 @@
 package stuff;
 import static java.lang.Math.*;
 
-import mindustry.logic.LAssembler;
-
 public class AdditionalFunction {
     /** @return arc sinh of x*/
     public static double asinh(double x){
@@ -93,14 +91,5 @@ public class AdditionalFunction {
             get[i] = p;
         }
         return get;
-    }
-
-    public static int[] GetVars(String[] a){
-        LAssembler L = new LAssembler();
-        int[] K = new int[a.length];
-        for(int i=0; i<a.length; i++){
-            K[i] = L.var(a[i]);
-        }
-        return K;
     }
 }

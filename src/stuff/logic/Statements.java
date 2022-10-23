@@ -95,7 +95,7 @@ public class Statements {
         }
 
         @Override
-        public LInstructionPlus buildplus(LAssembler builder) {
+        public LInstructionPlus buildplus(LAssemblerPlus builder) {
             return null;
         }
     }
@@ -104,6 +104,11 @@ public class Statements {
         LAssembler L = new LAssembler();
         public VFunc Opv = VFunc.addV;
         public String scalar = "scalar", n = "3";
+        int Line = L.var(n);
+        public String[] 
+        result = AlphabetFunction(Line),
+        a = Spam(Line, "0"),
+        b = Spam(Line, "0");
         public VectorOperationsStatement(String Opv, String[] a, String[] b, String[] result, String scalar, String n){
             try{
                 this.Opv = VFunc.valueOf(Opv);
@@ -114,12 +119,7 @@ public class Statements {
             this.scalar = scalar;
             this.n = n;
         }
-        int Line = L.var(n);
-        public String[] 
-        result = AlphabetFunction(Line),
-        a = Spam(Line, "0"),
-        b = Spam(Line, "0");
-
+        
         public VectorOperationsStatement(){}
 
         @Override
@@ -135,6 +135,7 @@ public class Statements {
                 row(table);
             }
             Line = L.var(n);
+            String[] result = AlphabetFunction(Line), a = Spam(Line, "0"), b = Spam(Line, "0");
             if(Opv.scalar){
                 for(int I2=0; I2<Line; I2++){
                     final int inI2 = I2;
@@ -172,8 +173,8 @@ public class Statements {
         }
 
         @Override
-        public LInstructionPlus buildplus(LAssembler build) {
-            return new VFunction(Opv, GetVars(a), GetVars(b), GetVars(result), build.var(scalar), build.var(n));
+        public LInstructionPlus buildplus(LAssemblerPlus build) {
+            return new VFunction(Opv, build.vars(a), build.vars(b), build.vars(result), build.var(scalar), build.var(n));
         }
 
         public void write(StringBuilder builder){
@@ -181,14 +182,10 @@ public class Statements {
             for(int i=0; i<Line; i++){
                 builder.append(" ").append(a[i]).append(" ").append(b[i]);
             }
-            if(Opv.scalar){
-                builder.append(" ").append(scalar);
-            }else{
-                for(int i=0; i<Line; i++){
-                    builder.append(" ").append(result[i]);
-                }
+            for(int i=0; i<Line; i++){
+                builder.append(" ").append(result[i]);
             }
-            builder.append(" ").append(n);
+            builder.append(" ").append(scalar).append(" ").append(n);
         }
 
         @Override

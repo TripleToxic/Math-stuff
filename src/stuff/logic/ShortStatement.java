@@ -8,7 +8,7 @@ import mindustry.ui.Styles;
 import stuff.logic.LExecutorPlus.*;
 
 public abstract class ShortStatement extends LStatement{
-    public abstract LInstructionPlus buildplus(LAssembler builder);
+    public abstract LInstructionPlus buildplus(LAssemblerPlus builder);
     // Modified width from 144 to 70
     protected Cell<TextField> field2(Table table, String result, Cons<String> setter){
         return table.field(result, Styles.nodeField, s -> setter.get(sanitize(s)))
