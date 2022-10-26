@@ -133,8 +133,8 @@ public class Statements {
                 table.add("N = ");
                 field2(table, n, str -> n = str);
                 row(table);
-            }
-            Line = L.var(n);
+                Line = L.var(n);
+            }else{Line = 3;}
             String[] result = AlphabetFunction(Line), a = Spam(Line, "0"), b = Spam(Line, "0");
             if(Opv.scalar){
                 for(int I2=0; I2<Line; I2++){
