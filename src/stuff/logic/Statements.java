@@ -75,7 +75,7 @@ public class Statements {
 
         public void write(StringBuilder builder){
             builder
-                .append("Complex ")
+                .append("comp ")
                 .append(Op.name())
                 .append(" ")
                 .append(r1)
@@ -108,6 +108,8 @@ public class Statements {
             this.F = F;
         }
 
+        public SetStatement(){}
+
         @Override 
         public void build(Table table){
             field(table, T[0][0], str -> T[0][0] = str);
@@ -125,6 +127,13 @@ public class Statements {
         @Override
         public LInstructionPlus buildplus(LAssemblerPlus b) {
             return new SetArray(b.vars(T[1]), b.vars(F));
+        }
+
+        public void write(StringBuilder builder){
+            builder.append("setarr");
+            for(int i=0; i<7; i++){
+                builder.append(" ").append(F[i]);
+            }
         }
 
         @Override
@@ -209,7 +218,7 @@ public class Statements {
         }
 
         public void write(StringBuilder builder){
-            builder.append("Vector ").append(Opv.name());
+            builder.append("vect ").append(Opv.name());
             for(int i=0; i<Line; i++){
                 builder.append(" ").append(a[i]).append(" ").append(b[i]);
             }
@@ -232,8 +241,9 @@ public class Statements {
     }
 
     public static void load(){
-        registerStatement("Complex", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
-        registerStatement("Vector", args -> new VectorOperationsStatement(args[1], args, args, args, args[2], args[3]), VectorOperationsStatement::new);
+        registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
+        registerStatement("setarr", args -> new SetStatement(args[1], args), SetStatement::new);
+        registerStatement("vect", args -> new VectorOperationsStatement(args[1], args, args, args, args[2], args[3]), VectorOperationsStatement::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov) {
