@@ -3,9 +3,9 @@ package stuff.logic;
 import static stuff.AdditionalFunction.*;
 
 public enum VFunc {
-    addV("+", (a, b, n) -> AddVector(a, b, n)),
-    subV("-", (a, b, n) -> SubVector(a, b, n)),
-    dotV("·", true, (a, b, n) -> DotProc(a, b, n)),
+    addV("+", (a, b) -> AddVector(a, b)),
+    subV("-", (a, b) -> SubVector(a, b)),
+    dotV("·", true, (a, b) -> DotProc(a, b)),
     crossV("x", (a, b) -> CrossProc(a, b), true),
     ;
 
@@ -53,10 +53,10 @@ public enum VFunc {
     }
 
     interface NormalVector{
-        double[] get(double[] a, double[] b, int n);
+        double[] get(double[] a, double[] b);
     }
 
     interface NormalScalar{
-        double get(double[] a, double[] b, int n);
+        double get(double[] a, double[] b);
     }
 }

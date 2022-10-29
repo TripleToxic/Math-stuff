@@ -6,8 +6,7 @@ import mindustry.gen.*;
 import mindustry.logic.*;
 import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
-import stuff.logic.LExecutorPlus.LInstructionPlus;
-import stuff.logic.Operations.*;
+import stuff.logic.LExecutorPlus.*;
 
 import static stuff.AdditionalFunction.*;
 
@@ -99,6 +98,35 @@ public class Statements {
             return null;
         }
     }
+
+    public static class SetStatement extends ShortStatement{
+        public String T = "result";
+        public String[] F = Spam(10, "0");
+
+        @Override 
+        public void build(Table table){
+            field(table, T, str -> T = str);
+            table.add(" = ");
+            for(int i=0; i<10; i++){
+                final int in = i;
+                field2(table, F[i], str -> F[in] = str);
+            }
+        }
+
+        public LCategory category(){
+            return LCategory.operation;
+        }
+
+        @Override
+        public LInstructionPlus buildplus(LAssemblerPlus builder) {
+            return null;
+        }
+
+        @Override
+        public LInstruction build(LAssembler builder) {
+            return null;
+        }
+    }
     
     public static class VectorOperationsStatement extends ShortStatement{
         LAssembler L = new LAssembler();
@@ -117,7 +145,7 @@ public class Statements {
 
         void rebuild(Table table){
             table.clearChildren();
-            if(Opv.cross == false){
+            if(!Opv.cross){
                 table.add("N = ");
                 field2(table, n, str -> n = str);
                 row(table);

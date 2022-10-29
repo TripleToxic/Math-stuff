@@ -43,25 +43,28 @@ public class AdditionalFunction {
         return pow(hypot(r, i), b)*sin(b*atan2(i, r));
     }
 
-    public static double DotProc(double[] a, double[] b, int n){
+    public static double DotProc(double[] a, double[] b){
+        int min = min(a.length, b.length);
         double dotP = 0;
-        for(int i=0; i<n; i++){
+        for(int i=0; i<min; i++){
             dotP += (a[i]*b[i]);
         }
         return dotP;
     }
 
-    public static double[] AddVector(double[] a, double[] b, int n){
-        double[] A = new double[n];
-        for(int i=0; i<n; i++){
+    public static double[] AddVector(double[] a, double[] b){
+        int min = min(a.length, b.length);
+        double[] A = new double[min];
+        for(int i=0; i<min; i++){
             A[i] = a[i] + b[i];
         }
         return A;
     }
 
-    public static double[] SubVector(double[] a, double[] b, int n){
-        double[] A = new double[n];
-        for(int i=0; i<n; i++){
+    public static double[] SubVector(double[] a, double[] b){
+        int min = min(a.length, b.length);
+        double[] A = new double[min];
+        for(int i=0; i<min; i++){
             A[i] = a[i] - b[i];
         }
         return A;
