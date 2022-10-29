@@ -40,6 +40,15 @@ public class Operations{
         }
     }
 
+    public static class SetArray implements LInstructionPlus{
+        public int[] from, to;
+
+        public SetArray(int[] from, int[] to){
+            this.from = from;
+            this.to = to;
+        }
+    }
+
     public static class VFunction implements LInstructionPlus{
         public VFunc Opv = VFunc.addV;
         public int scalar, n;

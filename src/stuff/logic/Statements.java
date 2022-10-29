@@ -109,18 +109,6 @@ public class Statements {
         result = AlphabetFunction(Line),
         a = Spam(Line, "0"),
         b = Spam(Line, "0");
-        public VectorOperationsStatement(String Opv, String[] a, String[] b, String[] result, String scalar, String n){
-            try{
-                this.Opv = VFunc.valueOf(Opv);
-            }catch(Throwable ignored){}
-            this.a = a;
-            this.b = b;
-            this.result = result;
-            this.scalar = scalar;
-            this.n = n;
-        }
-        
-        public VectorOperationsStatement(){}
 
         @Override
         public void build(Table table) {
@@ -133,9 +121,7 @@ public class Statements {
                 table.add("N = ");
                 field2(table, n, str -> n = str);
                 row(table);
-                Line = L.var(n);
             }else{Line = 3;}
-            String[] result = AlphabetFunction(Line), a = Spam(Line, "0"), b = Spam(Line, "0");
             if(Opv.scalar){
                 for(int I2=0; I2<Line; I2++){
                     final int inI2 = I2;
@@ -157,8 +143,7 @@ public class Statements {
                     if(I == Line/2){Button(table, table);}else{table.add("   ");}
                     field2(table, b[I], str -> b[inI] = str);
                     row(table);
-                }
-            
+                }     
             }
         }
 
@@ -171,6 +156,19 @@ public class Statements {
                 }));
             }, Styles.logict, () -> {}).size(90f, 40f).pad(2f).color(table.color);
         }
+
+        public VectorOperationsStatement(String Opv, String[] a, String[] b, String[] result, String scalar, String n){
+            try{
+                this.Opv = VFunc.valueOf(Opv);
+            }catch(Throwable ignored){}
+            this.a = a;
+            this.b = b;
+            this.result = result;
+            this.scalar = scalar;
+            this.n = n;
+        }
+        
+        public VectorOperationsStatement(){}
 
         @Override
         public LInstructionPlus buildplus(LAssemblerPlus build) {
