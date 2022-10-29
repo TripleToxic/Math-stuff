@@ -100,14 +100,19 @@ public class Statements {
     }
 
     public static class SetStatement extends ShortStatement{
-        public String T = "result";
-        public String[] F = Spam(10, "0");
+        public String T[][] = {{"result"}, AlphabetFunction(7)};
+        public String[] F = Spam(7, "0");
+
+        public SetStatement(String T, String[] F){
+            this.T[0][0] = T;
+            this.F = F;
+        }
 
         @Override 
         public void build(Table table){
-            field(table, T, str -> T = str);
+            field(table, T[0][0], str -> T[0][0] = str);
             table.add(" = ");
-            for(int i=0; i<10; i++){
+            for(int i=0; i<7; i++){
                 final int in = i;
                 field2(table, F[i], str -> F[in] = str);
             }
@@ -118,8 +123,8 @@ public class Statements {
         }
 
         @Override
-        public LInstructionPlus buildplus(LAssemblerPlus builder) {
-            return null;
+        public LInstructionPlus buildplus(LAssemblerPlus b) {
+            return new SetArray(b.vars(T[1]), b.vars(F));
         }
 
         @Override
@@ -137,6 +142,19 @@ public class Statements {
         result = AlphabetFunction(Line),
         a = Spam(Line, "0"),
         b = Spam(Line, "0");
+
+        public VectorOperationsStatement(String Opv, String[] a, String[] b, String[] result, String scalar, String n){
+            try{
+                this.Opv = VFunc.valueOf(Opv);
+            }catch(Throwable ignored){}
+            this.a = a;
+            this.b = b;
+            this.result = result;
+            this.scalar = scalar;
+            this.n = n;
+        }
+        
+        public VectorOperationsStatement(){}
 
         @Override
         public void build(Table table) {
@@ -184,19 +202,6 @@ public class Statements {
                 }));
             }, Styles.logict, () -> {}).size(90f, 40f).pad(2f).color(table.color);
         }
-
-        public VectorOperationsStatement(String Opv, String[] a, String[] b, String[] result, String scalar, String n){
-            try{
-                this.Opv = VFunc.valueOf(Opv);
-            }catch(Throwable ignored){}
-            this.a = a;
-            this.b = b;
-            this.result = result;
-            this.scalar = scalar;
-            this.n = n;
-        }
-        
-        public VectorOperationsStatement(){}
 
         @Override
         public LInstructionPlus buildplus(LAssemblerPlus build) {
