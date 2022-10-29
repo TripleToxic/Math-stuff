@@ -130,7 +130,7 @@ public class Statements {
         }
 
         public void write(StringBuilder builder){
-            builder.append("setarr");
+            builder.append("setarr ").append(T[0][0]);
             for(int i=0; i<7; i++){
                 builder.append(" ").append(F[i]);
             }
