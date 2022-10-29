@@ -89,7 +89,7 @@ public class LExecutorPlus extends LExecutor {
     public static class SetArray implements LInstructionPlus{
         public int[] from, to;
 
-        public SetArray(int[] from, int[] to){
+        public SetArray(int[] to, int[] from){
             this.from = from;
             this.to = to;
         }
