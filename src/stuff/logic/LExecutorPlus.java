@@ -117,16 +117,15 @@ public class LExecutorPlus extends LExecutor {
 
     public static class VFunction implements LInstructionPlus{
         public VFunc Opv = VFunc.addV;
-        public int scalar, n;
+        public int scalar;
         public int[] a, b, result;
 
-        public VFunction(VFunc Opv, int[] a, int[] b, int[] result, int scalar, int n){
+        public VFunction(VFunc Opv, int[] a, int[] b, int[] result, int scalar){
             this.Opv = Opv;
             this.a = a;
             this.b = b;
             this.result = result;
             this.scalar = scalar;
-            this.n = n;
         }
 
         VFunction(){}
