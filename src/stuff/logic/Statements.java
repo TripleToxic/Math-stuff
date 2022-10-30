@@ -103,9 +103,15 @@ public class Statements {
         public String T[][] = {{"result"}, AlphabetFunction(7)};
         public String[] F = Spam(7, "0");
 
-        public SetArrStatement(String T, String[] F){
+        public SetArrStatement(String T, String F0, String F1, String F2, String F3, String F4, String F5, String F6){
             this.T[0][0] = T;
-            this.F = F;
+            this.F[0] = F[0];
+            this.F[1] = F[1];
+            this.F[2] = F[2];
+            this.F[3] = F[3];
+            this.F[4] = F[4];
+            this.F[5] = F[5];
+            this.F[6] = F[6];
         }
 
         public SetArrStatement(){}
@@ -114,6 +120,7 @@ public class Statements {
         public void build(Table table){
             field(table, T[0][0], str -> T[0][0] = str);
             table.add(" = ");
+            row(table);
             for(int i=0; i<7; i++){
                 final int in = i;
                 field2(table, F[i], str -> F[in] = str);
@@ -130,9 +137,13 @@ public class Statements {
         }
 
         public void write(StringBuilder builder){
-            builder.append("setarr ").append(T[0][0]);
+            builder
+                .append("setarr ")
+                .append(T[0][0]);
             for(int i=0; i<7; i++){
-                builder.append(" ").append(F[i]);
+                builder
+                    .append(" ")
+                    .append(F[i]);
             }
         }
 
@@ -169,7 +180,7 @@ public class Statements {
 
         void rebuild(Table table){
             table.clearChildren();
-            if(Opv.scalar){field(table, scalar, str -> scalar = str);}else{field(table, result[0][0], str -> result[0][0] = str);}
+            if(Opv.scalar){field3(table, scalar, str -> scalar = str);}else{field3(table, result[0][0], str -> result[0][0] = str);}
             table.add(" = ");
             field2(table, a[0][0], str -> a[0][0] = str);
             Button(table, table);
@@ -192,7 +203,17 @@ public class Statements {
         }
 
         public void write(StringBuilder builder){
-            
+            builder
+                .append("vect ")
+                .append(Opv.name())
+                .append(" ")
+                .append(a[0][0])
+                .append(" ")
+                .append(b[0][0])
+                .append(" ")
+                .append(result[0][0])
+                .append(" ")
+                .append(scalar);
         }
 
         @Override
@@ -209,7 +230,7 @@ public class Statements {
 
     public static void load(){
         registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
-        registerStatement("setarr", args -> new SetArrStatement(args[1], args), SetArrStatement::new);
+        registerStatement("setarr", args -> new SetArrStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), SetArrStatement::new);
         registerStatement("vect", args -> new VectorOperationsStatement(args[1], args[2], args[3], args[4], args[5]), VectorOperationsStatement::new);
     }
 
