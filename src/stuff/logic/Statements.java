@@ -105,13 +105,13 @@ public class Statements {
 
         public SetArrStatement(String T, String F0, String F1, String F2, String F3, String F4, String F5, String F6){
             this.T[0][0] = T;
-            this.F[0] = F[0];
-            this.F[1] = F[1];
-            this.F[2] = F[2];
-            this.F[3] = F[3];
-            this.F[4] = F[4];
-            this.F[5] = F[5];
-            this.F[6] = F[6];
+            this.F[0] = F0;
+            this.F[1] = F1;
+            this.F[2] = F2;
+            this.F[3] = F3;
+            this.F[4] = F4;
+            this.F[5] = F5;
+            this.F[6] = F6;
         }
 
         public SetArrStatement(){}
