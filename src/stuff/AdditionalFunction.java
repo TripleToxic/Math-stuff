@@ -96,9 +96,9 @@ public class AdditionalFunction {
         return get;
     }
 
-    public static String ArrToString(int[] arr){
+    public static String ArrToString(double[] arr){
         StringBuilder s = new StringBuilder();
-        for(int i : arr){
+        for(double i : arr){
             s.append(i).append(" ");
         }
         return s.toString();

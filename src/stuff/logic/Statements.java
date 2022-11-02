@@ -128,13 +128,10 @@ public class Statements {
         public void write(StringBuilder builder){
             builder
                 .append("setarr ")
-                .append(T);
-            for(int i=0; i<7; i++){
-                builder
-                    .append(" ")
-                    .append(F);
+                .append(T)
+                .append(" ")
+                .append(F);
             }
-        }
 
         @Override
         public LInstruction build(LAssembler builder) {

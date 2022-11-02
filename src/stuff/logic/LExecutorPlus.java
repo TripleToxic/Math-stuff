@@ -108,7 +108,7 @@ public class LExecutorPlus extends LExecutor{
             if(Opv.scalar){
                 exec.setnum(result, Opv.op1.get(exec.vect(StringToArr(astr)), exec.vect(StringToArr(bstr))));
             }else{
-                exec.setobj(result, Opv.op2.get(exec.vect(StringToArr(astr)), exec.vect(StringToArr(bstr))));
+                exec.setobj(result, ArrToString(Opv.op2.get(exec.vect(StringToArr(astr)), exec.vect(StringToArr(bstr)))));
             }
         }
     }
