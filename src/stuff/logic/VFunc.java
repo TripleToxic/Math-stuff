@@ -6,14 +6,14 @@ public enum VFunc {
     addV("+", (a, b) -> AddVector(a, b)),
     subV("-", (a, b) -> SubVector(a, b)),
     dotV("·", true, (a, b) -> DotProc(a, b)),
-    crossV("x", (a, b) -> CrossProc(a, b), true),
+    crossV("x", (a, b) -> CrossProc(a, b)),
     ;
 
     public static final VFunc[] all = values();
 
     public final NormalScalar op1;
     public final NormalVector op2;
-    public final CrossVector op3;
+    public final NormalVector op3;
     public final String symbol;
     public final Boolean scalar, cross;
 
@@ -35,21 +35,8 @@ public enum VFunc {
         this.cross = false;
     }
 
-    VFunc(String symbol, CrossVector opIn, Boolean isCross){
-        this.symbol = symbol;
-        this.op1 = null;
-        this.op2 = null;
-        this.op3 = opIn;
-        this.scalar = false;
-        this.cross = isCross;
-    }
-
     public String getSymbol() {
         return symbol;
-    }
-
-    interface CrossVector{
-        double[] get(double[] a, double[] b);
     }
 
     interface NormalVector{

@@ -118,7 +118,7 @@ public class Statements {
 
         @Override 
         public void build(Table table){
-            field(table, T[0][0], str -> T[0][0] = str);
+            field2(table, T[0][0], str -> T[0][0] = str);
             table.add(" = ");
             row(table);
             for(int i=0; i<7; i++){
