@@ -3,8 +3,9 @@ package stuff.logic;
 import mindustry.logic.LExecutor;
 
 import static mindustry.Vars.*;
+import static stuff.AdditionalFunction.*;
 
-public class LExecutorPlus extends LExecutor {
+public class LExecutorPlus extends LExecutor{
 
     public static boolean invalid(double d){
         return Double.isNaN(d) || Double.isInfinite(d);
@@ -22,30 +23,11 @@ public class LExecutorPlus extends LExecutor {
     public double[] vect(int[] index){
         int count = index.length;
         double[] arr = new double[count];
+        Var[] v = arr(index).clone();
         for(int i=0; i<count; i++){
-            Var v = var(index[i]);
-            double d = v.isobj ? v.objval != null ? 1 : 0 : invalid(v.numval) ? 0 : v.numval;
-            arr[i] = d;
+            arr[i] = v[i].isobj ? v[i].objval != null ? 1 : 0 : invalid(v[i].numval) ? 0 : v[i].numval;
         }
         return arr;
-    }
-
-    public void setvect(int[] index, double[] vect){
-        int count = index.length;
-        for(int i=0; i<count; i++){
-            for(int k=0; k<1; k++){
-                Var v = var(index[i]);
-                if(v.constant) break;
-                if(invalid(vect[i])){
-                    v.objval = null;
-                    v.isobj = true;
-                }else{
-                    v.numval = vect[i];
-                    v.objval = null;
-                    v.isobj = false;
-                } 
-            }
-        }
     }
 
     public interface LInstructionPlus{
@@ -87,55 +69,46 @@ public class LExecutorPlus extends LExecutor {
     }
 
     public static class SetArray implements LInstructionPlus{
-        public int[] from, to;
+        public int from; 
+        public int to;
 
-        public SetArray(int[] to, int[] from){
-            this.from = from.clone();
-            this.to = to.clone();
+        public SetArray(int from, int to){
+            this.from = from;
+            this.to = to;
         }
 
-        SetArray(){}
+        public SetArray(){}
 
         @Override
-        public void run(LExecutorPlus exec) {
-            Var[] T = exec.arr(to).clone();
-            Var[] F = exec.arr(from).clone();
-
-            for(int i=0; i<F.length; i++){
-                if(!T[i].constant){
-                    if(F[i].isobj){
-                        T[i].objval = F[i].objval;
-                        T[i].isobj = true;
-                    }else{
-                        T[i].numval = invalid(F[i].numval) ? 0 : F[i].numval;
-                        T[i].isobj = false;
-                    }
-                }
+        public void run(LExecutorPlus exec){
+            if(exec.obj(from) instanceof String str){
+                exec.setobj(to, str);
+            }else{
+                exec.setobj(to, null);
             }
         }
     }
 
     public static class VFunction implements LInstructionPlus{
         public VFunc Opv = VFunc.addV;
-        public int scalar;
-        public int[] a, b, result;
+        public int a, b, result;
 
-        public VFunction(VFunc Opv, int[] a, int[] b, int[] result, int scalar){
+        public VFunction(VFunc Opv, int a, int b, int result){
             this.Opv = Opv;
-            this.a = a.clone();
-            this.b = b.clone();
-            this.result = result.clone();
-            this.scalar = scalar;
+            this.a = a;
+            this.b = b;
+            this.result = result;
         }
 
         VFunction(){}
 
         @Override
         public void run(LExecutorPlus exec){
+            if((exec.obj(a) instanceof String astr) && (exec.obj(b) instanceof String bstr))
             if(Opv.scalar){
-                exec.setnum(scalar, Opv.op1.get(exec.vect(a), exec.vect(b)));
+                exec.setnum(result, Opv.op1.get(exec.vect(StringToArr(astr)), exec.vect(StringToArr(bstr))));
             }else{
-                exec.setvect(result, Opv.op2.get(exec.vect(a), exec.vect(b)));
+                exec.setobj(result, Opv.op2.get(exec.vect(StringToArr(astr)), exec.vect(StringToArr(bstr))));
             }
         }
     }

@@ -95,4 +95,21 @@ public class AdditionalFunction {
         }
         return get;
     }
+
+    public static String ArrToString(int[] arr){
+        StringBuilder s = new StringBuilder();
+        for(int i : arr){
+            s.append(i).append(" ");
+        }
+        return s.toString();
+    }
+
+    public static int[] StringToArr(String str){
+        String[] arr = str.split(" ", 0);
+        int[] IA = new int[arr.length];
+        for(int i=0; i<arr.length; i++){
+            IA[i] = Integer.parseInt(arr[i]);
+        }
+        return IA;
+    }
 }

@@ -8,8 +8,6 @@ import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
 import stuff.logic.LExecutorPlus.*;
 
-import static stuff.AdditionalFunction.*;
-
 public class Statements {
     public static class ComplexOperationStatement extends ShortStatement{
         public Func Op = Func.addC;
@@ -100,31 +98,22 @@ public class Statements {
     }
 
     public static class SetArrStatement extends ShortStatement{
-        public String T[][] = {{"result"}, AlphabetFunction(7)};
-        public String[] F = Spam(7, "0");
+        public String T = "result";
+        public String F = "0";
 
-        public SetArrStatement(String T, String F0, String F1, String F2, String F3, String F4, String F5, String F6){
-            this.T[0][0] = T;
-            this.F[0] = F0;
-            this.F[1] = F1;
-            this.F[2] = F2;
-            this.F[3] = F3;
-            this.F[4] = F4;
-            this.F[5] = F5;
-            this.F[6] = F6;
+        public SetArrStatement(String T, String F){
+            this.T = T;
+            this.F = F;
         }
 
         public SetArrStatement(){}
 
         @Override 
         public void build(Table table){
-            field2(table, T[0][0], str -> T[0][0] = str);
+            field2(table, T, str -> T = str);
             table.add(" = ");
             row(table);
-            for(int i=0; i<7; i++){
-                final int in = i;
-                field2(table, F[i], str -> F[in] = str);
-            }
+            field3(table, F, str -> F = str);
         }
 
         public LCategory category(){
@@ -133,17 +122,17 @@ public class Statements {
 
         @Override
         public LInstructionPlus buildplus(LAssemblerPlus b) {
-            return new SetArray(b.vars(T[1]), b.vars(F));
+            return new SetArray(b.var(F), b.var(T));
         }
 
         public void write(StringBuilder builder){
             builder
                 .append("setarr ")
-                .append(T[0][0]);
+                .append(T);
             for(int i=0; i<7; i++){
                 builder
                     .append(" ")
-                    .append(F[i]);
+                    .append(F);
             }
         }
 
@@ -155,20 +144,15 @@ public class Statements {
     
     public static class VectorOperationsStatement extends ShortStatement{
         public VFunc Opv = VFunc.addV;
-        public String scalar = "result";
-        public String[][] 
-        result = {{"result"}, AlphabetFunction(7)},
-        a = {{"A"}, Spam(7, "0")},
-        b = {{"B"}, Spam(7, "0")};
+        public String result = "result", a = "A", b = "B";
 
-        public VectorOperationsStatement(String Opv, String a, String b, String result, String scalar){
+        public VectorOperationsStatement(String Opv, String a, String b, String result){
             try{
                 this.Opv = VFunc.valueOf(Opv);
             }catch(Throwable ignored){}
-            this.a[0][0] = a;
-            this.b[0][0] = b;
-            this.result[0][0] = result;
-            this.scalar = scalar;
+            this.a = a;
+            this.b = b;
+            this.result = result;
         }
         
         public VectorOperationsStatement(){}
@@ -180,11 +164,11 @@ public class Statements {
 
         void rebuild(Table table){
             table.clearChildren();
-            if(Opv.scalar){field3(table, scalar, str -> scalar = str);}else{field3(table, result[0][0], str -> result[0][0] = str);}
+            field3(table, result, str -> result = str);
             table.add(" = ");
-            field2(table, a[0][0], str -> a[0][0] = str);
+            field2(table, a, str -> a = str);
             Button(table, table);
-            field2(table, b[0][0], str -> b[0][0] = str);
+            field2(table, b, str -> b = str);
         }
 
         void Button(Table table, Table parent){
@@ -199,7 +183,7 @@ public class Statements {
 
         @Override
         public LInstructionPlus buildplus(LAssemblerPlus build) {
-            return new VFunction(Opv, build.vars(a[1]), build.vars(b[1]), build.vars(result[1]), build.var(scalar));
+            return new VFunction(Opv, build.var(a), build.var(b), build.var(result));
         }
 
         public void write(StringBuilder builder){
@@ -207,13 +191,11 @@ public class Statements {
                 .append("vect ")
                 .append(Opv.name())
                 .append(" ")
-                .append(a[0][0])
+                .append(a)
                 .append(" ")
-                .append(b[0][0])
+                .append(b)
                 .append(" ")
-                .append(result[0][0])
-                .append(" ")
-                .append(scalar);
+                .append(result);
         }
 
         @Override
@@ -230,8 +212,8 @@ public class Statements {
 
     public static void load(){
         registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
-        registerStatement("setarr", args -> new SetArrStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), SetArrStatement::new);
-        registerStatement("vect", args -> new VectorOperationsStatement(args[1], args[2], args[3], args[4], args[5]), VectorOperationsStatement::new);
+        registerStatement("setarr", args -> new SetArrStatement(args[1], args[2]), SetArrStatement::new);
+        registerStatement("vect", args -> new VectorOperationsStatement(args[1], args[2], args[3], args[4]), VectorOperationsStatement::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov) {
