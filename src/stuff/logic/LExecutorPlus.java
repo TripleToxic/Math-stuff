@@ -90,16 +90,16 @@ public class LExecutorPlus extends LExecutor {
         public int[] from, to;
 
         public SetArray(int[] to, int[] from){
-            this.from = from;
-            this.to = to;
+            this.from = from.clone();
+            this.to = to.clone();
         }
 
         SetArray(){}
 
         @Override
         public void run(LExecutorPlus exec) {
-            Var[] T = exec.arr(to);
-            Var[] F = exec.arr(from);
+            Var[] T = exec.arr(to).clone();
+            Var[] F = exec.arr(from).clone();
 
             for(int i=0; i<F.length; i++){
                 if(!T[i].constant){
@@ -122,9 +122,9 @@ public class LExecutorPlus extends LExecutor {
 
         public VFunction(VFunc Opv, int[] a, int[] b, int[] result, int scalar){
             this.Opv = Opv;
-            this.a = a;
-            this.b = b;
-            this.result = result;
+            this.a = a.clone();
+            this.b = b.clone();
+            this.result = result.clone();
             this.scalar = scalar;
         }
 
