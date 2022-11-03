@@ -88,7 +88,7 @@ public class AdditionalFunction {
     }
 
     public static int[] StringToArr(String str){
-        String[] arr = str.split(" ");
+        String[] arr = str.split(" ", 0);
         int[] IA = new int[arr.length];
         for(int i=0; i<arr.length; i++){
             if(isNumeric(arr[i])){
@@ -98,20 +98,15 @@ public class AdditionalFunction {
         return IA;
     }
 
-    public static boolean isNumeric(String string) {    
-        System.out.println(String.format("Parsing string: \"%s\"", string));
-            
-        if(string == null || string.equals("")) {
-            System.out.println("String cannot be parsed, it is null or empty.");
+    public static boolean isNumeric(String string) {             
+        if(string == null || string.equals("")){
             return false;
         }
         
-        try {
+        try{
             int intValue = Integer.parseInt(string);
             return true;
-        } catch (NumberFormatException e) {
-            System.out.println("Input String cannot be parsed to Integer.");
-        }
+        } catch (NumberFormatException e){}
         return false;
     }
     
