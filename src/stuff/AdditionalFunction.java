@@ -88,11 +88,31 @@ public class AdditionalFunction {
     }
 
     public static int[] StringToArr(String str){
-        String[] arr = str.split(" ", 0);
+        String[] arr = str.split(" ");
         int[] IA = new int[arr.length];
         for(int i=0; i<arr.length; i++){
-            IA[i] = Integer.parseInt(arr[i]);
+            if(isNumeric(arr[i])){
+                IA[i] = Integer.parseInt(arr[i]);
+            }else{IA[i] = 0;}
         }
         return IA;
     }
+
+    public static boolean isNumeric(String string) {    
+        System.out.println(String.format("Parsing string: \"%s\"", string));
+            
+        if(string == null || string.equals("")) {
+            System.out.println("String cannot be parsed, it is null or empty.");
+            return false;
+        }
+        
+        try {
+            int intValue = Integer.parseInt(string);
+            return true;
+        } catch (NumberFormatException e) {
+            System.out.println("Input String cannot be parsed to Integer.");
+        }
+        return false;
+    }
+    
 }

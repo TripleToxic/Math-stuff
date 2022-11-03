@@ -3,7 +3,7 @@ package stuff.logic;
 import mindustry.logic.LExecutor;
 import static stuff.AdditionalFunction.*;
 
-public class LExecutorPlus extends LExecutor{
+public class TheInstruction extends LExecutor{
 
     public static class Function implements LInstruction{
         public Func Op = Func.addC;
@@ -65,9 +65,9 @@ public class LExecutorPlus extends LExecutor{
             
         }
 
-        LExecutor exec = new LExecutor();
+        static LExecutor exec = new LExecutor();
 
-        double[] vect(int[] index){
+        public static double[] vect(int[] index){
             int count = index.length;
             double[] arr = new double[count];
             for(int i=0; i<count; i++){
@@ -77,7 +77,7 @@ public class LExecutorPlus extends LExecutor{
             return arr;
         }
 
-        static boolean invalid(double d){
+        public static boolean invalid(double d){
             return Double.isNaN(d) || Double.isInfinite(d);
         }
     }
