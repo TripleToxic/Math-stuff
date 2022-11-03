@@ -68,27 +68,6 @@ public class LExecutorPlus extends LExecutor{
         }
     }
 
-    public static class SetArray implements LInstructionPlus{
-        public int from; 
-        public int to;
-
-        public SetArray(int from, int to){
-            this.from = from;
-            this.to = to;
-        }
-
-        public SetArray(){}
-
-        @Override
-        public void run(LExecutorPlus exec){
-            if(exec.obj(from) instanceof String str){
-                exec.setobj(to, str);
-            }else{
-                exec.setobj(to, null);
-            }
-        }
-    }
-
     public static class VFunction implements LInstructionPlus{
         public VFunc Opv = VFunc.addV;
         public int a, b, result;
@@ -104,12 +83,13 @@ public class LExecutorPlus extends LExecutor{
 
         @Override
         public void run(LExecutorPlus exec){
-            if((exec.obj(a) instanceof String astr) && (exec.obj(b) instanceof String bstr))
-            if(Opv.scalar){
-                exec.setnum(result, Opv.op1.get(exec.vect(StringToArr(astr)), exec.vect(StringToArr(bstr))));
-            }else{
-                exec.setobj(result, ArrToString(Opv.op2.get(exec.vect(StringToArr(astr)), exec.vect(StringToArr(bstr)))));
-            }
+            if((exec.obj(a) instanceof String astr) && (exec.obj(b) instanceof String bstr)){
+                if(Opv.scalar){
+                    exec.setnum(result, Opv.op1.get(exec.vect(StringToArr(astr)), exec.vect(StringToArr(bstr))));
+                }else{
+                    exec.setobj(result, ArrToString(Opv.op2.get(exec.vect(StringToArr(astr)), exec.vect(StringToArr(bstr)))));
+                }
+            }else{exec.setobj(result, null);}
         }
     }
 }

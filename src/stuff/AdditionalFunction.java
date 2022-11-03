@@ -79,23 +79,6 @@ public class AdditionalFunction {
 
     }
 
-    public static String[] AlphabetFunction(int n){
-        String example = "abcdefghijklmnopqrstuvwxyz";
-        String[] get = new String[n];
-        for(int i=0; i<n; i++){
-            get[i] = String.valueOf(example.charAt(i));
-        }
-        return get;
-    }
-
-    public static String[] Spam(int n, String p){
-        String[] get = new String[n];
-        for(int i=0; i<n; i++){
-            get[i] = p;
-        }
-        return get;
-    }
-
     public static String ArrToString(double[] arr){
         StringBuilder s = new StringBuilder();
         for(double i : arr){

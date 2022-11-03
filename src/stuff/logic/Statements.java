@@ -96,48 +96,6 @@ public class Statements {
             return null;
         }
     }
-
-    public static class SetArrStatement extends ShortStatement{
-        public String T = "result";
-        public String F = "0";
-
-        public SetArrStatement(String T, String F){
-            this.T = T;
-            this.F = F;
-        }
-
-        public SetArrStatement(){}
-
-        @Override 
-        public void build(Table table){
-            field2(table, T, str -> T = str);
-            table.add(" = ");
-            row(table);
-            field3(table, F, str -> F = str);
-        }
-
-        public LCategory category(){
-            return LCategory.operation;
-        }
-
-        @Override
-        public LInstructionPlus buildplus(LAssemblerPlus b) {
-            return new SetArray(b.var(F), b.var(T));
-        }
-
-        public void write(StringBuilder builder){
-            builder
-                .append("setarr ")
-                .append(T)
-                .append(" ")
-                .append(F);
-            }
-
-        @Override
-        public LInstruction build(LAssembler builder) {
-            return null;
-        }
-    }
     
     public static class VectorOperationsStatement extends ShortStatement{
         public VFunc Opv = VFunc.addV;
@@ -209,7 +167,6 @@ public class Statements {
 
     public static void load(){
         registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
-        registerStatement("setarr", args -> new SetArrStatement(args[1], args[2]), SetArrStatement::new);
         registerStatement("vect", args -> new VectorOperationsStatement(args[1], args[2], args[3], args[4]), VectorOperationsStatement::new);
     }
 
