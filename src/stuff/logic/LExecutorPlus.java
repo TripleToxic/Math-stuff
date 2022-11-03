@@ -1,38 +1,9 @@
 package stuff.logic;
 
 import mindustry.logic.LExecutor;
-
-import static mindustry.Vars.*;
 import static stuff.AdditionalFunction.*;
 
 public class LExecutorPlus extends LExecutor{
-
-    public static boolean invalid(double d){
-        return Double.isNaN(d) || Double.isInfinite(d);
-    }
-
-    public Var[] arr(int[] arr){
-        int L = arr.length;
-        Var[] v = new Var[L];
-        for(int i=0; i<L; i++){
-            v[i] = arr[i] < 0 ? logicVars.get(-arr[i]) : vars[arr[i]];
-        }
-        return v;
-    }
-
-    public double[] vect(int[] index){
-        int count = index.length;
-        double[] arr = new double[count];
-        Var[] v = arr(index).clone();
-        for(int i=0; i<count; i++){
-            arr[i] = v[i].isobj ? v[i].objval != null ? 1 : 0 : invalid(v[i].numval) ? 0 : v[i].numval;
-        }
-        return arr;
-    }
-
-    public interface LInstructionPlus{
-        void run(LExecutorPlus exec);
-    }
 
     public static class Function implements LInstruction{
         public Func Op = Func.addC;
@@ -68,7 +39,7 @@ public class LExecutorPlus extends LExecutor{
         }
     }
 
-    public static class VFunction implements LInstructionPlus{
+    public static class VFunction implements LInstruction{
         public VFunc Opv = VFunc.addV;
         public int a, b, result;
 
@@ -82,14 +53,32 @@ public class LExecutorPlus extends LExecutor{
         VFunction(){}
 
         @Override
-        public void run(LExecutorPlus exec){
+        public void run(LExecutor exec){
             if((exec.obj(a) instanceof String astr) && (exec.obj(b) instanceof String bstr)){
                 if(Opv.scalar){
-                    exec.setnum(result, Opv.op1.get(exec.vect(StringToArr(astr)), exec.vect(StringToArr(bstr))));
+                    exec.setnum(result, Opv.op1.get(vect(StringToArr(astr)), vect(StringToArr(bstr))));
                 }else{
-                    exec.setobj(result, ArrToString(Opv.op2.get(exec.vect(StringToArr(astr)), exec.vect(StringToArr(bstr)))));
+                    exec.setobj(result, ArrToString(Opv.op2.get(vect(StringToArr(astr)), vect(StringToArr(bstr)))));
                 }
             }else{exec.setobj(result, null);}
+
+            
+        }
+
+        LExecutor exec = new LExecutor();
+
+        double[] vect(int[] index){
+            int count = index.length;
+            double[] arr = new double[count];
+            for(int i=0; i<count; i++){
+                Var v = exec.var(index[i]);
+                arr[i] = v.isobj ? v.objval != null ? 1 : 0 : invalid(v.numval) ? 0 : v.numval;
+            }
+            return arr;
+        }
+
+        static boolean invalid(double d){
+            return Double.isNaN(d) || Double.isInfinite(d);
         }
     }
 }

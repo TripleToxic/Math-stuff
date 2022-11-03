@@ -88,12 +88,6 @@ public class Statements {
                 .append(" ")
                 .append(ImaginaryOutput)
                 ;
-            
-        }
-
-        @Override
-        public LInstructionPlus buildplus(LAssemblerPlus builder) {
-            return null;
         }
     }
     
@@ -137,7 +131,7 @@ public class Statements {
         }
 
         @Override
-        public LInstructionPlus buildplus(LAssemblerPlus build) {
+        public LInstruction build(LAssembler build) {
             return new VFunction(Opv, build.var(a), build.var(b), build.var(result));
         }
 
@@ -156,13 +150,7 @@ public class Statements {
         @Override
         public LCategory category(){
             return LCategory.operation;
-        }
-
-        @Override
-        public LInstruction build(LAssembler builder) {
-            return null;
-        }
-        
+        }       
     }
 
     public static void load(){
