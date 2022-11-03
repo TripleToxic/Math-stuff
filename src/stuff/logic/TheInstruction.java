@@ -40,6 +40,7 @@ public class TheInstruction extends LExecutor{
     }
 
     public static class VFunction implements LInstruction{
+        static LExecutor exec = new LExecutor();
         public VFunc Opv = VFunc.addV;
         public int a, b, result;
 
@@ -65,20 +66,13 @@ public class TheInstruction extends LExecutor{
             
         }
 
-        static LExecutor exec = new LExecutor();
-
         public static double[] vect(int[] index){
             int count = index.length;
             double[] arr = new double[count];
             for(int i=0; i<count; i++){
-                Var v = exec.var(index[i]);
-                arr[i] = v.isobj ? v.objval != null ? 1 : 0 : invalid(v.numval) ? 0 : v.numval;
+                arr[i] = exec.num(index[i]);
             }
             return arr;
-        }
-
-        public static boolean invalid(double d){
-            return Double.isNaN(d) || Double.isInfinite(d);
         }
     }
 }

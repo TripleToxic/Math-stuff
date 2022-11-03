@@ -102,7 +102,6 @@ public class AdditionalFunction {
         if(string == null || string.equals("")){
             return false;
         }
-        
         try{
             int intValue = Integer.parseInt(string);
             return true;
