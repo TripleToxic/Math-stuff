@@ -108,5 +108,4 @@ public class AdditionalFunction {
         } catch (NumberFormatException e){}
         return false;
     }
-    
 }

@@ -23,7 +23,7 @@ description: "Expand calculation into the complex world"
 version: 1.0
 
 #minimum game version required to run this mod
-minGameVersion: 138
+minGameVersion: 139
 
 #is a java mod
 java: true
