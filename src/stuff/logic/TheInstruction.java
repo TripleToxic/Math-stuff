@@ -56,10 +56,11 @@ public class TheInstruction extends LExecutor{
         @Override
         public void run(LExecutor exec){
             if(exec.obj(a) instanceof String astr  &&  exec.obj(b) instanceof String bstr){
-                if(Opv.scalar){
-                    exec.setnum(result, Opv.op1.get(vect(StringToArr(astr)), vect(StringToArr(bstr))));
-                }else{
-                    exec.setobj(result, ArrToString(Opv.op2.get(vect(StringToArr(astr)), vect(StringToArr(bstr)))));
+                switch(Opv){
+                    case addV -> exec.setobj(result, ArrToString(AddVector(vect(StringToArr(astr)), vect(StringToArr(bstr)))));
+                    case subV -> exec.setobj(result, ArrToString(SubVector(vect(StringToArr(astr)), vect(StringToArr(bstr)))));
+                    case dotV -> exec.setnum(result, DotProc(vect(StringToArr(astr)), vect(StringToArr(bstr))));
+                    case crossV -> exec.setobj(result, ArrToString(CrossProc(vect(StringToArr(astr)), vect(StringToArr(bstr)))));
                 }
             }else{exec.setobj(result, null);}  
         }
