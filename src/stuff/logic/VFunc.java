@@ -15,7 +15,7 @@ public enum VFunc {
     public final NormalVector op2;
     public final NormalVector op3;
     public final String symbol;
-    public final Boolean scalar, cross;
+    public final Boolean scalar;
 
     VFunc(String symbol, NormalVector opIn){
         this.symbol = symbol;
