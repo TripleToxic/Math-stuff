@@ -23,7 +23,6 @@ public enum VFunc {
         this.op2 = opIn;
         this.op3 = null;
         this.scalar = false;
-        this.cross = false;
     }
 
     VFunc(String symbol, Boolean isScalar, NormalScalar opIn){
@@ -32,7 +31,6 @@ public enum VFunc {
         this.op2 = null;
         this.op3 = null;
         this.scalar = isScalar;
-        this.cross = false;
     }
 
     public String getSymbol() {
