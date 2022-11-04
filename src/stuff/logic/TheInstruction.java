@@ -57,21 +57,12 @@ public class TheInstruction extends LExecutor{
         public void run(LExecutor exec){
             if(exec.obj(a) instanceof String astr  &&  exec.obj(b) instanceof String bstr){
                 switch(Opv){
-                    case addV -> exec.setobj(result, ArrToString(AddVector(vect(StringToArr(astr)), vect(StringToArr(bstr)))));
-                    case subV -> exec.setobj(result, ArrToString(SubVector(vect(StringToArr(astr)), vect(StringToArr(bstr)))));
-                    case dotV -> exec.setnum(result, DotProc(vect(StringToArr(astr)), vect(StringToArr(bstr))));
-                    case crossV -> exec.setobj(result, ArrToString(CrossProc(vect(StringToArr(astr)), vect(StringToArr(bstr)))));
+                    case addV -> exec.setobj(result, ArrToString(AddVector(StringToArr(astr), StringToArr(bstr))));
+                    case subV -> exec.setobj(result, ArrToString(SubVector(StringToArr(astr), StringToArr(bstr))));
+                    case dotV -> exec.setnum(result, DotProc(StringToArr(astr), StringToArr(bstr)));
+                    case crossV -> exec.setobj(result, ArrToString(CrossProc(StringToArr(astr), StringToArr(bstr))));
                 }
             }else{exec.setobj(result, null);}  
-        }
-
-        public static double[] vect(int[] index){
-            int count = index.length;
-            double[] arr = new double[count];
-            for(int i=0; i<count; i++){
-                arr[i] = exec.num(index[i]);
-            }
-            return arr;
         }
     }
 }

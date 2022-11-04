@@ -87,9 +87,9 @@ public class AdditionalFunction {
         return s.toString();
     }
 
-    public static int[] StringToArr(String str){
+    public static double[] StringToArr(String str){
         String[] arr = str.split(" ", 0);
-        int[] IA = new int[arr.length];
+        double[] IA = new double[arr.length];
         for(int i=0; i<arr.length; i++){
             if(isNumeric(arr[i])){
                 IA[i] = Integer.parseInt(arr[i]);
