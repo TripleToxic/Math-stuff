@@ -92,12 +92,12 @@ public class Statements {
     }
     
     public static class VectorOperationsStatement extends ShortStatement{
-        public VFunc Opv = VFunc.addV;
+        public AFunc Opv = AFunc.addA;
         public String result = "result", a = "A", b = "B";
 
         public VectorOperationsStatement(String Opv, String a, String b, String result){
             try{
-                this.Opv = VFunc.valueOf(Opv);
+                this.Opv = AFunc.valueOf(Opv);
             }catch(Throwable ignored){}
             this.a = a;
             this.b = b;
@@ -115,15 +115,18 @@ public class Statements {
             table.clearChildren();
             field3(table, result, str -> result = str);
             table.add(" = ");
+            if(Opv.single){Button(table, table);}
             field2(table, a, str -> a = str);
-            Button(table, table);
-            field2(table, b, str -> b = str);
+            if(!Opv.single){
+                Button(table, table);
+                field2(table, b, str -> b = str);
+            }
         }
 
         void Button(Table table, Table parent){
             table.button(b -> {
                 b.label(() -> Opv.symbol);
-                b.clicked(() -> showSelect(b, VFunc.all, Opv, o -> {
+                b.clicked(() -> showSelect(b, AFunc.all, Opv, o -> {
                     Opv = o;
                     rebuild(parent);
                 }));
@@ -159,7 +162,7 @@ public class Statements {
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov) {
-        LAssemblerPlus.customParsers.put(name, func);
+        LAssembler.customParsers.put(name, func);
         LogicIO.allStatements.add(prov);
     }
 }

@@ -41,10 +41,10 @@ public class TheInstruction extends LExecutor{
 
     public static class VFunction implements LInstruction{
         static LExecutor exec = new LExecutor();
-        public VFunc Opv = VFunc.addV;
+        public AFunc Opv = AFunc.addA;
         public int a, b, result;
 
-        public VFunction(VFunc Opv, int a, int b, int result){
+        public VFunction(AFunc Opv, int a, int b, int result){
             this.Opv = Opv;
             this.a = a;
             this.b = b;
@@ -55,12 +55,22 @@ public class TheInstruction extends LExecutor{
 
         @Override
         public void run(LExecutor exec){
-            if(exec.obj(a) instanceof String astr  &&  exec.obj(b) instanceof String bstr){
+            if(exec.obj(a) instanceof String astr){
                 switch(Opv){
-                    case addV -> exec.setobj(result, ArrToString(AddVector(StringToArr(astr), StringToArr(bstr))));
-                    case subV -> exec.setobj(result, ArrToString(SubVector(StringToArr(astr), StringToArr(bstr))));
-                    case dotV -> exec.setnum(result, DotProc(StringToArr(astr), StringToArr(bstr)));
-                    case crossV -> exec.setobj(result, ArrToString(CrossProc(StringToArr(astr), StringToArr(bstr))));
+                    case sumA -> exec.setnum(result, sum(StringToArr(astr)));
+                    case Ascalar -> exec.setobj(result, proc(StringToArr(astr), exec.num(b)));
+                }
+                if(exec.obj(b) instanceof String bstr){
+                    switch(Opv){
+                        case addA -> exec.setobj(result, ArrToString(AddVector(StringToArr(astr), StringToArr(bstr))));
+                        case subA -> exec.setobj(result, ArrToString(SubVector(StringToArr(astr), StringToArr(bstr))));
+                        case dotA -> exec.setnum(result, DotProc(StringToArr(astr), StringToArr(bstr)));
+                        case crossA -> exec.setobj(result, ArrToString(CrossProc(StringToArr(astr), StringToArr(bstr))));
+                    }
+                }
+            }else if(exec.obj(b) instanceof String str){
+                switch(Opv){
+                    case Ascalar -> exec.setobj(result, proc(StringToArr(str), exec.num(a))) ;
                 }
             }else{exec.setobj(result, null);}  
         }

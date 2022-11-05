@@ -105,7 +105,22 @@ public class AdditionalFunction {
         try{
             int intValue = Integer.parseInt(string);
             return true;
-        } catch (NumberFormatException e){}
+        }catch (NumberFormatException e){}
         return false;
+    }
+
+    public static double sum(double[] a){
+        double sum = 0;
+        for(double i : a){
+            sum += i;
+        }
+        return sum;
+    }
+
+    public static double[] proc(double[] a, double b){
+        for(int i=0; i<a.length; i++){
+            a[i] *= b;
+        }
+        return a;
     }
 }
