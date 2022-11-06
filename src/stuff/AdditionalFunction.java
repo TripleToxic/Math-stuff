@@ -43,7 +43,7 @@ public class AdditionalFunction {
         return pow(hypot(r, i), b)*sin(b*atan2(i, r));
     }
 
-    public static double DotProc(double[] a, double[] b){
+    public static double DotProd(double[] a, double[] b){
         int min = min(a.length, b.length);
         double dotP = 0;
         for(int i=0; i<min; i++){
@@ -70,7 +70,7 @@ public class AdditionalFunction {
         return A;
     }
 
-    public static double[] CrossProc(double[] a, double[] b){
+    public static double[] CrossProd(double[] a, double[] b){
         double[] A = new double[3];
         for(int i=0; i<3; i++){
             if(min(a.length, b.length) >= 3){A[i] = a[(i+1)%3]*b[(i+2)%3] - a[(i+2)%3]*b[(i+1)%3];}else{A[i] = 0;}

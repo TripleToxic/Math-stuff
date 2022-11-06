@@ -4,11 +4,11 @@ public enum AFunc{
     addA("+"),
     subA("-"),
     Ascalar("*"),
-    dotA("·"),
-    crossA("x"),
+    dotProd("·"),
+    crossProd("x"),
     sumA("sumAll", true),
-    AddElement("inclu", false, true),
-    RemoveElement("exclu", false, true),
+    AddEle("inclu", false, true),
+    RemoveEle("exclu", false, true),
     ;
 
     public static final AFunc[] all = values();

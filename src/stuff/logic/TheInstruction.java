@@ -58,14 +58,14 @@ public class TheInstruction extends LExecutor{
                 switch(Opv){
                     case sumA -> exec.setnum(result, sum(StringToArr(astr)));
                     case Ascalar -> exec.setobj(result, ArrToString(proc(StringToArr(astr), exec.num(b))));
-                    case AddElement -> exec.setobj(result, ArrToString(addArray(StringToArr(astr), exec.num(b), exec.numi(n))));
-                    case RemoveElement -> exec.setobj(result, ArrToString(removeArray(StringToArr(astr), exec.numi(n))));
+                    case AddEle -> exec.setobj(result, ArrToString(addArray(StringToArr(astr), exec.num(b), exec.numi(n))));
+                    case RemoveEle -> exec.setobj(result, ArrToString(removeArray(StringToArr(astr), exec.numi(n))));
                 }if(exec.obj(b) instanceof String bstr){
                     switch(Opv){
                         case addA -> exec.setobj(result, ArrToString(AddVector(StringToArr(astr), StringToArr(bstr))));
                         case subA -> exec.setobj(result, ArrToString(SubVector(StringToArr(astr), StringToArr(bstr))));
-                        case dotA -> exec.setnum(result, DotProc(StringToArr(astr), StringToArr(bstr)));
-                        case crossA -> exec.setobj(result, ArrToString(CrossProc(StringToArr(astr), StringToArr(bstr))));
+                        case dotProd -> exec.setnum(result, DotProd(StringToArr(astr), StringToArr(bstr)));
+                        case crossProd -> exec.setobj(result, ArrToString(CrossProd(StringToArr(astr), StringToArr(bstr))));
                     }
                 }
             }else if(exec.obj(b) instanceof String bstr){

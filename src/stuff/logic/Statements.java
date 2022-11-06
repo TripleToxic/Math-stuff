@@ -91,11 +91,11 @@ public class Statements {
         }
     }
     
-    public static class VectorOperationsStatement extends ShortStatement{
+    public static class ArrayOperationStatement extends ShortStatement{
         public AFunc Opv = AFunc.addA;
         public String result = "result", a = "A", b = "B", n = "n";
 
-        public VectorOperationsStatement(String Opv, String a, String b, String n, String result){
+        public ArrayOperationStatement(String Opv, String a, String b, String n, String result){
             try{
                 this.Opv = AFunc.valueOf(Opv);
             }catch(Throwable ignored){}
@@ -105,7 +105,7 @@ public class Statements {
             this.result = result;
         }
         
-        public VectorOperationsStatement(){}
+        public ArrayOperationStatement(){}
 
         @Override
         public void build(Table table){
@@ -118,7 +118,7 @@ public class Statements {
             table.add(" = ");
             if(Opv.diff){
                 switch(Opv){
-                    case AddElement -> {
+                    case AddEle -> {
                         Button(table, table);
                         row(table);
                         table.add("add ");
@@ -128,7 +128,7 @@ public class Statements {
                         table.add(" at:");
                         field2(table, n, str -> n = str);
                     }
-                    case RemoveElement -> {
+                    case RemoveEle -> {
                         Button(table, table);
                         row(table);
                         table.add("remove an element of ");
@@ -164,7 +164,7 @@ public class Statements {
 
         public void write(StringBuilder builder){
             builder
-                .append("vect ")
+                .append("arr ")
                 .append(Opv.name())
                 .append(" ")
                 .append(a)
@@ -183,8 +183,8 @@ public class Statements {
     }
 
     public static void load(){
-        registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
-        registerStatement("vect", args -> new VectorOperationsStatement(args[1], args[2], args[3], args[4], args[5]), VectorOperationsStatement::new);
+        registerStatement("aomp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
+        registerStatement("arr", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5]), ArrayOperationStatement::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov) {
