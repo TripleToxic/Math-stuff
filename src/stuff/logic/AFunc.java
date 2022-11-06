@@ -6,25 +6,31 @@ public enum AFunc{
     Ascalar("*"),
     dotA("·"),
     crossA("x"),
-    sumA("Σ", true),
+    sumA("sumAll", true),
+    AddElement("inclu", false, true),
+    RemoveElement("exclu", false, true),
     ;
 
     public static final AFunc[] all = values();
 
     public final String symbol;
-    public final boolean single;
+    public final boolean single, diff;
 
     AFunc(String symbol){
         this.symbol = symbol;
         this.single = false;
+        this.diff = false;
     }
 
     AFunc(String symbol, boolean single){
         this.symbol = symbol;
         this.single = single;
+        this.diff = false;
     }
 
-    public String getSymbol() {
-        return symbol;
+    AFunc(String symbol, boolean single, boolean diff){
+        this.symbol = symbol;
+        this.single = single;
+        this.diff = diff;
     }
 }

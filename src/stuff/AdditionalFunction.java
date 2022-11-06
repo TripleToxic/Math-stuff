@@ -123,4 +123,27 @@ public class AdditionalFunction {
         }
         return a;
     }
+
+    public static double[] addArray(double[] arr, double a, int n){
+        int c = arr.length;
+        double[] narr = new double[c+1];
+        if(n < 0 || n >= c+1){return arr;}
+        for(int i=0; i<c+1; i++){
+            if(i >= n){
+                if(i == n){narr[i] = a;}else{narr[i] = arr[i-1];}
+            }else{narr[i] = arr[i];}
+        }
+        return narr;
+    }
+
+    public static double[] removeArray(double[] arr, int n){
+        int c = arr.length, a = 0;
+        if(n < 0 || n >= c){return arr;}
+        double[] narr = new double[c-1];
+        for(int i=0; i<c-1; i++){
+            if(i < n){a=i;}else{a=i+1;}
+            narr[i] = arr[a];
+        }
+        return narr;
+    }
 }

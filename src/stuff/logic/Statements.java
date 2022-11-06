@@ -93,14 +93,15 @@ public class Statements {
     
     public static class VectorOperationsStatement extends ShortStatement{
         public AFunc Opv = AFunc.addA;
-        public String result = "result", a = "A", b = "B";
+        public String result = "result", a = "A", b = "B", n = "n";
 
-        public VectorOperationsStatement(String Opv, String a, String b, String result){
+        public VectorOperationsStatement(String Opv, String a, String b, String n, String result){
             try{
                 this.Opv = AFunc.valueOf(Opv);
             }catch(Throwable ignored){}
             this.a = a;
             this.b = b;
+            this.n = n;
             this.result = result;
         }
         
@@ -113,13 +114,34 @@ public class Statements {
 
         void rebuild(Table table){
             table.clearChildren();
-            field3(table, result, str -> result = str);
+            field2(table, result, str -> result = str);
             table.add(" = ");
-            if(Opv.single){Button(table, table);}
-            field2(table, a, str -> a = str);
-            if(!Opv.single){
-                Button(table, table);
-                field2(table, b, str -> b = str);
+            if(Opv.diff){
+                switch(Opv){
+                    case AddElement -> {
+                        row(table);
+                        table.add("add ");
+                        field2(table, b, str -> b = str);
+                        table.add(" to ");
+                        field2(table, a, str -> a = str);
+                        table.add(" at ");
+                        field2(table, n, str -> n = str);
+                    }
+                    case RemoveElement -> {
+                        row(table);
+                        table.add("remove an element of ");
+                        field2(table, a, str -> a = str);
+                        table.add(" at ");
+                        field2(table, n, str -> n = str);
+                    }
+                }
+            }else{
+                if(Opv.single){Button(table, table);}
+                field2(table, a, str -> a = str);
+                if(!Opv.single){
+                    Button(table, table);
+                    field2(table, b, str -> b = str);
+                }
             }
         }
 
@@ -135,7 +157,7 @@ public class Statements {
 
         @Override
         public LInstruction build(LAssembler build) {
-            return new VFunction(Opv, build.var(a), build.var(b), build.var(result));
+            return new VFunction(Opv, build.var(a), build.var(b), build.var(n), build.var(result));
         }
 
         public void write(StringBuilder builder){
@@ -146,6 +168,8 @@ public class Statements {
                 .append(a)
                 .append(" ")
                 .append(b)
+                .append(" ")
+                .append(n)
                 .append(" ")
                 .append(result);
         }
@@ -158,7 +182,7 @@ public class Statements {
 
     public static void load(){
         registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
-        registerStatement("vect", args -> new VectorOperationsStatement(args[1], args[2], args[3], args[4]), VectorOperationsStatement::new);
+        registerStatement("vect", args -> new VectorOperationsStatement(args[1], args[2], args[3], args[4], args[5]), VectorOperationsStatement::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov) {
