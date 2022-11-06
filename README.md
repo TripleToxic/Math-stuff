@@ -1,2 +1,4 @@
 # Math stuff
-two part
+adding:
+- Complex operation
+- Array operation
