@@ -1,2 +1,2 @@
-# Complex Function
+# Math stuff
 two part
