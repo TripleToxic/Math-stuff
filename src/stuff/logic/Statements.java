@@ -119,19 +119,21 @@ public class Statements {
             if(Opv.diff){
                 switch(Opv){
                     case AddElement -> {
+                        Button(table, table);
                         row(table);
                         table.add("add ");
                         field2(table, b, str -> b = str);
                         table.add(" to ");
                         field2(table, a, str -> a = str);
-                        table.add(" at ");
+                        table.add(" at:");
                         field2(table, n, str -> n = str);
                     }
                     case RemoveElement -> {
+                        Button(table, table);
                         row(table);
                         table.add("remove an element of ");
                         field2(table, a, str -> a = str);
-                        table.add(" at ");
+                        table.add(" at:");
                         field2(table, n, str -> n = str);
                     }
                 }
@@ -152,7 +154,7 @@ public class Statements {
                     Opv = o;
                     rebuild(parent);
                 }));
-            }, Styles.logict, () -> {}).size(90f, 40f).pad(2f).color(table.color);
+            }, Styles.logict, () -> {}).size(100f, 40f).pad(2f).color(table.color);
         }
 
         @Override
