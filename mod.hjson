@@ -1,14 +1,14 @@
 #the mod name as displayed in-game
-displayName: "Complex Function"
+displayName: "Math stuff"
 
 #the internal name of the mod
-name: "complex-function"
+name: "math-stuff"
 
 #your name
 author: "Triple-Toxic"
 
 #the repository of the mod
-repo: "TripleToxic/ComplexFunction"
+repo: "TripleToxic/Math-stuff"
 
 #the fully qualified main class of the mod
 main: "stuff.Run"
@@ -17,13 +17,13 @@ main: "stuff.Run"
 subtitle: "C"
 
 #the mod description as seen in the mod dialog
-description: "Expand calculation into the complex world"
+description: "Adding math operations"
 
 #the mod version
-version: 1.0
+version: 1.1
 
 #minimum game version required to run this mod
-minGameVersion: 139
+minGameVersion: 140
 
 #is a java mod
 java: true
