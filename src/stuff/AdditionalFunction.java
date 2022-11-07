@@ -117,7 +117,7 @@ public class AdditionalFunction {
         return sum;
     }
 
-    public static double[] proc(double[] a, double b){
+    public static double[] prod(double[] a, double b){
         for(int i=0; i<a.length; i++){
             a[i] *= b;
         }
@@ -148,8 +148,12 @@ public class AdditionalFunction {
     }
 
     public static double[] changeArray(double[] arr, double a, int n){
-        int c = arr.length;
-        if(n >= 0 && n < c) arr[n] = a;
+        if(n >= 0 && n < arr.length) arr[n] = a;
         return arr;
+    }
+
+    public static double pickArray(double[] arr, int n){
+        if(n >= 0 && n < arr.length) return arr[n];
+        return 0;
     }
 }

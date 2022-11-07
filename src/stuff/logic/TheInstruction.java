@@ -57,11 +57,11 @@ public class TheInstruction extends LExecutor{
             if(exec.obj(a) instanceof String astr){
                 switch(Opv){
                     case sumA -> exec.setnum(result, sum(StringToArr(astr)));
-                    case Ascalar -> exec.setobj(result, ArrToString(proc(StringToArr(astr), exec.num(b))));
+                    case Ascalar -> exec.setobj(result, ArrToString(prod(StringToArr(astr), exec.num(b))));
                     case AddEle -> exec.setobj(result, ArrToString(addArray(StringToArr(astr), exec.num(b), exec.numi(n))));
                     case RemoveEle -> exec.setobj(result, ArrToString(removeArray(StringToArr(astr), exec.numi(n))));
-                    case Change -> exec.setobj(result, ArrToString(changeArray(StringToArr(astr), b, exec.numi(n))));
-                    case Pick -> exec.setnum(result, StringToArr(astr)[exec.numi(n)]);
+                    case Change -> exec.setobj(result, ArrToString(changeArray(StringToArr(astr), exec.num(b), exec.numi(n))));
+                    case Pick -> exec.setnum(result, pickArray(StringToArr(astr), exec.numi(n)));
                 }if(exec.obj(b) instanceof String bstr){
                     switch(Opv){
                         case addA -> exec.setobj(result, ArrToString(AddVector(StringToArr(astr), StringToArr(bstr))));
@@ -72,9 +72,9 @@ public class TheInstruction extends LExecutor{
                 }
             }else if(exec.obj(b) instanceof String bstr){
                 switch(Opv){
-                    case Ascalar -> exec.setobj(result, ArrToString(proc(StringToArr(bstr), exec.num(a))));
+                    case Ascalar -> exec.setobj(result, ArrToString(prod(StringToArr(bstr), exec.num(a))));
                 }
-            }else{exec.setobj(result, null);}  
+            }else{exec.setobj(result, null);}
         }
     }
 }
