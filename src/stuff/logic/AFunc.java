@@ -9,6 +9,8 @@ public enum AFunc{
     sumA("sumAll", true),
     AddEle("inclu", false, true),
     RemoveEle("exclu", false, true),
+    Change("change", false, true),
+    Pick("pick", false, true),
     ;
 
     public static final AFunc[] all = values();

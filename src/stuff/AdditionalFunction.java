@@ -138,12 +138,18 @@ public class AdditionalFunction {
 
     public static double[] removeArray(double[] arr, int n){
         int c = arr.length, a = 0;
-        if(n < 0 || n >= c){return arr;}
+        if(n < 0 || n >= c) return arr;
         double[] narr = new double[c-1];
         for(int i=0; i<c-1; i++){
             if(i < n){a=i;}else{a=i+1;}
             narr[i] = arr[a];
         }
         return narr;
+    }
+
+    public static double[] changeArray(double[] arr, double a, int n){
+        int c = arr.length;
+        if(n >= 0 && n < c) arr[n] = a;
+        return arr;
     }
 }

@@ -121,19 +121,34 @@ public class Statements {
                     case AddEle -> {
                         Button(table, table);
                         row(table);
-                        table.add("add ");
+                        table.add(" include ");
                         field2(table, b, str -> b = str);
                         table.add(" to ");
                         field2(table, a, str -> a = str);
-                        table.add(" at:");
+                        table.add(" at: ");
                         field2(table, n, str -> n = str);
                     }
                     case RemoveEle -> {
                         Button(table, table);
                         row(table);
-                        table.add("remove an element of ");
+                        table.add(" remove ");
                         field2(table, a, str -> a = str);
-                        table.add(" at:");
+                        table.add(" index: ");
+                        field2(table, n, str -> n = str);
+                    }
+                    case Change -> {
+                        row(table);
+                        Button(table, table);
+                        field2(table, a, str -> a = str);
+                        table.add(" at ");
+                        field2(table, n, str -> n = str);
+                        table.add(" to ");
+                        field2(table, b, str -> b = str);
+                    }
+                    case Pick -> {
+                        Button(table, table);
+                        field2(table, a, str -> a = str);
+                        table.add(" at ");
                         field2(table, n, str -> n = str);
                     }
                 }
