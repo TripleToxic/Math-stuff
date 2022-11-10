@@ -151,6 +151,16 @@ public class Statements {
                         table.add(" at ");
                         field2(table, n, str -> n = str);
                     }
+                    case Shift -> {
+                        Button(table, table);
+                        field2(table, a, str -> a = str);
+                        field2(table, n, str -> n = str);
+                        table.add(" times");
+                    }
+                    case Shuffle -> {
+                        Button(table, table);
+                        field2(table, a, str -> a = str);
+                    }
                 }
             }else{
                 if(Opv.single){Button(table, table);}
@@ -198,7 +208,7 @@ public class Statements {
     }
 
     public static void load(){
-        registerStatement("aomp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
+        registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
         registerStatement("arr", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5]), ArrayOperationStatement::new);
     }
 

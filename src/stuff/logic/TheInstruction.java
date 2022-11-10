@@ -62,6 +62,8 @@ public class TheInstruction extends LExecutor{
                     case RemoveEle -> exec.setobj(result, ArrToString(removeArray(StringToArr(astr), exec.numi(n))));
                     case Change -> exec.setobj(result, ArrToString(changeArray(StringToArr(astr), exec.num(b), exec.numi(n))));
                     case Pick -> exec.setnum(result, pickArray(StringToArr(astr), exec.numi(n)));
+                    case Shift -> exec.setobj(result, ArrToString(shiftArray(StringToArr(astr), exec.numi(n))));
+                    case Shuffle -> exec.setobj(result, ArrToString(shuffleArray(StringToArr(astr))));
                 }if(exec.obj(b) instanceof String bstr){
                     switch(Opv){
                         case addA -> exec.setobj(result, ArrToString(AddVector(StringToArr(astr), StringToArr(bstr))));

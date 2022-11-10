@@ -11,6 +11,8 @@ public enum AFunc{
     RemoveEle("exclu", false, true),
     Change("change", false, true),
     Pick("pick", false, true),
+    Shift("shift", false, true),
+    Shuffle("shuffle", false, true),
     ;
 
     public static final AFunc[] all = values();

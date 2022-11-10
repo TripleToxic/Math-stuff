@@ -153,7 +153,31 @@ public class AdditionalFunction {
     }
 
     public static double pickArray(double[] arr, int n){
-        if(n >= 0 && n < arr.length) return arr[n];
-        return 0;
+        return (n >= 0 && n < arr.length) ? arr[n] : 0;
+    }
+
+    public static double[] shuffleArray(double[] arr){
+        int l = arr.length, c = 0;
+        double[] narr = new double[l];
+        String[] sarr = new String[l];
+        for(int i=0; i<l; i++){
+            while(true){
+                c = (int)(random()*l);
+                if(sarr[c] == null){
+                    narr[c] = arr[i];
+                    sarr[c] = "Y";
+                    break;
+                }
+            }
+        }return narr;
+    }
+
+    public static double[] shiftArray(double[] arr, int n){
+        int l = arr.length, k = 0;
+        if(n < 0)k = l + (n % l); else k = n;
+        double[] narr = new double[l];
+        for(int i=0; i<l; i++){
+            narr[(i + k) % l] = arr[i];
+        }return narr;
     }
 }
