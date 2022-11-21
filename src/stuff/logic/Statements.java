@@ -230,7 +230,7 @@ public class Statements {
         void Button2(Table table, Table parent){
             table.button(b -> {
                 b.label(() -> L.name());
-                b.clicked(() -> showSelect(b, L.all, L, o -> {
+                b.clicked(() -> showSelect(b, LengthRArr.all, L, o -> {
                     L = o;
                     rebuild(parent);
                 }));
@@ -245,9 +245,13 @@ public class Statements {
         public void write(StringBuilder builder){
             builder
                 .append("arr ")
-                .append(Opv.name())
-                .append(" ")
-                .append(L.name())
+                .append(Opv.name());
+                try{
+                    builder
+                        .append(" ")
+                        .append(L.name());
+                }catch(Throwable ignore){}
+            builder
                 .append(" ")
                 .append(a)
                 .append(" ")
@@ -263,7 +267,7 @@ public class Statements {
         @Override
         public LCategory category(){
             return LCategory.operation;
-        }       
+        }
     }
 
     public static void load(){

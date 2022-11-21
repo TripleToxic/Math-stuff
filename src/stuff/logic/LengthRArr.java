@@ -5,5 +5,5 @@ public enum LengthRArr{
     Columns,
     Rows;
 
-    public final LengthRArr all[] = values();
+    public static final LengthRArr all[] = values();
 }

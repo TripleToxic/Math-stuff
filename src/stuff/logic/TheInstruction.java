@@ -93,6 +93,7 @@ public class TheInstruction extends LExecutor{
                         switch(L){
                             case Columns -> exec.setnum(result, aArr.length);
                             case Rows -> exec.setnum(result, aArr[0].length);
+                            default -> {}
                         }
                     }
                 }
