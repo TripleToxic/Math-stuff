@@ -93,7 +93,6 @@ public class Statements {
     
     public static class ArrayOperationStatement extends ShortStatement{
         public AFunc Opv = AFunc.addA;
-        public LengthRArr L = LengthRArr.NotIncluded;
         public String result = "result", a = "A", b = "B", c = "C", n = "n";
 
         public ArrayOperationStatement(String Opv, String a, String b, String c, String n, String result){
@@ -217,16 +216,6 @@ public class Statements {
             }, Styles.logict, () -> {}).size(100f, 40f).pad(2f).color(table.color);
         }
 
-        void Button2(Table table, Table parent){
-            table.button(b -> {
-                b.label(() -> L.name());
-                b.clicked(() -> showSelect(b, LengthRArr.all, L, o -> {
-                    L = o;
-                    rebuild(parent);
-                }));
-            }, Styles.logict, () -> {}).size(100f, 40f).pad(2f).color(table.color);
-        }
-
         @Override
         public LInstruction build(LAssembler build) {
             return new VFunction(Opv, build.var(a), build.var(b), build.var(c), build.var(n), build.var(result));
@@ -235,13 +224,7 @@ public class Statements {
         public void write(StringBuilder builder){
             builder
                 .append("arr ")
-                .append(Opv.name());
-                try{
-                    builder
-                        .append(" ")
-                        .append(L.name());
-                }catch(Throwable ignore){}
-            builder
+                .append(Opv.name())
                 .append(" ")
                 .append(a)
                 .append(" ")

@@ -41,7 +41,6 @@ public class TheInstruction extends LExecutor{
 
     public static class VFunction implements LInstruction{
         public AFunc Opv = AFunc.addA;
-        public LengthRArr L = LengthRArr.NotIncluded;
         public int a, b, c, n, result;
 
         public VFunction(AFunc Opv, int a, int b, int c, int n, int result){
@@ -89,11 +88,6 @@ public class TheInstruction extends LExecutor{
                 switch(Opv){
                     case ChangeE -> exec.setobj(result, ChangeRArrayE(aArr, exec.num(b), exec.numi(c), exec.numi(n)));
                     case Length -> {
-                        switch(L){
-                            case Columns -> exec.setnum(result, aArr.length);
-                            case Rows -> exec.setnum(result, aArr[0].length);
-                            default -> {}
-                        }
                     }
                 }
             }else{exec.setobj(result, null);}
