@@ -1,6 +1,7 @@
 package stuff.logic;
 
-public enum LengthRArr {
+public enum LengthRArr{
+    NotIncluded,
     Columns,
     Rows;
 

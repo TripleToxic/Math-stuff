@@ -102,7 +102,7 @@ public class Statements {
             }catch(Throwable ignored){}
             try{
                 this.L = LengthRArr.valueOf(L);
-            }catch(Throwable ignored){}
+            }catch(Throwable nonexist){this.L = LengthRArr.valueOf("NotIncluded");}
             this.a = a;
             this.b = b;
             this.c = c;
