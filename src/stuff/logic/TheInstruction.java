@@ -44,9 +44,8 @@ public class TheInstruction extends LExecutor{
         public LengthRArr L = LengthRArr.NotIncluded;
         public int a, b, c, n, result;
 
-        public VFunction(AFunc Opv, LengthRArr L, int a, int b, int c, int n, int result){
+        public VFunction(AFunc Opv, int a, int b, int c, int n, int result){
             this.Opv = Opv;
-            this.L = L;
             this.a = a;
             this.b = b;
             this.c = c;

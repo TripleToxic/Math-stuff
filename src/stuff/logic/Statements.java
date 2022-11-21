@@ -96,11 +96,8 @@ public class Statements {
         public LengthRArr L = LengthRArr.NotIncluded;
         public String result = "result", a = "A", b = "B", c = "C", n = "n";
 
-        public ArrayOperationStatement(String Opv, String L, String a, String b, String c, String n, String result){
+        public ArrayOperationStatement(String Opv, String a, String b, String c, String n, String result){
             this.Opv = AFunc.valueOf(Opv);
-            try{
-                this.L = LengthRArr.valueOf(L);
-            }catch(Throwable nonexist){this.L = LengthRArr.valueOf("NotIncluded");}
             this.a = a;
             this.b = b;
             this.c = c;
@@ -232,7 +229,7 @@ public class Statements {
 
         @Override
         public LInstruction build(LAssembler build) {
-            return new VFunction(Opv, L, build.var(a), build.var(b), build.var(c), build.var(n), build.var(result));
+            return new VFunction(Opv, build.var(a), build.var(b), build.var(c), build.var(n), build.var(result));
         }
 
         public void write(StringBuilder builder){
@@ -265,7 +262,7 @@ public class Statements {
 
     public static void load(){
         registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
-        registerStatement("arr", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ArrayOperationStatement::new);
+        registerStatement("arr", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6]), ArrayOperationStatement::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov){
