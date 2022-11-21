@@ -15,13 +15,13 @@ public enum AFunc{
     Shift("shift", false, true),
     Shuffle("shuffle", false, true),
     // 2D Array section
-    Length(true ,"length", false, true),
-    ChangeR(true ,"changeR", false, true),
-    AddTo(true ,"incluA", false, true),
-    ChangeE(true ,"changeE", false, true),
+    Length("length", false, true),
+    ChangeR("changeR", false, true),
+    AddTo("incluA", false, true),
+    ChangeE("changeE", false, true),
     ;
 
-    public static final AFunc[] all = values();
+    public static final AFunc[] all = symbolToAFunc();
 
     public final String symbol;
     public final boolean single, diff, RArray;
@@ -31,13 +31,6 @@ public enum AFunc{
         this.single = false;
         this.diff = false;
         this.RArray = false;
-    }
-
-    AFunc(boolean RArray ,String symbol, boolean single, boolean diff){
-        this.symbol = symbol;
-        this.single = single;
-        this.diff = diff;
-        this.RArray = RArray;
     }
 
     AFunc(String symbol, boolean single){
@@ -53,4 +46,14 @@ public enum AFunc{
         this.diff = diff;
         this.RArray = false;
     }
+
+    public static AFunc[] symbolToAFunc(){
+        int l = values().length;
+        AFunc[] arr = new AFunc[l];
+        for(int i=0; i<l; i++){
+            arr[i] = AFunc.valueOf(values()[i].symbol);
+        }
+        return arr;
+    }
+
 }

@@ -93,7 +93,7 @@ public class Statements {
     
     public static class ArrayOperationStatement extends ShortStatement{
         public AFunc Opv = AFunc.addA;
-        public LengthRArr L = LengthRArr.Columns;
+        public LengthRArr L = LengthRArr.NotIncluded;
         public String result = "result", a = "A", b = "B", c = "C", n = "n";
 
         public ArrayOperationStatement(String Opv, String L, String a, String b, String c, String n, String result){

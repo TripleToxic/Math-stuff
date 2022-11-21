@@ -41,7 +41,7 @@ public class TheInstruction extends LExecutor{
 
     public static class VFunction implements LInstruction{
         public AFunc Opv = AFunc.addA;
-        public LengthRArr L = LengthRArr.Columns;
+        public LengthRArr L = LengthRArr.NotIncluded;
         public int a, b, c, n, result;
 
         public VFunction(AFunc Opv, LengthRArr L, int a, int b, int c, int n, int result){
