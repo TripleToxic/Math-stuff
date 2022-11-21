@@ -7,44 +7,33 @@ public enum AFunc{
     scalar("*"),
     dotProd("·"),
     crossProd("x"),
-    sum("sumAll", true),
-    AddEle("inclu", false, true),
-    RemoveEle("exclu", false, true),
-    Change("change", false, true),
-    Pick("pick", false, true),
-    Shift("shift", false, true),
-    Shuffle("shuffle", false, true),
-    // 2D Array section
-    Length("length", false, true),
-    ChangeR("changeR", false, true),
-    AddTo("incluA", false, true),
-    ChangeE("changeE", false, true),
+    sum("sumAll", false),
+    AddEle("inclu", true),
+    RemoveEle("exclu", true),
+    Change("change", true),
+    Pick("pick", true),
+    Shift("shift", true),
+    Shuffle("shuffle", true),
+    // 2D Array sectio
+    Length("length", true),
+    ChangeR("changeR", true),
+    AddTo("incluA", true),
+    ChangeE("changeE", true),
     ;
 
     public static final AFunc[] all = symbolToAFunc();
 
     public final String symbol;
-    public final boolean single, diff, RArray;
+    public final boolean diff;
 
     AFunc(String symbol){
         this.symbol = symbol;
-        this.single = false;
         this.diff = false;
-        this.RArray = false;
     }
 
-    AFunc(String symbol, boolean single){
+    AFunc(String symbol, boolean diff){
         this.symbol = symbol;
-        this.single = single;
-        this.diff = false;
-        this.RArray = false;
-    }
-
-    AFunc(String symbol, boolean single, boolean diff){
-        this.symbol = symbol;
-        this.single = single;
         this.diff = diff;
-        this.RArray = false;
     }
 
     public static AFunc[] symbolToAFunc(){

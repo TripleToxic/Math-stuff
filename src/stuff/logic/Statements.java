@@ -97,9 +97,7 @@ public class Statements {
         public String result = "result", a = "A", b = "B", c = "C", n = "n";
 
         public ArrayOperationStatement(String Opv, String L, String a, String b, String c, String n, String result){
-            try{
-                this.Opv = AFunc.valueOf(Opv);
-            }catch(Throwable ignored){}
+            this.Opv = AFunc.valueOf(Opv);
             try{
                 this.L = LengthRArr.valueOf(L);
             }catch(Throwable nonexist){this.L = LengthRArr.valueOf("NotIncluded");}
@@ -166,13 +164,7 @@ public class Statements {
                         Button(table, table);
                         field2(table, a, str -> a = str);
                     }
-                    case Length -> {
-                        row(table);
-                        Button(table, table);
-                        Button2(table, table);
-                        table.add(" 's of ");
-                        field2(table, a, str -> a = str);
-                    }
+                    
                     case ChangeR -> {
                         row(table);
                         Button(table, table);
@@ -206,14 +198,15 @@ public class Statements {
                         table.add(" at ");
                         field2(table, n, str -> n = str);
                     }
+                    case sum -> {
+                        Button(table, table);
+                        field2(table, a, str -> a = str);
+                    }
                 }
             }else{
-                if(Opv.single){Button(table, table);}
                 field2(table, a, str -> a = str);
-                if(!Opv.single){
-                    Button(table, table);
-                    field2(table, b, str -> b = str);
-                }
+                Button(table, table);
+                field2(table, b, str -> b = str);
             }
         }
 
@@ -275,7 +268,7 @@ public class Statements {
         registerStatement("arr", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ArrayOperationStatement::new);
     }
 
-    public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov) {
+    public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov){
         LAssembler.customParsers.put(name, func);
         LogicIO.allStatements.add(prov);
     }
