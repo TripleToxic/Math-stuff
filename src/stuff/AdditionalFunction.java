@@ -180,4 +180,27 @@ public class AdditionalFunction {
             narr[(i + k) % l] = arr[i];
         }return narr;
     }
+
+    public static double[][] ChangeRArrayE(double[][] arrR, double a, int column, int row){
+        if((column >= 0 && arrR.length > column) && (row >= 0 && arrR[0].length > row)) arrR[column][row] = a;
+        return arrR;
+    }
+
+    public static double[][] addArrayToRArray(double[][] arrR, double[] arr, int n){
+        int column = arrR.length, length = arr.length, maxRows = max(arrR[0].length, length), remainder = 0;
+        double[][] nRectArr = new double[column+1][maxRows];
+        if(n < 0 || n >= column+1){return arrR;}
+        for(int i=0; i<column+1; i++){
+            remainder = i != n ? arrR[i - i >= n ? 1:0].length : length;
+            for(int j=0; j<maxRows; j++){
+                nRectArr[i][j] = j < remainder ? (i != n ? arrR[i - i >= n ? 1:0][j] : arr[j]) : 0;
+            }
+        }
+        return nRectArr;
+    }
+
+    public static double[][] changeRArray(double[][] arrR, double[] arr, int n){
+        if(n >= 0 && n < arrR.length) arrR[n] = arr.clone();
+        return arrR;
+    }
 }

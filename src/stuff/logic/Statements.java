@@ -93,14 +93,19 @@ public class Statements {
     
     public static class ArrayOperationStatement extends ShortStatement{
         public AFunc Opv = AFunc.addA;
-        public String result = "result", a = "A", b = "B", n = "n";
+        public LengthRArr L = LengthRArr.Columns;
+        public String result = "result", a = "A", b = "B", c = "C", n = "n";
 
-        public ArrayOperationStatement(String Opv, String a, String b, String n, String result){
+        public ArrayOperationStatement(String Opv, String L, String a, String b, String c, String n, String result){
             try{
                 this.Opv = AFunc.valueOf(Opv);
             }catch(Throwable ignored){}
+            try{
+                this.L = LengthRArr.valueOf(L);
+            }catch(Throwable ignored){}
             this.a = a;
             this.b = b;
+            this.c = c;
             this.n = n;
             this.result = result;
         }
@@ -161,6 +166,46 @@ public class Statements {
                         Button(table, table);
                         field2(table, a, str -> a = str);
                     }
+                    case Length -> {
+                        row(table);
+                        Button(table, table);
+                        Button2(table, table);
+                        table.add(" 's of ");
+                        field2(table, a, str -> a = str);
+                    }
+                    case ChangeR -> {
+                        row(table);
+                        Button(table, table);
+                        field2(table, c, str -> c = str);
+                        table.add(" at column: ");
+                        field2(table, n, str -> n = str);
+                        row(table);
+                        table.add(" to ");
+                        field2(table, a, str -> a = str);
+                    }
+                    case ChangeE -> {
+                        row(table);
+                        Button(table, table);
+                        field2(table, a, str -> a = str);
+                        table.add(" at ");
+                        row(table);
+                        table.add(" column: ");
+                        field2(table, c, str -> c = str);
+                        table.add(" row: ");
+                        field2(table, n, str -> n = str);
+                        row(table);
+                        table.add(" to ");
+                        field2(table, b, str -> b = str);
+                    }
+                    case AddTo -> {
+                        row(table);
+                        Button(table, table);
+                        field2(table, a, str -> a = str);
+                        table.add(" to ");
+                        field2(table, c, str -> c = str);
+                        table.add(" at ");
+                        field2(table, n, str -> n = str);
+                    }
                 }
             }else{
                 if(Opv.single){Button(table, table);}
@@ -182,9 +227,19 @@ public class Statements {
             }, Styles.logict, () -> {}).size(100f, 40f).pad(2f).color(table.color);
         }
 
+        void Button2(Table table, Table parent){
+            table.button(b -> {
+                b.label(() -> L.name());
+                b.clicked(() -> showSelect(b, L.all, L, o -> {
+                    L = o;
+                    rebuild(parent);
+                }));
+            }, Styles.logict, () -> {}).size(100f, 40f).pad(2f).color(table.color);
+        }
+
         @Override
         public LInstruction build(LAssembler build) {
-            return new VFunction(Opv, build.var(a), build.var(b), build.var(n), build.var(result));
+            return new VFunction(Opv, L, build.var(a), build.var(b), build.var(c), build.var(n), build.var(result));
         }
 
         public void write(StringBuilder builder){
@@ -192,9 +247,13 @@ public class Statements {
                 .append("arr ")
                 .append(Opv.name())
                 .append(" ")
+                .append(L.name())
+                .append(" ")
                 .append(a)
                 .append(" ")
                 .append(b)
+                .append(" ")
+                .append(c)
                 .append(" ")
                 .append(n)
                 .append(" ")
@@ -209,7 +268,7 @@ public class Statements {
 
     public static void load(){
         registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
-        registerStatement("arr", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5]), ArrayOperationStatement::new);
+        registerStatement("arr", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ArrayOperationStatement::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov) {
