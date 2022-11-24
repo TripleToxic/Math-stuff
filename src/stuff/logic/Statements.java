@@ -96,7 +96,7 @@ public class Statements {
         public String result = "result", a = "A", b = "B", c = "C", n = "n";
 
         public ArrayOperationStatement(String Opv, String a, String b, String c, String n, String result){
-            this.Opv = AFunc.valueOf(Opv);
+            try{this.Opv = AFunc.valueOf(Opv);}catch(Throwable h){}
             this.a = a;
             this.b = b;
             this.c = c;
