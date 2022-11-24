@@ -21,7 +21,7 @@ public enum AFunc{
     ChangeE("changeE", true),
     ;
 
-    public static final AFunc[] all = symbolToAFunc();
+    public static final AFunc[] all = values();
 
     public final String symbol;
     public final boolean diff;
@@ -35,14 +35,4 @@ public enum AFunc{
         this.symbol = symbol;
         this.diff = diff;
     }
-
-    public static AFunc[] symbolToAFunc(){
-        int l = values().length;
-        AFunc[] arr = new AFunc[l];
-        for(int i=0; i<l; i++){
-            arr[i] = AFunc.valueOf(values()[i].symbol);
-        }
-        return arr;
-    }
-
 }
