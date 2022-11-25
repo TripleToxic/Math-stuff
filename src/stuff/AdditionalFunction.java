@@ -1,7 +1,9 @@
 package stuff;
 import static java.lang.Math.*;
 
-public class AdditionalFunction {
+public class AdditionalFunction{
+    public static int limit = 20;
+
     /** @return arc sinh of x*/
     public static double asinh(double x){
         return log(x + sqrt(x*x + 1));
@@ -92,7 +94,7 @@ public class AdditionalFunction {
         double[] IA = new double[arr.length];
         for(int i=0; i<arr.length; i++){
             if(isNumeric(arr[i])){
-                IA[i] = Integer.parseInt(arr[i]);
+                IA[i] = Double.parseDouble(arr[i]);
             }else{IA[i] = 0;}
         }
         return IA;
@@ -103,7 +105,7 @@ public class AdditionalFunction {
             return false;
         }
         try{
-            int intValue = Integer.parseInt(string);
+            double doubleValue = Double.parseDouble(string);
             return true;
         }catch (NumberFormatException e){}
         return false;
@@ -202,5 +204,31 @@ public class AdditionalFunction {
     public static double[][] changeRArray(double[][] arrR, double[] arr, int n){
         if(n >= 0 && n < arrR.length) arrR[n] = arr.clone();
         return arrR;
+    }
+
+    public static double[][] NewRArray(int column, int row){
+        return new double[column][row];
+    }
+
+    public static double[][] LimitR(double[][] RArr){
+        int C = RArr.length, R = RArr[0].length;
+        if(C <= limit && R <= limit){return RArr;}
+        double[][] LRArr = new double[limit][limit];
+        for(int i=0; i<limit; i++){
+            for(int j=0; j<limit; j++){
+                LRArr[i][j] = RArr[i][j];
+            }
+        }
+        return LRArr;
+    }
+
+    public static double[] Limit(double[] Arr){
+        int L = Arr.length;
+        if(L <= limit){return Arr;}
+        double[] LArr = new double[limit];
+        for(int i=0; i<limit; i++){
+            LArr[i] = Arr[i];
+        }
+        return LArr;
     }
 }

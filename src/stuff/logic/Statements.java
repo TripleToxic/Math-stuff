@@ -160,7 +160,6 @@ public class Statements {
                         Button(table, table);
                         field2(table, a, str -> a = str);
                     }
-                    
                     case ChangeR -> {
                         row(table);
                         Button(table, table);
@@ -197,6 +196,16 @@ public class Statements {
                     case sum -> {
                         Button(table, table);
                         field2(table, a, str -> a = str);
+                    }
+                    case NewRArray -> {
+                        Button(table, table);
+                        table.add(" columns: ");
+                        field2(table, a, str -> a = str);
+                        table.add(" rows: ");
+                        field2(table, b, str -> b = str);
+                    }
+                    case Length -> {
+                        Button(table, table);
                     }
                 }
             }else{

@@ -14,7 +14,8 @@ public enum AFunc{
     Pick("pick", true),
     Shift("shift", true),
     Shuffle("shuffle", true),
-    // 2D Array sectio
+    // 2D Array section
+    NewRArray("newR", true),
     Length("length", true),
     ChangeR("changeR", true),
     AddTo("incluA", true),
