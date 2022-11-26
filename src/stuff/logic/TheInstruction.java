@@ -41,10 +41,14 @@ public class TheInstruction extends LExecutor{
 
     public static class VFunction implements LInstruction{
         public AFunc Opv = AFunc.addA;
+        public LengthFunction L = LengthFunction.Column;
+        public LengthGroup L2 = LengthGroup.Array;
         public int a, b, c, n, result;
 
-        public VFunction(AFunc Opv, int a, int b, int c, int n, int result){
+        public VFunction(AFunc Opv, LengthFunction L, LengthGroup L2, int a, int b, int c, int n, int result){
             this.Opv = Opv;
+            this.L = L;
+            this.L2 = L2;
             this.a = a;
             this.b = b;
             this.c = c;
@@ -56,11 +60,13 @@ public class TheInstruction extends LExecutor{
 
         @Override
         public void run(LExecutor exec){
-            int Ia = exec.numi(a), Ib = exec.numi(b);
-            Ia = Ia <= limit ? Ia : limit; 
-            Ib = Ib <= limit ? Ib : limit;
             switch(Opv){
-                case NewRArray -> exec.setobj(result, NewRArray(Ia, Ib));
+                case NewRArray -> {
+                    int Ia = exec.numi(a), Ib = exec.numi(b);
+                    Ia = Ia <= limit ? Ia : limit; 
+                    Ib = Ib <= limit ? Ib : limit;
+                    exec.setobj(result, NewRArray(Ia, Ib));
+                }
             }
             if(exec.obj(a) instanceof String astr){
                 double[] aArr = StringToArr(astr);
@@ -79,6 +85,15 @@ public class TheInstruction extends LExecutor{
                     case Pick -> exec.setnum(result, pickArray(aArr, exec.numi(n)));
                     case Shift -> exec.setobj(result, ArrToString(shiftArray(aArr, exec.numi(n))));
                     case Shuffle -> exec.setobj(result, ArrToString(shuffleArray(aArr)));
+                    case Length -> {
+                        switch(L){
+                            case Row -> {
+                                switch(L2){
+                                    case Array -> exec.setnum(result, aArr.length);
+                                }
+                            }
+                        }
+                    }
                 }if(exec.obj(b) instanceof String bstr){
                     double[] bArr = StringToArr(bstr);
                     switch(Opv){
@@ -96,6 +111,19 @@ public class TheInstruction extends LExecutor{
                 switch(Opv){
                     case ChangeE -> exec.setobj(result, LimitR(ChangeRArrayE(aRArr, exec.num(b), exec.numi(c), exec.numi(n))));
                     case Length -> {
+                        switch(L){
+                            case Column -> {
+                                switch(L2){
+                                    case Array -> exec.setnum(result, 1);
+                                    case RArray -> exec.setnum(result, aRArr.length);
+                                }
+                            }
+                            case Row -> {
+                                switch(L2){
+                                    case RArray -> exec.setnum(result, aRArr[0].length);
+                                }
+                            }
+                        }
                     }
                 }
             }else{exec.setobj(result, null);}

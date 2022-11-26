@@ -93,10 +93,14 @@ public class Statements {
     
     public static class ArrayOperationStatement extends ShortStatement{
         public AFunc Opv = AFunc.addA;
+        public LengthFunction L = LengthFunction.Column;
+        public LengthGroup L2 = LengthGroup.Array;
         public String result = "result", a = "A", b = "B", c = "C", n = "n";
 
-        public ArrayOperationStatement(String Opv, String a, String b, String c, String n, String result){
+        public ArrayOperationStatement(String Opv, String L, String L2, String a, String b, String c, String n, String result){
             try{this.Opv = AFunc.valueOf(Opv);}catch(Throwable h){}
+            try{this.L = LengthFunction.valueOf(L);}catch(Throwable i){}
+            try{this.L2 = LengthGroup.valueOf(L2);}catch(Throwable j){}
             this.a = a;
             this.b = b;
             this.c = c;
@@ -205,7 +209,12 @@ public class Statements {
                         field2(table, b, str -> b = str);
                     }
                     case Length -> {
+                        row(table);
+                        Button2(table, table);
                         Button(table, table);
+                        table.add(" of ");
+                        Button3(table, table);
+                        field2(table, a, str -> a = str);
                     }
                 }
             }else{
@@ -225,15 +234,43 @@ public class Statements {
             }, Styles.logict, () -> {}).size(100f, 40f).pad(2f).color(table.color);
         }
 
+        void Button2(Table table, Table parent){
+            table.button(b -> {
+                b.label(() -> L.name());
+                b.clicked(() -> showSelect(b, LengthFunction.All, L, o -> {
+                    L = o;
+                    rebuild(parent);
+                }));
+            }, Styles.logict, () -> {}).size(100f, 40f).pad(2f).color(table.color);
+        }
+
+        void Button3(Table table, Table parent){
+            table.button(b -> {
+                b.label(() -> L2.name());
+                b.clicked(() -> showSelect(b, LengthGroup.ALL, L2, o -> {
+                    L2 = o;
+                    rebuild(parent);
+                }));
+            }, Styles.logict, () -> {}).size(100f, 40f).pad(2f).color(table.color);
+        }
+
         @Override
         public LInstruction build(LAssembler build) {
-            return new VFunction(Opv, build.var(a), build.var(b), build.var(c), build.var(n), build.var(result));
+            return new VFunction(Opv, L, L2, build.var(a), build.var(b), build.var(c), build.var(n), build.var(result));
         }
 
         public void write(StringBuilder builder){
             builder
                 .append("arr ")
-                .append(Opv.name())
+                .append(Opv.name());
+                if(AFunc.Length == Opv){
+                    builder
+                        .append(" ")
+                        .append(L.name())
+                        .append(" ")
+                        .append(L2.name());
+                }
+            builder
                 .append(" ")
                 .append(a)
                 .append(" ")
@@ -254,7 +291,7 @@ public class Statements {
 
     public static void load(){
         registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
-        registerStatement("arr", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6]), ArrayOperationStatement::new);
+        registerStatement("arr", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov){
