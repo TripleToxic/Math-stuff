@@ -241,7 +241,7 @@ public class Statements {
                     L = o;
                     rebuild(parent);
                 }));
-            }, Styles.logict, () -> {}).size(100f, 40f).pad(2f).color(table.color);
+            }, Styles.logict, () -> {}).size(120f, 40f).pad(2f).color(table.color);
         }
 
         void Button3(Table table, Table parent){
@@ -251,7 +251,7 @@ public class Statements {
                     L2 = o;
                     rebuild(parent);
                 }));
-            }, Styles.logict, () -> {}).size(100f, 40f).pad(2f).color(table.color);
+            }, Styles.logict, () -> {}).size(120f, 40f).pad(2f).color(table.color);
         }
 
         @Override
@@ -262,15 +262,11 @@ public class Statements {
         public void write(StringBuilder builder){
             builder
                 .append("arr ")
-                .append(Opv.name());
-                if(AFunc.Length == Opv){
-                    builder
-                        .append(" ")
-                        .append(L.name())
-                        .append(" ")
-                        .append(L2.name());
-                }
-            builder
+                .append(Opv.name())
+                .append(" ")
+                .append(L.name())
+                .append(" ")
+                .append(L2.name())        
                 .append(" ")
                 .append(a)
                 .append(" ")

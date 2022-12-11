@@ -114,7 +114,7 @@ public class TheInstruction extends LExecutor{
                         switch(L){
                             case Column -> {
                                 switch(L2){
-                                    case Array -> exec.setnum(result, 1);
+                                    case Array -> exec.setnum(result, 1d);
                                     case RArray -> exec.setnum(result, aRArr.length);
                                 }
                             }
