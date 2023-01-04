@@ -35,20 +35,16 @@ public class Statements {
         void rebuild(Table table){
             table.clearChildren();
             field2(table, RealOutput, str -> RealOutput = str);
-            if(Op.isConstant){
-                table.add(" = ");
+                        
+            if (Op.SingleOutputCheck){}else{field2(table, ImaginaryOutput, str -> ImaginaryOutput = str);}
+            table.add(" = ");
+            if (Op.SingleInputCheck){Button(table, table);}else{row(table);}
+            field2(table, r1, str -> r1 = str);
+            field2(table, i1, str -> i1 = str);
+            if (Op.SingleInputCheck != true){
                 Button(table, table);
-            }else{ 
-                if (Op.SingleOutputCheck){}else{field2(table, ImaginaryOutput, str -> ImaginaryOutput = str);}
-                table.add(" = ");
-                if (Op.SingleInputCheck){Button(table, table);}else{row(table);}
-                field2(table, r1, str -> r1 = str);
-                field2(table, i1, str -> i1 = str);
-                if (Op.SingleInputCheck != true){
-                    Button(table, table);
-                    field2(table, r2, str -> r2 = str);
-                    field2(table, i2, str -> i2 = str);
-                }
+                field2(table, r2, str -> r2 = str);
+                field2(table, i2, str -> i2 = str);
             }
         }
 
