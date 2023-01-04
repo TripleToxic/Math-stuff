@@ -37,7 +37,7 @@ public class Statements {
             field2(table, RealOutput, str -> RealOutput = str);
             if (Op.SingleOutputCheck){}else{field2(table, ImaginaryOutput, str -> ImaginaryOutput = str);}
             table.add(" = ");
-            if(Op.isRealFunction){field2(table, r1){}
+            if(Op.isRealFunction){field2(table, r1)}
             else{
                 if (Op.SingleInputCheck){Button(table, table);}else{row(table);}
                 field2(table, r1, str -> r1 = str);
