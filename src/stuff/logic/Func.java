@@ -28,19 +28,20 @@ public enum Func{
     atanC("atan", (r, i) -> -Ilog(Rdiv(r, i+1, -r, 1-i), Idiv(r, i+1, -r, 1-i))/2d, (r, i) -> Rlog(Rdiv(r, i+1, -r, 1-i), Idiv(r, i+1, -r, 1-i))/2d),
     cartesian("ca<pol", (r, theta) -> r*cos(theta),(r, theta) -> r*sin(theta)),
     polar("pol<ca", (r, i) -> hypot(r, i), (r, i) -> atan2(i, r)),
+    factorial("!", (r) -> Factorial(r))
     ;
 
     public static final Func[] all = values();
 
-    public final Lambda1 Constants;
+    public final Lambda1 RealFunction;
     public final Lambda2 SingleOutput, Func2, Func3;
     public final Lambda3 Func4, Func5;
     public final String symbol;
-    public final boolean SingleOutputCheck, SingleInputCheck, isConstant;
+    public final boolean SingleOutputCheck, SingleInputCheck, isRealFunction;
 
     Func(String symbol, Lambda2 Func2In, Lambda2 Func3In){
         this.symbol = symbol;
-        this.Constants = null;
+        this.RealFunction = null;
         this.SingleOutput = null;
         this.Func2 = Func2In;
         this.Func3 = Func3In;
@@ -48,33 +49,46 @@ public enum Func{
         this.Func5 = null;
         this.SingleInputCheck = true;
         this.SingleOutputCheck = false;
-        this.isConstant = false;
+        this.isRealFunction = false;
     }
 
     Func(String symbol, Lambda3 Func4In, Lambda3 Func5In){
         this.symbol = symbol;
-        this.Constants = null;
         this.SingleOutput = null;
+        this.RealFunction = null;
         this.Func2 = null;
         this.Func3 = null;
         this.Func4 = Func4In;
         this.Func5 = Func5In;
         this.SingleInputCheck = false;
         this.SingleOutputCheck = false;
-        this.isConstant = false;
+        this.isRealFunction = false;
     }
     
     Func(String symbol, Lambda2 SingleOutputIn){
         this.symbol = symbol;
-        this.Constants = null;
         this.SingleOutput = SingleOutputIn;
+        this.RealFunction = null;
         this.Func2 = null;
         this.Func3 = null;
         this.Func4 = null;
         this.Func5 = null;
         this.SingleInputCheck = true;
         this.SingleOutputCheck = true;
-        this.isConstant = false;
+        this.isRealFunction = false;
+    }
+
+    Func(String symbol, Lambda1 RealFunction){
+        this.symbol = symbol;
+        this.SingleOutput = null;
+        this.RealFunction = RealFunction;
+        this.Func2 = null;
+        this.Func3 = null;
+        this.Func4 = null;
+        this.Func5 = null;
+        this.SingleInputCheck = true;
+        this.SingleOutputCheck = false;
+        this.isRealFunction = true;
     }
     
     public String getSymbol() {
