@@ -2,7 +2,7 @@ package stuff;
 import static java.lang.Math.*;
 
 public class AdditionalFunction{
-    public static int limit = 20;
+    public static int limit = 20, iter = 10000;
 
     /** @return arc sinh of x*/
     public static double asinh(double x){
@@ -230,5 +230,37 @@ public class AdditionalFunction{
             LArr[i] = Arr[i];
         }
         return LArr;
+    }
+
+    private static double RationalDiscreteFactorial(double decimal, int term, boolean x_is_positive){
+        double p = 1;
+        decimal %= 1;
+        if(x_is_positive){
+            for(int i=0; i<term; i++){
+                p *= term - i + decimal;
+            }
+        }else{
+            p /= decimal;
+            for(int i=-1; i>term; i--){
+                p /= term - i  + decimal;
+            }
+        }
+        return p;
+    }
+
+    private static double G(double x, double t){
+        return pow(t, x) * exp(-t);
+    }
+
+    public static double Factorial(double x){
+        int upper_bound = 30, floor_x = (int)floor(x);
+        double dt = (double)upper_bound/iter, step2 = 0, decimal = x - floor_x, sum = 0, h = dt/8d;
+        if(decimal != 0){
+            for(int n=0; n<iter; n++){
+                step2 = n*dt;
+                sum += h*(G(decimal, step2) + 3*G(decimal, step2 + dt/3d) + 3*G(decimal, step2 + 2*dt/3d) + G(decimal, step2 + dt));
+            }
+        }else{sum = 1;}
+        return sum * RationalDiscreteFactorial(decimal, floor_x, x >= 0);
     }
 }

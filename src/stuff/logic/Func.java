@@ -28,8 +28,6 @@ public enum Func{
     atanC("atan", (r, i) -> -Ilog(Rdiv(r, i+1, -r, 1-i), Idiv(r, i+1, -r, 1-i))/2d, (r, i) -> Rlog(Rdiv(r, i+1, -r, 1-i), Idiv(r, i+1, -r, 1-i))/2d),
     cartesian("ca<pol", (r, theta) -> r*cos(theta),(r, theta) -> r*sin(theta)),
     polar("pol<ca", (r, i) -> hypot(r, i), (r, i) -> atan2(i, r)),
-    pi("π", (r) -> PI),
-    e("e", (r) -> E),
     ;
 
     public static final Func[] all = values();
@@ -77,19 +75,6 @@ public enum Func{
         this.SingleInputCheck = true;
         this.SingleOutputCheck = true;
         this.isConstant = false;
-    }
-
-    Func(String symbol, Lambda1 ConstantsIn){
-        this.symbol = symbol;
-        this.Constants = ConstantsIn;
-        this.SingleOutput = null;
-        this.Func2 = null;
-        this.Func3 = null;
-        this.Func4 = null;
-        this.Func5 = null;
-        this.SingleInputCheck = false;
-        this.SingleOutputCheck = true;
-        this.isConstant = true;
     }
     
     public String getSymbol() {

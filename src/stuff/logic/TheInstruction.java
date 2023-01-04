@@ -23,9 +23,7 @@ public class TheInstruction extends LExecutor{
 
         @Override
         public void run(LExecutor exec){
-            if (Op.isConstant){
-                exec.setnum(RealOutput, Op.Constants.get(exec.num(r1)));
-            }else if (Op.SingleInputCheck){
+            if (Op.SingleInputCheck){
                 if (Op.SingleOutputCheck){
                     exec.setnum(RealOutput, Op.SingleOutput.get(exec.num(r1), exec.num(i1)));
                 }else{
