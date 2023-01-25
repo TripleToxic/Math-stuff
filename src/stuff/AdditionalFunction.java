@@ -93,22 +93,11 @@ public class AdditionalFunction{
         String[] arr = str.split(" ", 0);
         double[] IA = new double[arr.length];
         for(int i=0; i<arr.length; i++){
-            if(isNumeric(arr[i])){
+            try{
                 IA[i] = Double.parseDouble(arr[i]);
-            }else{IA[i] = 0;}
+            }catch(Throwable n){IA[i] = 0;}
         }
         return IA;
-    }
-
-    public static boolean isNumeric(String string) {             
-        if(string == null || string.equals("")){
-            return false;
-        }
-        try{
-            double doubleValue = Double.parseDouble(string);
-            return true;
-        }catch (NumberFormatException e){}
-        return false;
     }
 
     public static double sum(double[] a){
