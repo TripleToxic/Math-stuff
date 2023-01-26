@@ -1,6 +1,7 @@
 package stuff.logic;
 
 import arc.math.Mathf;
+import static java.lang.Math.*;
 
 public class ArrayStringDouble{
     private int[] Default1 = {1};
@@ -59,7 +60,7 @@ public class ArrayStringDouble{
         for(int i=0; i<pos.length; i++) {
             try{
                 buffer = pos[i];
-                if(buffer < l[i]) s_pos *= buffer;
+                if(buffer < l[i]) s_pos += buffer * pow(l[i] - 1, i);
                 else return 0;
             }catch(Throwable invalid){return 0;}
         }return s[s_pos];
