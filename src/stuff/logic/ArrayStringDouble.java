@@ -2,6 +2,7 @@ package stuff.logic;
 
 import arc.math.Mathf;
 import static java.lang.Math.*;
+import java.util.Random;
 
 public class ArrayStringDouble{
     private int[] Default1 = {1};
@@ -45,6 +46,7 @@ public class ArrayStringDouble{
     private static int[] Limit(int[] i){
         for(int n=0; n<Mathf.clamp(i.length, 1, array_limit); n++){
             if(i[n] > length_limit) i[n] = length_limit;
+            if(i[n] < 1) i[n] = 1;
         }return i;
     }
 
@@ -56,14 +58,46 @@ public class ArrayStringDouble{
     }
 
     public double getNum(int[] pos){
-        int s_pos = 1, buffer;
+        int s_pos = 0, buffer = 1;
         for(int i=0; i<pos.length; i++) {
             try{
-                buffer = pos[i];
-                if(buffer < l[i]) s_pos += buffer * pow(l[i] - 1, i);
+                if(pos[i] < l[i]) s_pos += pos[i] * buffer;
                 else return 0;
+                buffer *= l[i];
             }catch(Throwable invalid){return 0;}
         }return s[s_pos];
+    }
+
+    public void prod(double b){
+        for(int i=0; i<s.length; i++){
+            s[i] *= b;
+        }
+    }
+
+    public void shuffle(){
+        Random rand = new Random();
+        for (int i = 0; i < s.length; i++) {
+			int randomIndexToSwap = rand.nextInt(s.length);
+			double temp = s[randomIndexToSwap];
+			s[randomIndexToSwap] = s[i];
+			s[i] = temp;
+		}
+    }
+
+    public void Change(int[] pos, double new_){
+        int s_pos = 0, buffer = 1;
+        for(int i=0; i<pos.length; i++) {
+            try{
+                if(pos[i] < l[i]) s_pos += pos[i] * buffer;
+                else return;
+                buffer *= l[i];
+            }catch(Throwable invalid){return;}
+        }s[s_pos] = new_;
+    }
+
+    public void Resize(int[] new_size){
+        if(productAll(new_size) != productAll(l)) return;
+        
     }
 
     public String toString(){
