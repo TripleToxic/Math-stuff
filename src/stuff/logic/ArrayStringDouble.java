@@ -1,8 +1,10 @@
 package stuff.logic;
 
 import arc.math.Mathf;
-import static java.lang.Math.*;
+import java.util.Arrays;
 import java.util.Random;
+
+import static java.lang.Math.*;
 
 public class ArrayStringDouble{
     private int[] Default1 = {1};
@@ -43,11 +45,14 @@ public class ArrayStringDouble{
         return I;
     }
 
-    private static int[] Limit(int[] i){
-        for(int n=0; n<Mathf.clamp(i.length, 1, array_limit); n++){
-            if(i[n] > length_limit) i[n] = length_limit;
-            if(i[n] < 1) i[n] = 1;
-        }return i;
+    public static int[] Limit(int[] i){
+        int j = Mathf.clamp(i.length, 1, array_limit);
+        int[] new_i = new int[j];
+        for(int n=0; n<j; n++){
+            if(i[n] > length_limit) new_i[n] = length_limit;
+            if(i[n] < 1) new_i[n] = 1;
+            else{new_i[n] = i[n];}
+        }return new_i;
     }
 
     public int productAll(int[] i){
@@ -58,20 +63,35 @@ public class ArrayStringDouble{
     }
 
     public double getNum(int[] pos){
+        int[] l2;
+        if(pos.length != l.length){
+            l2 = Arrays.copyOf(l, pos.length);
+            Arrays.fill(l2, l.length, pos.length, 1);
+        }else{l2 = l.clone();}
         int s_pos = 0, buffer = 1;
-        for(int i=0; i<pos.length; i++) {
-            try{
-                if(pos[i] < l[i]) s_pos += pos[i] * buffer;
-                else return 0;
-                buffer *= l[i];
-            }catch(Throwable invalid){return 0;}
+        for(int i=0; i<pos.length; i++){
+            if(pos[i] < l2[i]) s_pos += pos[i] * buffer;
+            else return 0;
+            buffer *= l2[i];
         }return s[s_pos];
+    }
+
+    public double sumAll(double[] a){
+        double sum = 0;
+        for(double i : a){
+            sum += i;
+        }
+        return sum;
     }
 
     public void prod(double b){
         for(int i=0; i<s.length; i++){
             s[i] *= b;
         }
+    }
+
+    public void add(ArrayStringDouble b){
+        
     }
 
     public void shuffle(){
@@ -95,9 +115,25 @@ public class ArrayStringDouble{
         }s[s_pos] = new_;
     }
 
-    public void Resize(int[] new_size){
-        if(productAll(new_size) != productAll(l)) return;
-        
+    public void Resize(int[] new_size, boolean Static){
+        new_size = Limit(new_size).clone();
+        if(productAll(new_size) == productAll(l) && Static){
+            l = new_size.clone();
+            return;
+        }else if(Static) return;
+        int buffer = 1;
+        int[] count_arr = new int[new_size.length];
+        double[] new_arr = new double[productAll(new_size)];
+        for(int i=0; i<new_arr.length; i++){
+            for(int j=0; j<new_size.length; j++){
+                count_arr[j] = i/buffer % new_size[j];
+                buffer *= new_size[j];
+            }
+            buffer = 1;
+            new_arr[i] = getNum(count_arr);
+        }
+        s = new_arr.clone();
+        l = new_size.clone();
     }
 
     public String toString(){
@@ -112,9 +148,14 @@ public class ArrayStringDouble{
         }o1.append(l[i]);
         i = 0;
         while(i<s.length - 1){
-            o2.append(s[i]).append(" ");
+            if(s[i] == floor(s[i])){;
+                o2.append((int)s[i]).append(" ");
+            }else{o2.append(s[i]).append(" ");}
             i++;
-        }o2.append(s[i]);
+        }
+        if(s[i] == floor(s[i])){;
+            o2.append((int)s[i]);
+        }else{o2.append(s[i]);}
 
         return final_.append(o1).append("] {").append(o2).append("}").toString();
     }
