@@ -1,6 +1,8 @@
 package stuff.logic;
 
 import arc.math.Mathf;
+import arc.util.Nullable;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -43,6 +45,16 @@ public class ArrayStringDouble{
             try{I[i] = Double.parseDouble(s[i]);}catch(Throwable a){I[i] = 0;}
         }
         return I;
+    }
+
+    private static int[] NumToPos(int[] arr, int num){
+        int l2 = arr.length, buffer = 1;
+        int[] count_arr = new int[l2];
+        for(int j=0; j<l2; j++){
+            count_arr[j] = num/buffer % arr[j];
+            buffer *= arr[j];
+        }
+        return count_arr;
     }
 
     public static int[] Limit(int[] i){
@@ -92,6 +104,7 @@ public class ArrayStringDouble{
 
     public void add(ArrayStringDouble b){
         
+
     }
 
     public void shuffle(){
@@ -121,15 +134,10 @@ public class ArrayStringDouble{
             l = new_size.clone();
             return;
         }else if(Static) return;
-        int buffer = 1;
         int[] count_arr = new int[new_size.length];
         double[] new_arr = new double[productAll(new_size)];
         for(int i=0; i<new_arr.length; i++){
-            for(int j=0; j<new_size.length; j++){
-                count_arr[j] = i/buffer % new_size[j];
-                buffer *= new_size[j];
-            }
-            buffer = 1;
+            count_arr = NumToPos(new_size, i);
             new_arr[i] = getNum(count_arr);
         }
         s = new_arr.clone();
