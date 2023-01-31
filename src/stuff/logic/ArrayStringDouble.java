@@ -103,8 +103,27 @@ public class ArrayStringDouble{
     }
 
     public void add(ArrayStringDouble b){
-        
+        int[] count_arr = new int[l.length];
+        for(int i=0; i<productAll(l); i++){
+            count_arr = NumToPos(l, i);
+            s[i] += b.getNum(count_arr);
+        }
+    }
 
+    public void minus(ArrayStringDouble b){
+        int[] count_arr = new int[l.length];
+        for(int i=0; i<productAll(l); i++){
+            count_arr = NumToPos(l, i);
+            s[i] += b.getNum(count_arr);
+        }
+    }
+
+    public void prodEach(ArrayStringDouble b){
+        int[] count_arr = new int[l.length];
+        for(int i=0; i<productAll(l); i++){
+            count_arr = NumToPos(l, i);
+            s[i] *= b.getNum(count_arr);
+        }
     }
 
     public void shuffle(){
@@ -134,11 +153,9 @@ public class ArrayStringDouble{
             l = new_size.clone();
             return;
         }else if(Static) return;
-        int[] count_arr = new int[new_size.length];
         double[] new_arr = new double[productAll(new_size)];
         for(int i=0; i<new_arr.length; i++){
-            count_arr = NumToPos(new_size, i);
-            new_arr[i] = getNum(count_arr);
+            new_arr[i] = getNum(NumToPos(new_size, i));
         }
         s = new_arr.clone();
         l = new_size.clone();
