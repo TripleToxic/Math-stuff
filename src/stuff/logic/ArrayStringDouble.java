@@ -1,8 +1,6 @@
 package stuff.logic;
 
 import arc.math.Mathf;
-import arc.util.Nullable;
-
 import java.util.Arrays;
 import java.util.Random;
 
@@ -102,6 +100,12 @@ public class ArrayStringDouble{
         }
     }
 
+    public void div(double b){
+        for(int i=0; i<s.length; i++){
+            s[i] /= b;
+        }
+    }
+
     public void add(ArrayStringDouble b){
         int[] count_arr = new int[l.length];
         for(int i=0; i<productAll(l); i++){
@@ -114,7 +118,7 @@ public class ArrayStringDouble{
         int[] count_arr = new int[l.length];
         for(int i=0; i<productAll(l); i++){
             count_arr = NumToPos(l, i);
-            s[i] += b.getNum(count_arr);
+            s[i] -= b.getNum(count_arr);
         }
     }
 
@@ -125,6 +129,14 @@ public class ArrayStringDouble{
             s[i] *= b.getNum(count_arr);
         }
     }
+
+    public void divEach(ArrayStringDouble b){
+        int[] count_arr = new int[l.length];
+        for(int i=0; i<productAll(l); i++){
+            count_arr = NumToPos(l, i);
+            s[i] /= b.getNum(count_arr);
+        }
+    }    
 
     public void shuffle(){
         Random rand = new Random();
@@ -159,6 +171,16 @@ public class ArrayStringDouble{
         }
         s = new_arr.clone();
         l = new_size.clone();
+    }
+
+    public void Shift(int[] shift){
+        int k, n;
+        for(int i=0; i<shift.length; i++){
+            n = shift[i];
+            if(n < 0)k = l[i] + (n % l[i]); else k = n;
+            if(n != 0 && n != l[i]){
+            }
+        }
     }
 
     public String toString(){
