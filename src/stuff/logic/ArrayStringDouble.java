@@ -174,11 +174,24 @@ public class ArrayStringDouble{
     }
 
     public void Shift(int[] shift){
-        int k, n;
+        int k, n, step = productAll(l), local = 1, incre = 0;
+        double buffer, buffer2;
         for(int i=0; i<shift.length; i++){
             n = shift[i];
             if(n < 0)k = l[i] + (n % l[i]); else k = n;
+            step /= l[i];
+            local *= l[i];
             if(n != 0 && n != l[i]){
+                for(int j=0; j<step; j++){
+                    buffer2 = s[incre];
+                    for(int m=0; m<local; m++){
+                        buffer = s[k*(m+1) % local + incre];
+                        s[k*(m+1) % local + incre] = buffer2;
+                        buffer2 = buffer;
+                    }
+                    incre += local;
+                }
+                incre = 0;
             }
         }
     }
