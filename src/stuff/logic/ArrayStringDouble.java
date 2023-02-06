@@ -136,7 +136,7 @@ public class ArrayStringDouble{
             count_arr = NumToPos(l, i);
             s[i] /= b.getNum(count_arr);
         }
-    }    
+    }
 
     public void shuffle(){
         Random rand = new Random();
@@ -159,6 +159,10 @@ public class ArrayStringDouble{
         }s[s_pos] = new_;
     }
 
+    public void Change(int pos, double new_){
+        if(pos >= 0 && pos < s.length) s[pos] = new_;
+    }
+
     public void Resize(int[] new_size, boolean Static){
         new_size = Limit(new_size).clone();
         if(productAll(new_size) == productAll(l) && Static){
@@ -173,6 +177,7 @@ public class ArrayStringDouble{
         l = new_size.clone();
     }
 
+    @Override
     public String toString(){
         StringBuilder o1 = new StringBuilder("");
         StringBuilder o2 = new StringBuilder("");

@@ -91,7 +91,8 @@ public enum Func{
         this.isRealFunction = true;
     }
     
-    public String getSymbol() {
+    @Override
+    public String toString() {
         return symbol;
     }
 
