@@ -2,24 +2,15 @@ package stuff.logic;
 
 public enum AFunc{
     // Array section
-    addA("+"),
-    subA("-"),
-    scalar("*"),
+    add("+"),
+    sub("-"),
+    mul("*"),
     dotProd("·"),
     crossProd("x"),
-    sum("sumAll", false),
-    AddEle("inclu", true),
-    RemoveEle("exclu", true),
+    Sum("sumAll", false),
     Change("change", true),
-    Pick("pick", true),
-    Shift("shift", true),
+    Get("pick", true),
     Shuffle("shuffle", true),
-    // 2D Array section
-    NewRArray("newR", true),
-    Length("length", true),
-    ChangeR("changeR", true),
-    AddTo("incluA", true),
-    ChangeE("changeE", true),
     ;
 
     public static final AFunc[] all = values();

@@ -138,6 +138,13 @@ public class ArrayStringDouble{
         }
     }
 
+    public ArrayStringDouble crossProd(ArrayStringDouble b){
+        ArrayStringDouble c = ArrayStringDouble("[3] {0 0 0}");
+        try{if(l.length != 1 && b.l.length != 1 && l[0] != 3 && b.l[0] != 3) return c;}catch(Throwable e){return c;}
+
+
+    }
+
     public void shuffle(){
         Random rand = new Random();
         for (int i = 0; i < s.length; i++) {

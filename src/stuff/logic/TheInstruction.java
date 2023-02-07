@@ -59,73 +59,7 @@ public class TheInstruction extends LExecutor{
 
         @Override
         public void run(LExecutor exec){
-            switch(Opv){
-                case NewRArray -> {
-                    int Ia = exec.numi(a), Ib = exec.numi(b);
-                    Ia = Ia <= limit ? Ia : limit; 
-                    Ib = Ib <= limit ? Ib : limit;
-                    exec.setobj(result, NewRArray(Ia, Ib));
-                }
-            }
-            if(exec.obj(a) instanceof String astr){
-                double[] aArr = StringToArr(astr);
-                if(exec.obj(c) instanceof double[][] cRArr){
-                    switch(Opv){
-                        case AddTo -> exec.setobj(result, LimitR(addArrayToRArray(cRArr, aArr, exec.numi(n))));
-                        case ChangeR -> exec.setobj(result, LimitR(changeRArray(cRArr, aArr, exec.numi(n))));
-                    }
-                }
-                switch(Opv){
-                    case sum -> exec.setnum(result, sum(aArr));
-                    case scalar -> exec.setobj(result, ArrToString(prod(aArr, exec.num(b))));
-                    case AddEle -> exec.setobj(result, ArrToString(Limit(addArray(aArr, exec.num(b), exec.numi(n)))));
-                    case RemoveEle -> exec.setobj(result, ArrToString(removeArray(aArr, exec.numi(n))));
-                    case Change -> exec.setobj(result, ArrToString(changeArray(aArr, exec.num(b), exec.numi(n))));
-                    case Pick -> exec.setnum(result, pickArray(aArr, exec.numi(n)));
-                    case Shift -> exec.setobj(result, ArrToString(shiftArray(aArr, exec.numi(n))));
-                    case Shuffle -> exec.setobj(result, ArrToString(shuffleArray(aArr)));
-                    case Length -> {
-                        switch(L){
-                            case Row -> {
-                                switch(L2){
-                                    case Array -> exec.setnum(result, aArr.length);
-                                }
-                            }
-                        }
-                    }
-                }if(exec.obj(b) instanceof String bstr){
-                    double[] bArr = StringToArr(bstr);
-                    switch(Opv){
-                        case addA -> exec.setobj(result, ArrToString(AddVector(aArr, bArr)));
-                        case subA -> exec.setobj(result, ArrToString(SubVector(aArr, bArr)));
-                        case dotProd -> exec.setnum(result, DotProd(aArr, bArr));
-                        case crossProd -> exec.setobj(result, ArrToString(CrossProd(aArr, bArr)));
-                    }
-                }
-            }else if(exec.obj(b) instanceof String bstr){
-                switch(Opv){
-                    case scalar -> exec.setobj(result, ArrToString(prod(StringToArr(bstr), exec.num(a))));
-                }
-            }else if(exec.obj(a) instanceof double[][] aRArr){
-                switch(Opv){
-                    case ChangeE -> exec.setobj(result, LimitR(ChangeRArrayE(aRArr, exec.num(b), exec.numi(c), exec.numi(n))));
-                    case Length -> {
-                        switch(L){
-                            case Column -> {
-                                switch(L2){
-                                    case Array -> exec.setnum(result, 1d);
-                                    case RArray -> exec.setnum(result, aRArr.length);
-                                }
-                            }
-                            case Row -> {
-                                switch(L2){
-                                    case RArray -> exec.setnum(result, aRArr[0].length);
-                                }
-                            }
-                        }
-                    }
-                }
-            }else{exec.setobj(result, null);}
+            
         }
     }
 }
