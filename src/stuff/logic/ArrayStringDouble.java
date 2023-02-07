@@ -17,12 +17,11 @@ public class ArrayStringDouble{
         try{
             this.l = Limit(StringToIntArray(s.substring(s.indexOf("[") + 1, s.indexOf("]"))));
             this.s = StringToDoubleArray(s.substring(s.indexOf("{") + 1, s.indexOf("}")));
-            if(this.s.length != productAll(this.l)) this.s = new double[productAll(this.l)];
         }
         catch(Throwable b){
             this.l = Default1.clone();
             this.s = Default2.clone();
-        }
+        }if(this.s.length != productAll(this.l)) this.s = new double[productAll(this.l)];
     }
 
     private static int[] StringToIntArray(String str){
@@ -138,11 +137,25 @@ public class ArrayStringDouble{
         }
     }
 
+    public double dotProd(ArrayStringDouble b){
+        double dotP = 0;
+        if(l.length != 1 && b.l.length != 1) return 0;
+        for(int i=0; i<min(l[0], b.l[0]); i++){
+            dotP += s[i] * b.s[i];
+        }return dotP;
+    }
+
+    public ArrayStringDouble ArrMultiplication(ArrayStringDouble b){
+        if(l.length == 2 || b.l.length == 2) return new ArrayStringDouble("none");
+
+    }
+
     public ArrayStringDouble crossProd(ArrayStringDouble b){
-        ArrayStringDouble c = ArrayStringDouble("[3] {0 0 0}");
-        try{if(l.length != 1 && b.l.length != 1 && l[0] != 3 && b.l[0] != 3) return c;}catch(Throwable e){return c;}
-
-
+        ArrayStringDouble c = new ArrayStringDouble("[3] {0 0 0}");
+        if(l.length != 1 && b.l.length != 1 && l[0] < 3 && b.l[0] < 3) return c;
+        for(int i=0; i<3; i++){
+            c.s[i] = s[(i+1)%3]*b.s[(i+2)%3] - s[(i+2)%3]*b.s[(i+1)%3];
+        }return c;
     }
 
     public void shuffle(){
