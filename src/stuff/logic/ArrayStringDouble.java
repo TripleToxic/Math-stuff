@@ -17,11 +17,17 @@ public class ArrayStringDouble{
         try{
             this.l = Limit(StringToIntArray(s.substring(s.indexOf("[") + 1, s.indexOf("]"))));
             this.s = StringToDoubleArray(s.substring(s.indexOf("{") + 1, s.indexOf("}")));
+            if(this.s.length != productAll(this.l)) this.s = new double[productAll(this.l)];
         }
         catch(Throwable b){
             this.l = Default1.clone();
             this.s = Default2.clone();
-        }if(this.s.length != productAll(this.l)) this.s = new double[productAll(this.l)];
+        }
+    }
+
+    private ArrayStringDouble(int[] arr){
+        this.l = arr;
+        this.s = new double[productAll(this.l)];
     }
 
     private static int[] StringToIntArray(String str){
@@ -62,6 +68,13 @@ public class ArrayStringDouble{
             if(i[n] < 1) new_i[n] = 1;
             else{new_i[n] = i[n];}
         }return new_i;
+    }
+
+    private static int[] minArr(int[] arr1, int[] arr2){
+        int m = min(arr1.length, arr2.length);
+        for(int i=0; i<min(arr1.length, arr2.length); i++){
+
+        }
     }
 
     public int productAll(int[] i){
@@ -146,8 +159,9 @@ public class ArrayStringDouble{
     }
 
     public ArrayStringDouble ArrMultiplication(ArrayStringDouble b){
-        if(l.length == 2 || b.l.length == 2) return new ArrayStringDouble("none");
-
+        if(l.length > 2 || b.l.length > 2) return new ArrayStringDouble("none");
+        if(l.length == 1 && b.l.length == 1) return new ArrayStringDouble("none");
+        ArrayStringDouble out = new ArrayStringDouble()
     }
 
     public ArrayStringDouble crossProd(ArrayStringDouble b){
