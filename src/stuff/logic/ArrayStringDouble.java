@@ -72,9 +72,10 @@ public class ArrayStringDouble{
 
     private static int[] minArr(int[] arr1, int[] arr2){
         int m = min(arr1.length, arr2.length);
-        for(int i=0; i<min(arr1.length, arr2.length); i++){
-
-        }
+        int[] n = new int[m];
+        for(int i=0; i<m; i++){
+            n[i] = min(arr1[i], arr2[i]);
+        }return n;
     }
 
     public int productAll(int[] i){
@@ -161,7 +162,11 @@ public class ArrayStringDouble{
     public ArrayStringDouble ArrMultiplication(ArrayStringDouble b){
         if(l.length > 2 || b.l.length > 2) return new ArrayStringDouble("none");
         if(l.length == 1 && b.l.length == 1) return new ArrayStringDouble("none");
-        ArrayStringDouble out = new ArrayStringDouble()
+        int buffer1 = min(l[0], b.l[1]);
+        int[] buffer2 = {l[1], b.l[0]};
+        for(int i=0; i<productAll(buffer2); i++){
+            
+        }
     }
 
     public ArrayStringDouble crossProd(ArrayStringDouble b){
