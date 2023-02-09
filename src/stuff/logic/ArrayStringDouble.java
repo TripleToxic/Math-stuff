@@ -25,7 +25,7 @@ public class ArrayStringDouble{
         }
     }
 
-    private ArrayStringDouble(int[] arr){
+    public ArrayStringDouble(int[] arr){
         this.l = arr;
         this.s = new double[productAll(this.l)];
     }
@@ -53,7 +53,7 @@ public class ArrayStringDouble{
     private static int[] NumToPos(int[] arr, int num){
         int l2 = arr.length, buffer = 1;
         int[] count_arr = new int[l2];
-        for(int j=0; j<l2; j++){
+        for(int j=l2-1; j>=0; j++){
             count_arr[j] = num/buffer % arr[j];
             buffer *= arr[j];
         }
@@ -70,14 +70,6 @@ public class ArrayStringDouble{
         }return new_i;
     }
 
-    private static int[] minArr(int[] arr1, int[] arr2){
-        int m = min(arr1.length, arr2.length);
-        int[] n = new int[m];
-        for(int i=0; i<m; i++){
-            n[i] = min(arr1[i], arr2[i]);
-        }return n;
-    }
-
     public int productAll(int[] i){
         int d = 1;
         for (int j : i) {
@@ -92,7 +84,7 @@ public class ArrayStringDouble{
             Arrays.fill(l2, l.length, pos.length, 1);
         }else{l2 = l.clone();}
         int s_pos = 0, buffer = 1;
-        for(int i=0; i<pos.length; i++){
+        for(int i=pos.length-1; i>=0; i++){
             if(pos[i] < l2[i]) s_pos += pos[i] * buffer;
             else return 0;
             buffer *= l2[i];
@@ -120,34 +112,26 @@ public class ArrayStringDouble{
     }
 
     public void add(ArrayStringDouble b){
-        int[] count_arr = new int[l.length];
         for(int i=0; i<productAll(l); i++){
-            count_arr = NumToPos(l, i);
-            s[i] += b.getNum(count_arr);
+            s[i] += b.getNum(NumToPos(l, i));
         }
     }
 
     public void minus(ArrayStringDouble b){
-        int[] count_arr = new int[l.length];
         for(int i=0; i<productAll(l); i++){
-            count_arr = NumToPos(l, i);
-            s[i] -= b.getNum(count_arr);
+            s[i] -= b.getNum(NumToPos(l, i));
         }
     }
 
     public void prodEach(ArrayStringDouble b){
-        int[] count_arr = new int[l.length];
         for(int i=0; i<productAll(l); i++){
-            count_arr = NumToPos(l, i);
-            s[i] *= b.getNum(count_arr);
+            s[i] *= b.getNum(NumToPos(l, i));
         }
     }
 
     public void divEach(ArrayStringDouble b){
-        int[] count_arr = new int[l.length];
         for(int i=0; i<productAll(l); i++){
-            count_arr = NumToPos(l, i);
-            s[i] /= b.getNum(count_arr);
+            s[i] /= b.getNum(NumToPos(l, i));
         }
     }
 
@@ -164,6 +148,7 @@ public class ArrayStringDouble{
         if(l.length == 1 && b.l.length == 1) return new ArrayStringDouble("none");
         int buffer1 = min(l[0], b.l[1]);
         int[] buffer2 = {l[1], b.l[0]};
+        ArrayStringDouble out = new ArrayStringDouble(buffer2);
         for(int i=0; i<productAll(buffer2); i++){
             
         }

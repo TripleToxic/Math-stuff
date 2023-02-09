@@ -90,15 +90,11 @@ public class Statements {
     }
     
     public static class ArrayOperationStatement extends ShortStatement{
-        public AFunc Opv = AFunc.addA;
-        public LengthFunction L = LengthFunction.Column;
-        public LengthGroup L2 = LengthGroup.Array;
+        public AFunc Opv = AFunc.add;
         public String result = "result", a = "A", b = "B", c = "C", n = "n";
 
-        public ArrayOperationStatement(String Opv, String L, String L2, String a, String b, String c, String n, String result){
+        public ArrayOperationStatement(String Opv, String a, String b, String c, String n, String result){
             try{this.Opv = AFunc.valueOf(Opv);}catch(Throwable h){}
-            try{this.L = LengthFunction.valueOf(L);}catch(Throwable i){}
-            try{this.L2 = LengthGroup.valueOf(L2);}catch(Throwable j){}
             this.a = a;
             this.b = b;
             this.c = c;
@@ -115,111 +111,7 @@ public class Statements {
 
         void rebuild(Table table){
             table.clearChildren();
-            field2(table, result, str -> result = str);
-            table.add(" = ");
-            if(Opv.diff){
-                switch(Opv){
-                    case AddEle -> {
-                        Button(table, table);
-                        row(table);
-                        table.add(" include ");
-                        field2(table, b, str -> b = str);
-                        table.add(" to ");
-                        field2(table, a, str -> a = str);
-                        table.add(" at: ");
-                        field2(table, n, str -> n = str);
-                    }
-                    case RemoveEle -> {
-                        Button(table, table);
-                        row(table);
-                        table.add(" remove ");
-                        field2(table, a, str -> a = str);
-                        table.add(" index: ");
-                        field2(table, n, str -> n = str);
-                    }
-                    case Change -> {
-                        row(table);
-                        Button(table, table);
-                        field2(table, a, str -> a = str);
-                        table.add(" at ");
-                        field2(table, n, str -> n = str);
-                        table.add(" to ");
-                        field2(table, b, str -> b = str);
-                    }
-                    case Pick -> {
-                        Button(table, table);
-                        field2(table, a, str -> a = str);
-                        table.add(" at ");
-                        field2(table, n, str -> n = str);
-                    }
-                    case Shift -> {
-                        Button(table, table);
-                        field2(table, a, str -> a = str);
-                        field2(table, n, str -> n = str);
-                        table.add(" times");
-                    }
-                    case Shuffle -> {
-                        Button(table, table);
-                        field2(table, a, str -> a = str);
-                    }
-                    case ChangeR -> {
-                        row(table);
-                        Button(table, table);
-                        field2(table, c, str -> c = str);
-                        table.add(" at column: ");
-                        field2(table, n, str -> n = str);
-                        row(table);
-                        table.add(" to ");
-                        field2(table, a, str -> a = str);
-                    }
-                    case ChangeE -> {
-                        row(table);
-                        Button(table, table);
-                        field2(table, a, str -> a = str);
-                        table.add(" at ");
-                        row(table);
-                        table.add(" column: ");
-                        field2(table, c, str -> c = str);
-                        table.add(" row: ");
-                        field2(table, n, str -> n = str);
-                        row(table);
-                        table.add(" to ");
-                        field2(table, b, str -> b = str);
-                    }
-                    case AddTo -> {
-                        row(table);
-                        Button(table, table);
-                        field2(table, a, str -> a = str);
-                        table.add(" to ");
-                        field2(table, c, str -> c = str);
-                        table.add(" at ");
-                        field2(table, n, str -> n = str);
-                    }
-                    case sum -> {
-                        Button(table, table);
-                        field2(table, a, str -> a = str);
-                    }
-                    case NewRArray -> {
-                        Button(table, table);
-                        table.add(" columns: ");
-                        field2(table, a, str -> a = str);
-                        table.add(" rows: ");
-                        field2(table, b, str -> b = str);
-                    }
-                    case Length -> {
-                        row(table);
-                        Button2(table, table);
-                        Button(table, table);
-                        table.add(" of ");
-                        Button3(table, table);
-                        field2(table, a, str -> a = str);
-                    }
-                }
-            }else{
-                field2(table, a, str -> a = str);
-                Button(table, table);
-                field2(table, b, str -> b = str);
-            }
+            
         }
 
         void Button(Table table, Table parent){
@@ -232,39 +124,16 @@ public class Statements {
             }, Styles.logict, () -> {}).size(100f, 40f).pad(2f).color(table.color);
         }
 
-        void Button2(Table table, Table parent){
-            table.button(b -> {
-                b.label(() -> L.name());
-                b.clicked(() -> showSelect(b, LengthFunction.All, L, o -> {
-                    L = o;
-                    rebuild(parent);
-                }));
-            }, Styles.logict, () -> {}).size(120f, 40f).pad(2f).color(table.color);
-        }
-
-        void Button3(Table table, Table parent){
-            table.button(b -> {
-                b.label(() -> L2.name());
-                b.clicked(() -> showSelect(b, LengthGroup.ALL, L2, o -> {
-                    L2 = o;
-                    rebuild(parent);
-                }));
-            }, Styles.logict, () -> {}).size(120f, 40f).pad(2f).color(table.color);
-        }
-
         @Override
         public LInstruction build(LAssembler build) {
-            return new VFunction(Opv, L, L2, build.var(a), build.var(b), build.var(c), build.var(n), build.var(result));
+            return new VFunction(Opv, build.var(a), build.var(b), build.var(c), build.var(n), build.var(result));
         }
 
         public void write(StringBuilder builder){
             builder
                 .append("arr ")
                 .append(Opv.name())
-                .append(" ")
-                .append(L.name())
-                .append(" ")
-                .append(L2.name())        
+                .append(" ")     
                 .append(" ")
                 .append(a)
                 .append(" ")
@@ -285,7 +154,7 @@ public class Statements {
 
     public static void load(){
         registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
-        registerStatement("arr", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
+        registerStatement("arr", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6]), ArrayOperationStatement::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov){

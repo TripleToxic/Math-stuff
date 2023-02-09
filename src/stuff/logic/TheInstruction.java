@@ -1,7 +1,6 @@
 package stuff.logic;
 
 import mindustry.logic.LExecutor;
-import static stuff.AdditionalFunction.*;
 
 public class TheInstruction extends LExecutor{
 
@@ -39,15 +38,11 @@ public class TheInstruction extends LExecutor{
     }
 
     public static class VFunction implements LInstruction{
-        public AFunc Opv = AFunc.addA;
-        public LengthFunction L = LengthFunction.Column;
-        public LengthGroup L2 = LengthGroup.Array;
+        public AFunc Opv = AFunc.add;
         public int a, b, c, n, result;
 
-        public VFunction(AFunc Opv, LengthFunction L, LengthGroup L2, int a, int b, int c, int n, int result){
+        public VFunction(AFunc Opv, int a, int b, int c, int n, int result){
             this.Opv = Opv;
-            this.L = L;
-            this.L2 = L2;
             this.a = a;
             this.b = b;
             this.c = c;
