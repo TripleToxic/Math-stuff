@@ -82,7 +82,7 @@ public class ArrayStringDouble{
         if(pos.length != l.length){
             l2 = Arrays.copyOf(l, pos.length);
             Arrays.fill(l2, l.length, pos.length, 1);
-        }else{l2 = l.clone();}
+        }else{l2 = l;}
         int s_pos = 0, buffer = 1;
         for(int i=pos.length-1; i>=0; i++){
             if(pos[i] < l2[i]) s_pos += pos[i] * buffer;
@@ -149,8 +149,10 @@ public class ArrayStringDouble{
         int buffer1 = min(l[0], b.l[1]);
         int[] buffer2 = {l[1], b.l[0]};
         ArrayStringDouble out = new ArrayStringDouble(buffer2);
-        for(int i=0; i<productAll(buffer2); i++){
-            
+        for(int i=0; i<l[1]; i++){
+            for(int j=0; j<b.l[0]; j++){
+                
+            }
         }
     }
 
