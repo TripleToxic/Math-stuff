@@ -1,5 +1,5 @@
 package stuff.logic;
-
+import arc.util.Nullable;
 import mindustry.logic.LExecutor;
 
 public class TheInstruction extends LExecutor{
@@ -38,7 +38,7 @@ public class TheInstruction extends LExecutor{
     }
 
     public static class VFunction implements LInstruction{
-        public AFunc Opv = AFunc.add;
+        public AFunc Opv = AFunc.Add;
         public int a, b, c, n, result;
 
         public VFunction(AFunc Opv, int a, int b, int c, int n, int result){
@@ -54,6 +54,8 @@ public class TheInstruction extends LExecutor{
 
         @Override
         public void run(LExecutor exec){
+            Var a1 = exec.var(a);
+            Var a2 = exec.var(b);
             
         }
     }

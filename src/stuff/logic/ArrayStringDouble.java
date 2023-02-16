@@ -143,6 +143,8 @@ public class ArrayStringDouble{
         }return dotP;
     }
 
+    // a
+    /*
     public ArrayStringDouble ArrMultiplication(ArrayStringDouble b){
         if(l.length > 2 || b.l.length > 2) return new ArrayStringDouble("none");
         if(l.length == 1 && b.l.length == 1) return new ArrayStringDouble("none");
@@ -155,6 +157,7 @@ public class ArrayStringDouble{
             }
         }
     }
+    */
 
     public ArrayStringDouble crossProd(ArrayStringDouble b){
         ArrayStringDouble c = new ArrayStringDouble("[3] {0 0 0}");

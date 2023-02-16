@@ -90,7 +90,7 @@ public class Statements {
     }
     
     public static class ArrayOperationStatement extends ShortStatement{
-        public AFunc Opv = AFunc.add;
+        public AFunc Opv = AFunc.Add;
         public String result = "result", a = "A", b = "B", c = "C", n = "n";
 
         public ArrayOperationStatement(String Opv, String a, String b, String c, String n, String result){
