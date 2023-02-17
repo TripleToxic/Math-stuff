@@ -91,9 +91,9 @@ public class ArrayStringDouble{
         }return s[s_pos];
     }
 
-    public double sumAll(double[] a){
+    public double sumAll(){
         double sum = 0;
-        for(double i : a){
+        for(double i : s){
             sum += i;
         }
         return sum;

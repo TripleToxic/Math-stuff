@@ -1,5 +1,4 @@
 package stuff.logic;
-import arc.util.Nullable;
 import mindustry.logic.LExecutor;
 
 public class TheInstruction extends LExecutor{
@@ -39,13 +38,14 @@ public class TheInstruction extends LExecutor{
 
     public static class VFunction implements LInstruction{
         public AFunc Opv = AFunc.Add;
-        public int a, b, c, n, result;
+        public int a, b, c, d, n, result;
 
-        public VFunction(AFunc Opv, int a, int b, int c, int n, int result){
+        public VFunction(AFunc Opv, int a, int b, int c, int d, int n, int result){
             this.Opv = Opv;
             this.a = a;
             this.b = b;
             this.c = c;
+            this.d = d;
             this.n = n;
             this.result = result;
         }
@@ -56,7 +56,62 @@ public class TheInstruction extends LExecutor{
         public void run(LExecutor exec){
             Var a1 = exec.var(a);
             Var a2 = exec.var(b);
-            
+            ArrayStringDouble arr1 = a1.isobj && a1.objval instanceof ArrayStringDouble arr1B ? arr1B : null;
+            ArrayStringDouble arr2 = a2.isobj && a2.objval instanceof ArrayStringDouble arr2B ? arr2B : null;
+            double s = exec.num(c);
+            int s2 = exec.numi(d);
+            boolean B = exec.bool(n);
+            switch(Opv){
+                case Add -> {
+                    arr1.add(arr2);
+                    exec.setobj(B ? a : result, arr1);
+                }
+                case Subtract -> {
+                    arr1.minus(arr2);
+                    exec.setobj(B ? a : result, arr1);
+                }
+                case Muliply -> {
+                    arr1.prodEach(arr2);
+                    exec.setobj(B ? a : result, arr1);
+                }
+                case Divide -> {
+                    arr1.divEach(arr2);
+                    exec.setobj(B ? a : result, arr1);
+                }
+                case ScalarMul -> {
+                    arr1.prod(s);
+                    exec.setobj(B ? a : result, arr1);
+                }
+                case ScalarDiv -> {
+                    arr1.div(s);
+                    exec.setobj(B ? a : result, arr1);
+                }
+                case SumAll-> {
+                    exec.setnum(result, arr1.sumAll());
+                }
+                case ChangeInt -> {
+                    arr1.Change(d, s);
+                    exec.setobj(a, arr1);
+                }
+                case CrossProduct -> {
+
+                }
+                case DotProd -> {
+
+                }
+                case Get -> {
+
+                }
+                case ProductAll -> {
+
+                }
+                case Resize -> {
+                    exec.setobj(B ? a : result, arr1);
+                }
+                case Shuffle -> {
+
+                }
+            }
         }
     }
 }
