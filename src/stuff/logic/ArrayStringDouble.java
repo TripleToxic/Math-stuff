@@ -25,7 +25,8 @@ public class ArrayStringDouble{
         }
     }
 
-    public ArrayStringDouble(int[] arr){
+    /* this on is used for new array or as an position input */
+    public ArrayStringDouble(int... arr){
         this.l = arr;
         this.s = new double[productAll(this.l)];
     }
@@ -70,9 +71,16 @@ public class ArrayStringDouble{
         }return new_i;
     }
 
-    public int productAll(int[] i){
+    public static int productAll(int[] i){
         int d = 1;
         for (int j : i) {
+            d *= j;
+        }return d;
+    }
+
+    public static double productAll(double[] i){
+        double d = 1;
+        for (double j : i) {
             d *= j;
         }return d;
     }
@@ -89,6 +97,11 @@ public class ArrayStringDouble{
             else return 0;
             buffer *= l2[i];
         }return s[s_pos];
+    }
+
+    public double getNum(int pos){
+        if(pos >= productAll(l) || pos < 0) return 0;
+        return l[pos];
     }
 
     public double sumAll(){

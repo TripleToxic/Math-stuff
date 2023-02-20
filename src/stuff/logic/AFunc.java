@@ -2,6 +2,7 @@ package stuff.logic;
 
 public enum AFunc{
     // Array section
+    New("new"),
     Add("+"),
     Subtract("-"),
     Muliply("*"),
