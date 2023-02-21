@@ -14,7 +14,7 @@ public enum AFunc{
     SumAll("sum"),
     ProductAll("prod"),
     ChangeInt("change"),
-    Get("get"),
+    Get("get", "number", "array"),
     Shuffle("shuffle"),
     Resize("resize"),
     ;
@@ -22,6 +22,7 @@ public enum AFunc{
     public static final AFunc[] all = values();
 
     public final String symbol;
+    public final String[] choice;
 
     @Override
     public String toString(){
@@ -30,5 +31,11 @@ public enum AFunc{
 
     AFunc(String symbol){
         this.symbol = symbol;
+        this.choice = null;
+    }
+
+    AFunc(String symbol, String... choice){
+        this.symbol = symbol;
+        this.choice = choice.clone();
     }
 }

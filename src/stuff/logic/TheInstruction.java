@@ -64,10 +64,10 @@ public class TheInstruction{
             double s = exec.num(c);
             int s2 = exec.numi(d);
             boolean b1 = exec.bool(e);
+            int[] s3 = {exec.numi(a), exec.numi(b), s2};
             switch(Opv){
                 case New ->{
-                    int s_1 = exec.numi(a), s_2 = exec.numi(b);
-                    exec.setobj(s2, new ArrayStringDouble(s_1, s_2, s2));
+                    exec.setobj(s2, new ArrayStringDouble(s3));
                 }
                 case Add -> {
                     arr1.add(arr2);
@@ -113,7 +113,8 @@ public class TheInstruction{
                     exec.setnum(result, productAll(arr1.s));
                 }
                 case Resize -> {
-                    exec.setobj(result, arr1.Resize(null, e).toString());
+                    arr1.Resize(s3, b1);
+                    exec.setobj(result, arr1.toString());
                 }
                 case Shuffle -> {
 

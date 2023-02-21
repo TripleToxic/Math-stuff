@@ -25,7 +25,6 @@ public class ArrayStringDouble{
         }
     }
 
-    /* this on is used for new array or as an position input */
     public ArrayStringDouble(int... arr){
         this.l = arr;
         this.s = new double[productAll(this.l)];
