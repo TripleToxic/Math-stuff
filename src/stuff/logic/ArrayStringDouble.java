@@ -2,7 +2,9 @@ package stuff.logic;
 
 import arc.math.Mathf;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.DoubleStream;
 
 import static java.lang.Math.*;
 
@@ -71,17 +73,17 @@ public class ArrayStringDouble{
     }
 
     public static int productAll(int[] i){
-        int d = 1;
-        for (int j : i) {
-            d *= j;
-        }return d;
+        Integer[] j = Arrays.stream(i).boxed().toArray( Integer[]::new );
+        List<Integer> presult = Arrays.asList(j);
+        int result = presult.stream().reduce(1, (a, b) -> a*b);
+        return result;
     }
 
     public static double productAll(double[] i){
-        double d = 1;
-        for (double j : i) {
-            d *= j;
-        }return d;
+        Double[] j = Arrays.stream(i).boxed().toArray(Double[]::new );
+        List<Double> presult = Arrays.asList(j);
+        double result = presult.stream().reduce(1d, (a, b) -> a*b);
+        return result;
     }
 
     public double getNum(int[] pos){
@@ -104,23 +106,15 @@ public class ArrayStringDouble{
     }
 
     public double sumAll(){
-        double sum = 0;
-        for(double i : s){
-            sum += i;
-        }
-        return sum;
+        return Arrays.stream(s).sum();
     }
 
     public void prod(double b){
-        for(int i=0; i<s.length; i++){
-            s[i] *= b;
-        }
+        DoubleStream.of(s).map(v->v * b).toArray();
     }
 
     public void div(double b){
-        for(int i=0; i<s.length; i++){
-            s[i] /= b;
-        }
+        DoubleStream.of(s).map(v->v / b).toArray();
     }
 
     public void add(ArrayStringDouble b){
