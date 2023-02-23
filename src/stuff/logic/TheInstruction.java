@@ -39,21 +39,22 @@ public class TheInstruction{
         }
     }
 
-    public static class VFunction implements LInstruction{
-        public AFunc Opv = AFunc.Add;
-        public int a, b, c, d, e, result;
+    public static class AFunction implements LInstruction{
+        public AFunc OpA = AFunc.Add;
+        public AFunc.TwoType TT = AFunc.TwoType.number;
+        public int a, b, c, d, result;
 
-        public VFunction(AFunc Opv, int a, int b, int c, int d, int e, int result){
-            this.Opv = Opv;
+        public AFunction(AFunc OpA, AFunc.TwoType TT, int a, int b, int c, int d, int result){
+            this.OpA = OpA;
+            this.TT = TT;
             this.a = a;
             this.b = b;
             this.c = c;
             this.d = d;
-            this.e = e;
             this.result = result;
         }
 
-        VFunction(){}
+        AFunction(){}
 
         @Override
         public void run(LExecutor exec){
@@ -61,44 +62,52 @@ public class TheInstruction{
             Var a2 = exec.var(b);
             ArrayStringDouble arr1 = a1.isobj && a1.objval instanceof ArrayStringDouble arr1B ? arr1B : null;
             ArrayStringDouble arr2 = a2.isobj && a2.objval instanceof ArrayStringDouble arr2B ? arr2B : null;
-            double s = exec.num(c);
-            int s2 = exec.numi(d);
-            boolean b1 = exec.bool(e);
-            int[] s3 = {exec.numi(a), exec.numi(b), s2};
-            switch(Opv){
+            double s = exec.num(b);
+            boolean b1 = exec.bool(b);
+            int s2 = exec.numi(b);
+            int[] s3 = {s2, exec.numi(c), exec.numi(d)};
+            switch(OpA){
                 case New ->{
-                    exec.setobj(s2, new ArrayStringDouble(s3));
+                    exec.setobj(result, new ArrayStringDouble(s3));
                 }
                 case Add -> {
                     arr1.add(arr2);
-                    exec.setobj(result, arr1.toString());
+                    exec.setobj(result, arr1);
                 }
                 case Subtract -> {
                     arr1.minus(arr2);
-                    exec.setobj(result, arr1.toString());
+                    exec.setobj(result, arr1);
                 }
                 case Muliply -> {
                     arr1.prodEach(arr2);
-                    exec.setobj(result, arr1.toString());
+                    exec.setobj(result, arr1);
                 }
                 case Divide -> {
                     arr1.divEach(arr2);
-                    exec.setobj(result, arr1.toString());
+                    exec.setobj(result, arr1);
                 }
                 case ScalarMul -> {
                     arr1.prod(s);
-                    exec.setobj(result, arr1.toString());
+                    exec.setobj(result, arr1);
                 }
                 case ScalarDiv -> {
                     arr1.div(s);
-                    exec.setobj(result, arr1.toString());
+                    exec.setobj(result, arr1);
                 }
                 case SumAll-> {
                     exec.setnum(result, arr1.sumAll());
                 }
                 case ChangeInt -> {
-                    arr1.Change(s2, s);
-                    exec.setobj(a, arr1.toString());
+                    switch(TT){
+                        case array -> {
+                            arr1.Change(s2, s);
+                            exec.setobj(a, arr1);
+                        }
+                        case number -> {
+                            arr1.Change(s3, s);
+                            exec.setobj(a, arr1);
+                        }
+                    }
                 }
                 case CrossProduct -> {
                     exec.setobj(result, arr1.crossProd(arr2).toString());
@@ -107,17 +116,21 @@ public class TheInstruction{
                     exec.setnum(result, arr1.dotProd(arr2));
                 }
                 case Get -> {
-                    exec.setnum(result, arr1.getNum(s2));
+                    switch(TT){
+                        case array -> exec.setnum(result, arr1.getNum(s2));
+                        case number -> exec.setnum(result, arr1.getNum(s3));
+                    }
                 }
                 case ProductAll -> {
                     exec.setnum(result, productAll(arr1.s));
                 }
                 case Resize -> {
                     arr1.Resize(s3, b1);
-                    exec.setobj(result, arr1.toString());
+                    exec.setobj(result, arr1);
                 }
                 case Shuffle -> {
-
+                    arr1.shuffle();
+                    exec.setobj(result, arr1);
                 }
             }
         }

@@ -14,9 +14,7 @@ public class Statements {
         public String RealOutput = "Re", ImaginaryOutput = "Im", r1 = "r1", i1 = "i1", r2 = "r2", i2 = "i2";
         
         public ComplexOperationStatement(String Op, String r1, String i1, String r2, String i2, String RealOutput, String ImaginaryOutput){
-            try{
-                this.Op = Func.valueOf(Op);
-            }catch(Throwable ignored){}
+            try{this.Op = Func.valueOf(Op);}catch(Throwable ignored){}
             this.RealOutput = RealOutput;
             this.ImaginaryOutput = ImaginaryOutput;
             this.r1 = r1;
@@ -71,8 +69,8 @@ public class Statements {
 
         public void write(StringBuilder builder){
             builder
-                .append("comp ")
-                .append(Op.name())
+                .append("Comp ")
+                .append(Op.toString())
                 .append(" ")
                 .append(r1)
                 .append(" ")
@@ -90,15 +88,17 @@ public class Statements {
     }
     
     public static class ArrayOperationStatement extends ShortStatement{
-        public AFunc Opv = AFunc.Add;
-        public String result = "result", a = "A", b = "B", c = "C", n = "n";
+        public AFunc OpA = AFunc.Add;
+        public AFunc.TwoType TT = AFunc.TwoType.number;
+        public String result = "result", a = "A", b = "B", c = "C", d = "d";
 
-        public ArrayOperationStatement(String Opv, String a, String b, String c, String n, String result){
-            try{this.Opv = AFunc.valueOf(Opv);}catch(Throwable h){}
+        public ArrayOperationStatement(String OpA, String TT, String a, String b, String c, String d, String result){
+            try{this.OpA = AFunc.valueOf(OpA);}catch(Throwable h){}
+            try{this.TT = AFunc.TwoType.valueOf(TT);}catch(Throwable h){}
             this.a = a;
             this.b = b;
             this.c = c;
-            this.n = n;
+            this.d = d;
             this.result = result;
         }
         
@@ -116,9 +116,19 @@ public class Statements {
 
         void Button(Table table, Table parent){
             table.button(b -> {
-                b.label(() -> Opv.symbol);
-                b.clicked(() -> showSelect(b, AFunc.all, Opv, o -> {
-                    Opv = o;
+                b.label(() -> OpA.symbol);
+                b.clicked(() -> showSelect(b, AFunc.all, OpA, o -> {
+                    OpA = o;
+                    rebuild(parent);
+                }));
+            }, Styles.logict, () -> {}).size(100f, 40f).pad(2f).color(table.color);
+        }
+
+        void Button2(Table table, Table parent){
+            table.button(b -> {
+                b.label(() -> TT.name());
+                b.clicked(() -> showSelect(b, AFunc.TwoType.all, TT, o -> {
+                    TT = o;
                     rebuild(parent);
                 }));
             }, Styles.logict, () -> {}).size(100f, 40f).pad(2f).color(table.color);
@@ -126,14 +136,15 @@ public class Statements {
 
         @Override
         public LInstruction build(LAssembler build) {
-            return new VFunction(Opv, build.var(a), build.var(b), build.var(c), build.var(n), build.var(result));
+            return new AFunction(OpA, TT, build.var(a), build.var(b), build.var(c), build.var(d), build.var(result));
         }
 
         public void write(StringBuilder builder){
             builder
-                .append("arr ")
-                .append(Opv.name())
-                .append(" ")     
+                .append("Arr ")
+                .append(OpA.toString())
+                .append(" ")
+                .append(TT.name())
                 .append(" ")
                 .append(a)
                 .append(" ")
@@ -141,7 +152,7 @@ public class Statements {
                 .append(" ")
                 .append(c)
                 .append(" ")
-                .append(n)
+                .append(d)
                 .append(" ")
                 .append(result);
         }
@@ -154,7 +165,7 @@ public class Statements {
 
     public static void load(){
         registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
-        registerStatement("arr", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6]), ArrayOperationStatement::new);
+        registerStatement("arr", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ArrayOperationStatement::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov){

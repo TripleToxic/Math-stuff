@@ -212,6 +212,7 @@ public class ArrayStringDouble{
         l = new_size.clone();
     }
 
+    /*
     @Override
     public String toString(){
         StringBuilder o1 = new StringBuilder("");
@@ -235,5 +236,11 @@ public class ArrayStringDouble{
         }else{o2.append(s[i]);}
 
         return final_.append(o1).append("] {").append(o2).append("}").toString();
+    }
+    */
+
+    @Override
+    public String toString(){
+        return null;
     }
 }
