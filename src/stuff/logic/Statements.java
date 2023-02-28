@@ -8,6 +8,8 @@ import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
 import stuff.logic.TheInstruction.*;
 
+import stuff.logic.AFunc.TwoType;
+
 public class Statements {
     public static class ComplexOperationStatement extends ShortStatement{
         public Func Op = Func.addC;
@@ -89,12 +91,12 @@ public class Statements {
     
     public static class ArrayOperationStatement extends ShortStatement{
         public AFunc OpA = AFunc.Add;
-        public AFunc.TwoType TT = AFunc.TwoType.number;
+        public TwoType TT = TwoType.number;
         public String result = "result", a = "A", b = "B", c = "C", d = "d";
 
         public ArrayOperationStatement(String OpA, String TT, String a, String b, String c, String d, String result){
             try{this.OpA = AFunc.valueOf(OpA);}catch(Throwable h){}
-            try{this.TT = AFunc.TwoType.valueOf(TT);}catch(Throwable h){}
+            try{this.TT = TwoType.valueOf(TT);}catch(Throwable h){}
             this.a = a;
             this.b = b;
             this.c = c;
@@ -111,7 +113,53 @@ public class Statements {
 
         void rebuild(Table table){
             table.clearChildren();
-            
+            switch(OpA){
+                case Add ->{
+                    
+                }               
+                case ChangeInt->{
+                    
+                }                      
+                case CrossProduct->{
+                    
+                }                        
+                case Divide->{
+                    
+                }                        
+                case DotProd->{
+                    
+                }                           
+                case Get->{
+                    
+                }                         
+                case Muliply->{
+                    
+                }                            
+                case New->{
+                    
+                }         
+                case ProductAll->{
+                    
+                }                           
+                case Resize->{
+                    
+                }                       
+                case ScalarDiv->{
+                    
+                }                         
+                case ScalarMul->{
+                    
+                }                           
+                case Shuffle->{
+                    
+                }                           
+                case Subtract->{
+                    
+                }                        
+                case SumAll->{
+                    
+                }                      
+            }
         }
 
         void Button(Table table, Table parent){
@@ -127,7 +175,7 @@ public class Statements {
         void Button2(Table table, Table parent){
             table.button(b -> {
                 b.label(() -> TT.name());
-                b.clicked(() -> showSelect(b, AFunc.TwoType.all, TT, o -> {
+                b.clicked(() -> showSelect(b, TwoType.all, TT, o -> {
                     TT = o;
                     rebuild(parent);
                 }));

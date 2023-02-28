@@ -5,17 +5,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 import static java.lang.Math.*;
 
-public class ArrayStringDouble{
+public class Array{
     private int[] Default1 = {1};
     private double[] Default2 = {1d};
     public int[] l;
     public double[] s;
     private static int length_limit = 16, array_limit = 3;
+    private int All;
 
-    public ArrayStringDouble(String s){
+    public Array(String s){
         try{
             this.l = Limit(StringToIntArray(s.substring(s.indexOf("[") + 1, s.indexOf("]"))));
             this.s = StringToDoubleArray(s.substring(s.indexOf("{") + 1, s.indexOf("}")));
@@ -25,11 +27,14 @@ public class ArrayStringDouble{
             this.l = Default1.clone();
             this.s = Default2.clone();
         }
+        All = productAll(this.l);
     }
 
-    public ArrayStringDouble(int... arr){
-        this.l = arr;
-        this.s = new double[productAll(this.l)];
+    public Array(int... arr){
+        int f = productAll(this.l);
+        this.l = Limit(arr);
+        this.s = new double[f];
+        this.All = f;
     }
 
     private static int[] StringToIntArray(String str){
@@ -73,17 +78,17 @@ public class ArrayStringDouble{
     }
 
     public static int productAll(int[] i){
-        Integer[] j = Arrays.stream(i).boxed().toArray( Integer[]::new );
-        List<Integer> presult = Arrays.asList(j);
-        int result = presult.stream().reduce(1, (a, b) -> a*b);
-        return result;
+        int d = 1;
+        for (int j : i) {
+            d *= j;
+        }return d;
     }
 
     public static double productAll(double[] i){
-        Double[] j = Arrays.stream(i).boxed().toArray(Double[]::new );
-        List<Double> presult = Arrays.asList(j);
-        double result = presult.stream().reduce(1d, (a, b) -> a*b);
-        return result;
+        double d = 1;
+        for (double j : i) {
+            d *= j;
+        }return d;
     }
 
     public double getNum(int[] pos){
@@ -93,7 +98,7 @@ public class ArrayStringDouble{
             Arrays.fill(l2, l.length, pos.length, 1);
         }else{l2 = l;}
         int s_pos = 0, buffer = 1;
-        for(int i=pos.length-1; i>=0; i++){
+        for(int i=pos.length-1; i>=0; i--){
             if(pos[i] < l2[i]) s_pos += pos[i] * buffer;
             else return 0;
             buffer *= l2[i];
@@ -101,52 +106,61 @@ public class ArrayStringDouble{
     }
 
     public double getNum(int pos){
-        if(pos >= productAll(l) || pos < 0) return 0;
+        if(pos >= All || pos < 0) return 0;
         return l[pos];
     }
 
     public double sumAll(){
-        return Arrays.stream(s).sum();
+        double sum = 0;
+        for(double i : s){
+            sum += i;
+        }
+        return sum;
     }
 
+
     public void prod(double b){
-        DoubleStream.of(s).map(v->v * b).toArray();
+        for(int i=0; i<s.length; i++){
+            s[i] *= b;
+        }
     }
 
     public void div(double b){
-        DoubleStream.of(s).map(v->v / b).toArray();
+        for(int i=0; i<s.length; i++){
+            s[i] /= b;
+        }
     }
 
-    public void add(ArrayStringDouble b){
-        for(int i=0; i<productAll(l); i++){
+    public void add(Array b){
+        for(int i=0; i<All; i++){
             s[i] += b.getNum(NumToPos(l, i));
         }
     }
 
-    public void minus(ArrayStringDouble b){
-        for(int i=0; i<productAll(l); i++){
+    public void minus(Array b){
+        for(int i=0; i<All; i++){
             s[i] -= b.getNum(NumToPos(l, i));
         }
     }
 
-    public void prodEach(ArrayStringDouble b){
-        for(int i=0; i<productAll(l); i++){
+    public void prodEach(Array b){
+        for(int i=0; i<All; i++){
             s[i] *= b.getNum(NumToPos(l, i));
         }
     }
 
-    public void divEach(ArrayStringDouble b){
-        for(int i=0; i<productAll(l); i++){
+    public void divEach(Array b){
+        for(int i=0; i<All; i++){
             s[i] /= b.getNum(NumToPos(l, i));
         }
     }
 
-    public double dotProd(ArrayStringDouble b){
-        double dotP = 0;
+    public double dotProd(Array b){
         if(l.length != 1 && b.l.length != 1) return 0;
+        double h = 0;
         for(int i=0; i<min(l[0], b.l[0]); i++){
-            dotP += s[i] * b.s[i];
-        }return dotP;
+            h += s[i] * b.s[i];
+        }return h;
     }
 
     // a
@@ -165,8 +179,8 @@ public class ArrayStringDouble{
     }
     */
 
-    public ArrayStringDouble crossProd(ArrayStringDouble b){
-        ArrayStringDouble c = new ArrayStringDouble("[3] {0 0 0}");
+    public Array crossProd(Array b){
+        Array c = new Array("[3] {0 0 0}");
         if(l.length != 1 && b.l.length != 1 && l[0] < 3 && b.l[0] < 3) return c;
         for(int i=0; i<3; i++){
             c.s[i] = s[(i+1)%3]*b.s[(i+2)%3] - s[(i+2)%3]*b.s[(i+1)%3];
@@ -176,9 +190,9 @@ public class ArrayStringDouble{
     public void shuffle(){
         Random rand = new Random();
         for (int i = 0; i < s.length; i++) {
-			int randomIndexToSwap = rand.nextInt(s.length);
-			double temp = s[randomIndexToSwap];
-			s[randomIndexToSwap] = s[i];
+			int swap = rand.nextInt(s.length);
+			double temp = s[swap];
+			s[swap] = s[i];
 			s[i] = temp;
 		}
     }
@@ -200,7 +214,7 @@ public class ArrayStringDouble{
 
     public void Resize(int[] new_size, boolean Static){
         new_size = Limit(new_size).clone();
-        if(productAll(new_size) == productAll(l) && Static){
+        if(productAll(new_size) == All && Static){
             l = new_size.clone();
             return;
         }else if(Static) return;

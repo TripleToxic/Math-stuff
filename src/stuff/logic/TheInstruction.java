@@ -2,7 +2,8 @@ package stuff.logic;
 import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.*;
 
-import static stuff.logic.ArrayStringDouble.*;
+import static stuff.logic.Array.*;
+import static stuff.logic.AFunc.TwoType;
 
 public class TheInstruction{
 
@@ -41,10 +42,10 @@ public class TheInstruction{
 
     public static class AFunction implements LInstruction{
         public AFunc OpA = AFunc.Add;
-        public AFunc.TwoType TT = AFunc.TwoType.number;
+        public TwoType TT = TwoType.number;
         public int a, b, c, d, result;
 
-        public AFunction(AFunc OpA, AFunc.TwoType TT, int a, int b, int c, int d, int result){
+        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int result){
             this.OpA = OpA;
             this.TT = TT;
             this.a = a;
@@ -60,15 +61,15 @@ public class TheInstruction{
         public void run(LExecutor exec){
             Var a1 = exec.var(a);
             Var a2 = exec.var(b);
-            ArrayStringDouble arr1 = a1.isobj && a1.objval instanceof ArrayStringDouble arr1B ? arr1B : null;
-            ArrayStringDouble arr2 = a2.isobj && a2.objval instanceof ArrayStringDouble arr2B ? arr2B : null;
+            Array arr1 = a1.isobj && a1.objval instanceof Array arr1B ? arr1B : null;
+            Array arr2 = a2.isobj && a2.objval instanceof Array arr2B ? arr2B : null;
             double s = exec.num(b);
             boolean b1 = exec.bool(b);
             int s2 = exec.numi(b);
             int[] s3 = {s2, exec.numi(c), exec.numi(d)};
             switch(OpA){
                 case New ->{
-                    exec.setobj(result, new ArrayStringDouble(s3));
+                    exec.setobj(result, new Array(s3));
                 }
                 case Add -> {
                     arr1.add(arr2);
