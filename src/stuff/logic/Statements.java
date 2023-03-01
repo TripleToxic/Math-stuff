@@ -113,6 +113,9 @@ public class Statements {
 
         void rebuild(Table table){
             table.clearChildren();
+            if(OpA.local == false) field(table, result, str -> result = str);
+            else field(table, a, str -> a = str);
+            table.add(" = ");
             switch(OpA){
                 case Add ->{
                     

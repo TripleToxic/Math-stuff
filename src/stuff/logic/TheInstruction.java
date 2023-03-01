@@ -69,7 +69,7 @@ public class TheInstruction{
             int[] s3 = {s2, exec.numi(c), exec.numi(d)};
             switch(OpA){
                 case New ->{
-                    exec.setobj(result, new Array(s3));
+                    exec.setobj(result, new Array(exec.numi(a), exec.numi(b), exec.numi(c)));
                 }
                 case Add -> {
                     arr1.add(arr2);

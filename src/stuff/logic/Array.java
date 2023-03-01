@@ -2,10 +2,7 @@ package stuff.logic;
 
 import arc.math.Mathf;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
 
 import static java.lang.Math.*;
 
@@ -14,12 +11,14 @@ public class Array{
     private double[] Default2 = {1d};
     public int[] l;
     public double[] s;
-    private static int length_limit = 16, array_limit = 3;
+    private static int length_limit = 16;
     private int All;
 
     public Array(String s){
         try{
-            this.l = Limit(StringToIntArray(s.substring(s.indexOf("[") + 1, s.indexOf("]"))));
+            int[] m = StringToIntArray(s.substring(s.indexOf("[") + 1, s.indexOf("]")));
+            Limit(m);
+            this.l = m;
             this.s = StringToDoubleArray(s.substring(s.indexOf("{") + 1, s.indexOf("}")));
             if(this.s.length != productAll(this.l)) this.s = new double[productAll(this.l)];
         }
@@ -32,7 +31,8 @@ public class Array{
 
     public Array(int... arr){
         int f = productAll(this.l);
-        this.l = Limit(arr);
+        Limit(arr);
+        this.l = arr;
         this.s = new double[f];
         this.All = f;
     }
@@ -67,14 +67,10 @@ public class Array{
         return count_arr;
     }
 
-    public static int[] Limit(int[] i){
-        int j = Mathf.clamp(i.length, 1, array_limit);
-        int[] new_i = new int[j];
-        for(int n=0; n<j; n++){
-            if(i[n] > length_limit) new_i[n] = length_limit;
-            if(i[n] < 1) new_i[n] = 1;
-            else{new_i[n] = i[n];}
-        }return new_i;
+    public static void Limit(int[] i){
+        for(int n=0; n<3; n++){
+            i[n] = Mathf.clamp(i[n], 1, length_limit);
+        }
     }
 
     public static int productAll(int[] i){
@@ -212,12 +208,13 @@ public class Array{
         if(pos >= 0 && pos < s.length) s[pos] = new_;
     }
 
-    public void Resize(int[] new_size, boolean Static){
-        new_size = Limit(new_size).clone();
-        if(productAll(new_size) == All && Static){
+    public void Resize(int[] new_size, boolean Lossless){
+        Limit(new_size);
+        new_size = new_size.clone();
+        if(productAll(new_size) == All && Lossless){
             l = new_size.clone();
             return;
-        }else if(Static) return;
+        }else if(Lossless) return;
         double[] new_arr = new double[productAll(new_size)];
         for(int i=0; i<new_arr.length; i++){
             new_arr[i] = getNum(NumToPos(new_size, i));

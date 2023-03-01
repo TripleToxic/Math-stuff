@@ -13,15 +13,16 @@ public enum AFunc{
     CrossProduct("x"),
     SumAll("sum"),
     ProductAll("prod"),
-    ChangeInt("change"),
+    ChangeInt("change", true),
     Get("get"),
-    Shuffle("shuffle"),
+    Shuffle("shuffle", true),
     Resize("resize"),
     ;
 
     public static final AFunc[] all = values();
 
     public final String symbol;
+    public final boolean local;
 
     @Override
     public String toString(){
@@ -30,6 +31,12 @@ public enum AFunc{
 
     AFunc(String symbol){
         this.symbol = symbol;
+        this.local = false;
+    }
+
+    AFunc(String symbol, boolean local){
+        this.symbol = symbol;
+        this.local = local;
     }
 
     public static enum TwoType{
