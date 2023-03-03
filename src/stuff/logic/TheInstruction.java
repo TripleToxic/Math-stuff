@@ -43,15 +43,16 @@ public class TheInstruction{
     public static class AFunction implements LInstruction{
         public AFunc OpA = AFunc.Add;
         public TwoType TT = TwoType.number;
-        public int a, b, c, d, result;
+        public int a, b, c, d, e, result;
 
-        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int result){
+        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result){
             this.OpA = OpA;
             this.TT = TT;
             this.a = a;
             this.b = b;
             this.c = c;
             this.d = d;
+            this.e = e;
             this.result = result;
         }
 
@@ -63,13 +64,13 @@ public class TheInstruction{
             Var a2 = exec.var(b);
             Array arr1 = a1.isobj && a1.objval instanceof Array arr1B ? arr1B : null;
             Array arr2 = a2.isobj && a2.objval instanceof Array arr2B ? arr2B : null;
-            double s = exec.num(b);
-            boolean b1 = exec.bool(b);
+            double s = exec.num(e);
+            boolean b1 = exec.bool(e);
             int s2 = exec.numi(b);
             int[] s3 = {s2, exec.numi(c), exec.numi(d)};
             switch(OpA){
                 case New ->{
-                    exec.setobj(result, new Array(exec.numi(a), exec.numi(b), exec.numi(c)));
+                    exec.setobj(result, new Array(exec.numi(a), s2, exec.numi(c)));
                 }
                 case Add -> {
                     arr1.add(arr2);
@@ -98,28 +99,28 @@ public class TheInstruction{
                 case SumAll-> {
                     exec.setnum(result, arr1.sumAll());
                 }
-                case ChangeInt -> {
+                case Change -> {
                     switch(TT){
                         case array -> {
-                            arr1.Change(s2, s);
+                            arr1.Change(s3, s);
                             exec.setobj(a, arr1);
                         }
                         case number -> {
-                            arr1.Change(s3, s);
+                            arr1.Change(s2, s);
                             exec.setobj(a, arr1);
                         }
                     }
                 }
                 case CrossProduct -> {
-                    exec.setobj(result, arr1.crossProd(arr2).toString());
+                    exec.setobj(result, arr1.crossProd(arr2));
                 }
                 case DotProd -> {
                     exec.setnum(result, arr1.dotProd(arr2));
                 }
                 case Get -> {
                     switch(TT){
-                        case array -> exec.setnum(result, arr1.getNum(s2));
-                        case number -> exec.setnum(result, arr1.getNum(s3));
+                        case array -> exec.setnum(result, arr1.getNum(s3));
+                        case number -> exec.setnum(result, arr1.getNum(s2));
                     }
                 }
                 case ProductAll -> {

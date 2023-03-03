@@ -152,7 +152,6 @@ public class Array{
     }
 
     public double dotProd(Array b){
-        if(l.length != 1 && b.l.length != 1) return 0;
         double h = 0;
         for(int i=0; i<min(l[0], b.l[0]); i++){
             h += s[i] * b.s[i];

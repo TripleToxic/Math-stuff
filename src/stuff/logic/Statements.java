@@ -91,16 +91,17 @@ public class Statements {
     
     public static class ArrayOperationStatement extends ShortStatement{
         public AFunc OpA = AFunc.Add;
-        public TwoType TT = TwoType.number;
-        public String result = "result", a = "A", b = "B", c = "C", d = "d";
+        public TwoType TT = TwoType.array;
+        public String result = "result", a = "A", b = "B", c = "c", d = "d", e = "e";
 
-        public ArrayOperationStatement(String OpA, String TT, String a, String b, String c, String d, String result){
+        public ArrayOperationStatement(String OpA, String TT, String a, String b, String c, String d, String e, String result){
             try{this.OpA = AFunc.valueOf(OpA);}catch(Throwable h){}
             try{this.TT = TwoType.valueOf(TT);}catch(Throwable h){}
             this.a = a;
             this.b = b;
             this.c = c;
             this.d = d;
+            this.e = e;
             this.result = result;
         }
         
@@ -113,39 +114,92 @@ public class Statements {
 
         void rebuild(Table table){
             table.clearChildren();
-            if(OpA.local == false) field(table, result, str -> result = str);
-            else field(table, a, str -> a = str);
-            table.add(" = ");
+            if(!OpA.local) {
+                field(table, result, str -> result = str);
+                table.add(" = ");
+            }
             switch(OpA){
                 case Add ->{
-                    
+                    field2(table, a, str -> a = str);
+                    Button(table, table);
+                    field2(table, b, str -> b = str);
                 }               
-                case ChangeInt->{
-                    
+                case Change->{
+                    Button(table, table);
+                    field2(table, a, str -> a = str);
+                    table.add("by ");
+                    Button2(table, table);
+                    table.add(": ");
+                    switch(TT){
+                        case array -> {
+                            table.add("L:"); field2(table, b, str -> b = str);
+                            table.add("R:"); field2(table, c, str -> c = str);
+                            table.add("C:"); field2(table, d, str -> d = str);
+                        }
+                        case number -> {
+                            field2(table, b, str -> b = str);
+                        }
+                    }
                 }                      
                 case CrossProduct->{
-                    
+                    field2(table, a, str -> a = str);
+                    Button(table, table);
+                    field2(table, b, str -> b = str);
                 }                        
                 case Divide->{
-                    
+                    field2(table, a, str -> a = str);
+                    Button(table, table);
+                    field2(table, b, str -> b = str);
                 }                        
                 case DotProd->{
-                    
+                    field2(table, a, str -> a = str);
+                    Button(table, table);
+                    field2(table, b, str -> b = str);
                 }                           
                 case Get->{
-                    
+                    Button(table, table); table.add(" from ");
+                    field2(table, a, str -> a = str);
+                    table.add(" at:");
+                    switch(TT){
+                        case array -> {
+                            row(table);
+                            table.add("L:"); field2(table, b, str -> b = str);
+                            table.add("R:"); field2(table, c, str -> c = str);
+                            table.add("C:"); field2(table, d, str -> d = str);
+                        }
+                        case number -> {
+                            field2(table, b, str -> b = str);
+                        }
+                        
+                    }
                 }                         
                 case Muliply->{
-                    
+                    field2(table, a, str -> a = str);
+                    Button(table, table);
+                    field2(table, b, str -> b = str);
                 }                            
                 case New->{
-                    
+                    Button(table, table); table.add(" New array of:");
+                    row(table);
+                    table.add("L:"); field2(table, a, str -> a = str);
+                    table.add("R:"); field2(table, b, str -> b = str);
+                    table.add("C:"); field2(table, c, str -> c = str);
                 }         
                 case ProductAll->{
-                    
+                    Button(table, table);
+                    field2(table, a, str -> a = str);
                 }                           
                 case Resize->{
-                    
+                    Button(table, table);
+                    field2(table, a, str -> a = str);
+                    table.add(" is lossless:");
+                    field2(table, e, str -> e = str);
+                    table.add("to:");
+                    row(table);
+                    table.add("L:"); field2(table, b, str -> b = str);
+                    table.add("R:"); field2(table, c, str -> c = str);
+                    table.add("C:"); field2(table, d, str -> d = str);
+
                 }                       
                 case ScalarDiv->{
                     
@@ -187,7 +241,7 @@ public class Statements {
 
         @Override
         public LInstruction build(LAssembler build) {
-            return new AFunction(OpA, TT, build.var(a), build.var(b), build.var(c), build.var(d), build.var(result));
+            return new AFunction(OpA, TT, build.var(a), build.var(b), build.var(c), build.var(d), build.var(e), build.var(result));
         }
 
         public void write(StringBuilder builder){
@@ -205,6 +259,8 @@ public class Statements {
                 .append(" ")
                 .append(d)
                 .append(" ")
+                .append(e)
+                .append(" ")
                 .append(result);
         }
 
@@ -215,8 +271,8 @@ public class Statements {
     }
 
     public static void load(){
-        registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
-        registerStatement("arr", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ArrayOperationStatement::new);
+        registerStatement("Comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
+        registerStatement("Arr", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov){

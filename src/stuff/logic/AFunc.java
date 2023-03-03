@@ -13,7 +13,7 @@ public enum AFunc{
     CrossProduct("x"),
     SumAll("sum"),
     ProductAll("prod"),
-    ChangeInt("change", true),
+    Change("change", true),
     Get("get"),
     Shuffle("shuffle", true),
     Resize("resize"),
@@ -40,8 +40,8 @@ public enum AFunc{
     }
 
     public static enum TwoType{
-        number,
-        array;
+        array,
+        number;
 
         public static final TwoType[] all = values();
     }
