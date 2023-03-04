@@ -250,7 +250,7 @@ public class Statements {
         public void write(StringBuilder builder){
             builder
                 .append("Arr ")
-                .append(OpA.toString())
+                .append(OpA.name())
                 .append(" ")
                 .append(TT.name())
                 .append(" ")

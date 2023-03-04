@@ -30,9 +30,9 @@ public class Array{
     }
 
     public Array(int... arr){
-        int f = productAll(this.l);
         Limit(arr);
         this.l = arr;
+        int f = productAll(this.l);
         this.s = new double[f];
         this.All = f;
     }
