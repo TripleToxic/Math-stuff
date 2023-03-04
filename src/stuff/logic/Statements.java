@@ -91,7 +91,7 @@ public class Statements {
     
     public static class ArrayOperationStatement extends ShortStatement{
         public AFunc OpA = AFunc.Add;
-        public TwoType TT = TwoType.array;
+        public TwoType TT = TwoType.number;
         public String result = "result", a = "A", b = "B", c = "c", d = "d", e = "e";
 
         public ArrayOperationStatement(String OpA, String TT, String a, String b, String c, String d, String e, String result){

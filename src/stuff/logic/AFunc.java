@@ -38,8 +38,8 @@ public enum AFunc{
     }
 
     public static enum TwoType{
-        array,
-        number;
+        number,
+        array;
 
         public static final TwoType[] all = values();
     }

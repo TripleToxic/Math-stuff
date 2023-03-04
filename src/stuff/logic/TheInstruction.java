@@ -69,80 +69,85 @@ public class TheInstruction{
             boolean b1 = exec.bool(e);
             int s2 = exec.numi(b);
             int[] s3 = {s2, exec.numi(c), exec.numi(d)};
-            switch(OpA){
-                case New ->{
-                    exec.setobj(result, new Array(exec.numi(a), s2, exec.numi(c)));
-                }
-                case Add -> {
-                    arr1.add(arr2);
-                    exec.setobj(result, arr1);
-                }
-                case Subtract -> {
-                    arr1.minus(arr2);
-                    exec.setobj(result, arr1);
-                }
-                case Muliply -> {
-                    switch(TT){
-                        case array -> {
-                            arr1.prodEach(arr2);
-                            exec.setobj(result, arr1);
-                        }
-                        case number -> {
-                            arr1.prod(s0);
-                            exec.setobj(result, arr1);
+            try{
+                switch(OpA){
+                    case New ->{
+                        exec.setobj(result, new Array(exec.numi(a), s2, exec.numi(c)));
+                    }
+                    case Add -> {
+                        arr1.add(arr2);
+                        exec.setobj(result, arr1);
+                    }
+                    case Subtract -> {
+                        arr1.minus(arr2);
+                        exec.setobj(result, arr1);
+                    }
+                    case Muliply -> {
+                        switch(TT){
+                            case array -> {
+                                arr1.prodEach(arr2);
+                                exec.setobj(result, arr1);
+                            }
+                            case number -> {
+                                arr1.prod(s0);
+                                exec.setobj(result, arr1);
+                            }
                         }
                     }
-                }
-                case Divide -> {
-                    switch(TT){
-                        case array -> {
-                            arr1.divEach(arr2);
-                            exec.setobj(result, arr1);
-                        }
-                        case number -> {
-                            arr1.div(s0);
-                            exec.setobj(result, arr1);
-                        }
-                    }
-                }
-                case SumAll-> {
-                    exec.setnum(result, arr1.sumAll());
-                }
-                case Change -> {
-                    switch(TT){
-                        case array -> {
-                            arr1.Change(s3, s);
-                            exec.setobj(a, arr1);
-                        }
-                        case number -> {
-                            arr1.Change(s2, s);
-                            exec.setobj(a, arr1);
+                    case Divide -> {
+                        switch(TT){
+                            case array -> {
+                                arr1.divEach(arr2);
+                                exec.setobj(result, arr1);
+                            }
+                            case number -> {
+                                arr1.div(s0);
+                                exec.setobj(result, arr1);
+                            }
                         }
                     }
-                }
-                case CrossProduct -> {
-                    exec.setobj(result, arr1.crossProd(arr2));
-                }
-                case DotProd -> {
-                    exec.setnum(result, arr1.dotProd(arr2));
-                }
-                case Get -> {
-                    switch(TT){
-                        case array -> exec.setnum(result, arr1.getNum(s3));
-                        case number -> exec.setnum(result, arr1.getNum(s2));
+                    case SumAll-> {
+                        exec.setnum(result, arr1.sumAll());
+                    }
+                    case Change -> {
+                        switch(TT){
+                            case array -> {
+                                arr1.Change(s3, s);
+                                exec.setobj(a, arr1);
+                            }
+                            case number -> {
+                                arr1.Change(s2, s);
+                                exec.setobj(a, arr1);
+                            }
+                        }
+                    }
+                    case CrossProduct -> {
+                        exec.setobj(result, arr1.crossProd(arr2));
+                    }
+                    case DotProd -> {
+                        exec.setnum(result, arr1.dotProd(arr2));
+                    }
+                    case Get -> {
+                        switch(TT){
+                            case array -> exec.setnum(result, arr1.getNum(s3));
+                            case number -> exec.setnum(result, arr1.getNum(s2));
+                        }
+                    }
+                    case ProductAll -> {
+                        exec.setnum(result, productAll(arr1.s));
+                    }
+                    case Resize -> {
+                        arr1.Resize(s3, b1);
+                        exec.setobj(result, arr1);
+                    }
+                    case Shuffle -> {
+                        arr1.shuffle();
+                        exec.setobj(result, arr1);
                     }
                 }
-                case ProductAll -> {
-                    exec.setnum(result, productAll(arr1.s));
-                }
-                case Resize -> {
-                    arr1.Resize(s3, b1);
-                    exec.setobj(result, arr1);
-                }
-                case Shuffle -> {
-                    arr1.shuffle();
-                    exec.setobj(result, arr1);
-                }
+            }catch(Throwable n){
+                if(OpA.local) exec.setobj(a, null);
+                else exec.setobj(result, null);
             }
         }
     }
