@@ -41,7 +41,7 @@ public class TheInstruction{
     }
 
     public static class AFunction implements LInstruction{
-        public AFunc OpA = AFunc.Add;
+        public AFunc OpA = AFunc.New;
         public TwoType TT = TwoType.number;
         public int a, b, c, d, e, result;
 

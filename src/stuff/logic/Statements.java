@@ -90,7 +90,7 @@ public class Statements {
     }
     
     public static class ArrayOperationStatement extends ShortStatement{
-        public AFunc OpA = AFunc.Add;
+        public AFunc OpA = AFunc.New;
         public TwoType TT = TwoType.number;
         public String result = "result", a = "A", b = "B", c = "c", d = "d", e = "e";
 
