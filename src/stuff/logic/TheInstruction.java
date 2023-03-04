@@ -146,7 +146,7 @@ public class TheInstruction{
                     }
                 }
             }catch(Throwable n){
-                if(OpA.local) exec.setobj(a, null);
+                if(OpA.local) exec.setobj(a, arr1);
                 else exec.setobj(result, null);
             }
         }
