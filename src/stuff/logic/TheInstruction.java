@@ -69,18 +69,21 @@ public class TheInstruction{
             boolean b1 = exec.bool(e);
             int s2 = exec.numi(b);
             int[] s3 = {s2, exec.numi(c), exec.numi(d)};
-            try{
+            //try{      bug testing
                 switch(OpA){
                     case New ->{
                         exec.setobj(result, new Array(exec.numi(a), s2, exec.numi(c)));
+                        break;
                     }
                     case Add -> {
                         arr1.add(arr2);
                         exec.setobj(result, arr1);
+                        break;
                     }
                     case Subtract -> {
                         arr1.minus(arr2);
                         exec.setobj(result, arr1);
+                        break;
                     }
                     case Muliply -> {
                         switch(TT){
@@ -93,6 +96,7 @@ public class TheInstruction{
                                 exec.setobj(result, arr1);
                             }
                         }
+                        break;
                     }
                     case Divide -> {
                         switch(TT){
@@ -105,9 +109,11 @@ public class TheInstruction{
                                 exec.setobj(result, arr1);
                             }
                         }
+                        break;
                     }
                     case SumAll-> {
                         exec.setnum(result, arr1.sumAll());
+                        break;
                     }
                     case Change -> {
                         switch(TT){
@@ -120,35 +126,42 @@ public class TheInstruction{
                                 exec.setobj(a, arr1);
                             }
                         }
+                        break;
                     }
                     case CrossProduct -> {
                         exec.setobj(result, arr1.crossProd(arr2));
+                        break;
                     }
                     case DotProd -> {
                         exec.setnum(result, arr1.dotProd(arr2));
+                        break;
                     }
                     case Get -> {
                         switch(TT){
                             case array -> exec.setnum(result, arr1.getNum(s3));
                             case number -> exec.setnum(result, arr1.getNum(s2));
                         }
+                        break;
                     }
                     case ProductAll -> {
                         exec.setnum(result, productAll(arr1.s));
+                        break;
                     }
                     case Resize -> {
                         arr1.Resize(s3, b1);
                         exec.setobj(result, arr1);
+                        break;
                     }
                     case Shuffle -> {
                         arr1.shuffle();
                         exec.setobj(result, arr1);
+                        break;
                     }
                 }
-            }catch(Throwable n){
-                if(OpA.local) exec.setobj(a, arr1);
-                else exec.setobj(result, null);
-            }
+            //}catch(Throwable n){
+                //if(OpA.local) exec.setobj(a, arr1);
+                //else exec.setobj(result, null);
+            //}
         }
     }
 }

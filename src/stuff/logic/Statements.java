@@ -123,6 +123,7 @@ public class Statements {
                     field2(table, a, str -> a = str);
                     Button(table, table);
                     field2(table, b, str -> b = str);
+                    break;
                 }               
                 case Change->{
                     Button(table, table);
@@ -140,11 +141,13 @@ public class Statements {
                             field2(table, b, str -> b = str);
                         }
                     }
+                    break;
                 }                      
                 case CrossProduct->{
                     field2(table, a, str -> a = str);
                     Button(table, table);
                     field2(table, b, str -> b = str);
+                break;
                 }                        
                 case Divide->{
                     field2(table, a, str -> a = str);
@@ -152,11 +155,13 @@ public class Statements {
                     table.add("by");
                     Button2(table, table);
                     field2(table, b, str -> b = str);
+                break;
                 }                        
                 case DotProd->{
                     field2(table, a, str -> a = str);
                     Button(table, table);
                     field2(table, b, str -> b = str);
+                    break;
                 }                           
                 case Get->{
                     Button(table, table); table.add(" from ");
@@ -174,6 +179,7 @@ public class Statements {
                         }
                         
                     }
+                    break;
                 }                         
                 case Muliply->{
                     field2(table, a, str -> a = str);
@@ -181,6 +187,7 @@ public class Statements {
                     table.add("by");
                     Button2(table, table);
                     field2(table, b, str -> b = str);
+                    break;
                 }                            
                 case New->{
                     Button(table, table); table.add(" New array of:");
@@ -188,10 +195,12 @@ public class Statements {
                     table.add("L:"); field2(table, a, str -> a = str);
                     table.add("R:"); field2(table, b, str -> b = str);
                     table.add("C:"); field2(table, c, str -> c = str);
+                    break;
                 }         
                 case ProductAll->{
                     Button(table, table);
                     field2(table, a, str -> a = str);
+                    break;
                 }                           
                 case Resize->{
                     Button(table, table);
@@ -205,19 +214,23 @@ public class Statements {
                     table.add("L:"); field2(table, b, str -> b = str);
                     table.add("R:"); field2(table, c, str -> c = str);
                     table.add("C:"); field2(table, d, str -> d = str);
+                    break;
                 }                   
                 case Shuffle->{
                     Button(table, table);
                     field2(table, a, str -> a = str);
+                    break;
                 }                           
                 case Subtract->{
                     field2(table, a, str -> a = str);
                     Button(table, table);
                     field2(table, b, str -> b = str);
+                    break;
                 }                        
                 case SumAll->{
                     Button(table, table);
                     field2(table, a, str -> a = str);
+                    break;
                 }                      
             }
         }
