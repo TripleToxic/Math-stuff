@@ -64,6 +64,7 @@ public class TheInstruction{
             Var a2 = exec.var(b);
             Array arr1 = a1.isobj && a1.objval instanceof Array arr1B ? arr1B : null;
             Array arr2 = a2.isobj && a2.objval instanceof Array arr2B ? arr2B : null;
+            double s0 = exec.num(b);
             double s = exec.num(e);
             boolean b1 = exec.bool(e);
             int s2 = exec.numi(b);
@@ -81,20 +82,28 @@ public class TheInstruction{
                     exec.setobj(result, arr1);
                 }
                 case Muliply -> {
-                    arr1.prodEach(arr2);
-                    exec.setobj(result, arr1);
+                    switch(TT){
+                        case array -> {
+                            arr1.prodEach(arr2);
+                            exec.setobj(result, arr1);
+                        }
+                        case number -> {
+                            arr1.prod(s0);
+                            exec.setobj(result, arr1);
+                        }
+                    }
                 }
                 case Divide -> {
-                    arr1.divEach(arr2);
-                    exec.setobj(result, arr1);
-                }
-                case ScalarMul -> {
-                    arr1.prod(s);
-                    exec.setobj(result, arr1);
-                }
-                case ScalarDiv -> {
-                    arr1.div(s);
-                    exec.setobj(result, arr1);
+                    switch(TT){
+                        case array -> {
+                            arr1.divEach(arr2);
+                            exec.setobj(result, arr1);
+                        }
+                        case number -> {
+                            arr1.div(s0);
+                            exec.setobj(result, arr1);
+                        }
+                    }
                 }
                 case SumAll-> {
                     exec.setnum(result, arr1.sumAll());

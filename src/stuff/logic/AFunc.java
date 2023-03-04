@@ -7,8 +7,6 @@ public enum AFunc{
     Subtract("-"),
     Muliply("*"),
     Divide("/"),
-    ScalarMul("*s"),
-    ScalarDiv("/s"),
     DotProd("·"),
     CrossProduct("x"),
     SumAll("sum"),

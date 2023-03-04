@@ -149,6 +149,8 @@ public class Statements {
                 case Divide->{
                     field2(table, a, str -> a = str);
                     Button(table, table);
+                    table.add("by");
+                    Button2(table, table);
                     field2(table, b, str -> b = str);
                 }                        
                 case DotProd->{
@@ -176,6 +178,8 @@ public class Statements {
                 case Muliply->{
                     field2(table, a, str -> a = str);
                     Button(table, table);
+                    table.add("by");
+                    Button2(table, table);
                     field2(table, b, str -> b = str);
                 }                            
                 case New->{
@@ -192,29 +196,28 @@ public class Statements {
                 case Resize->{
                     Button(table, table);
                     field2(table, a, str -> a = str);
+                    row(table);
                     table.add(" is lossless:");
                     field2(table, e, str -> e = str);
+                    row(table);
                     table.add("to:");
                     row(table);
                     table.add("L:"); field2(table, b, str -> b = str);
                     table.add("R:"); field2(table, c, str -> c = str);
                     table.add("C:"); field2(table, d, str -> d = str);
-
-                }                       
-                case ScalarDiv->{
-                    
-                }                         
-                case ScalarMul->{
-                    
-                }                           
+                }                   
                 case Shuffle->{
-                    
+                    Button(table, table);
+                    field2(table, a, str -> a = str);
                 }                           
                 case Subtract->{
-                    
+                    field2(table, a, str -> a = str);
+                    Button(table, table);
+                    field2(table, b, str -> b = str);
                 }                        
                 case SumAll->{
-                    
+                    Button(table, table);
+                    field2(table, a, str -> a = str);
                 }                      
             }
         }
