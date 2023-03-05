@@ -128,9 +128,9 @@ public class Statements {
                 case Change->{
                     Button(table, table);
                     field2(table, a, str -> a = str);
-                    table.add("by ");
+                    table.add(" at ");
+                    row(table);
                     Button2(table, table);
-                    table.add(": ");
                     switch(TT){
                         case array -> {
                             table.add("L:"); field2(table, b, str -> b = str);
@@ -141,6 +141,8 @@ public class Statements {
                             field2(table, b, str -> b = str);
                         }
                     }
+                    row(table);
+                    table.add("to ");
                     break;
                 }                      
                 case CrossProduct->{
@@ -152,7 +154,7 @@ public class Statements {
                 case Divide->{
                     field2(table, a, str -> a = str);
                     Button(table, table);
-                    table.add("by");
+                    table.add(" by ");
                     Button2(table, table);
                     field2(table, b, str -> b = str);
                 break;
@@ -166,7 +168,8 @@ public class Statements {
                 case Get->{
                     Button(table, table); table.add(" from ");
                     field2(table, a, str -> a = str);
-                    table.add(" at:");
+                    table.add(" at ");
+                    Button2(table, table);
                     switch(TT){
                         case array -> {
                             row(table);
@@ -177,20 +180,19 @@ public class Statements {
                         case number -> {
                             field2(table, b, str -> b = str);
                         }
-                        
                     }
                     break;
                 }                         
                 case Muliply->{
                     field2(table, a, str -> a = str);
                     Button(table, table);
-                    table.add("by");
+                    table.add(" by ");
                     Button2(table, table);
                     field2(table, b, str -> b = str);
                     break;
                 }                            
                 case New->{
-                    Button(table, table); table.add(" New array of:");
+                    Button(table, table); table.add(" New array of: ");
                     row(table);
                     table.add("L:"); field2(table, a, str -> a = str);
                     table.add("R:"); field2(table, b, str -> b = str);
@@ -206,10 +208,10 @@ public class Statements {
                     Button(table, table);
                     field2(table, a, str -> a = str);
                     row(table);
-                    table.add(" is lossless:");
+                    table.add(" is lossless ");
                     field2(table, e, str -> e = str);
                     row(table);
-                    table.add("to:");
+                    table.add(" to ");
                     row(table);
                     table.add("L:"); field2(table, b, str -> b = str);
                     table.add("R:"); field2(table, c, str -> c = str);
