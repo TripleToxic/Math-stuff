@@ -188,7 +188,7 @@ public class Array{
 
     public void Change(int[] pos, double new_){
         int s_pos = 0, buffer = 1;
-        for(int i=0; i<pos.length; i++) {
+        for(int i=2; i>=0; i--){
             try{
                 if(pos[i] < l[i]) s_pos += pos[i] * buffer;
                 else return;

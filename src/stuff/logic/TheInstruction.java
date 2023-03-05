@@ -153,7 +153,7 @@ public class TheInstruction{
                     }
                     case Shuffle -> {
                         arr1.shuffle();
-                        exec.setobj(result, arr1.toString());
+                        exec.setobj(a, arr1.toString());
                         break;
                     }
                 }

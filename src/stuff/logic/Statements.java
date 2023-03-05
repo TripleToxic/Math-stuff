@@ -129,16 +129,17 @@ public class Statements {
                     Button(table, table);
                     field2(table, a, str -> a = str);
                     table.add(" at ");
-                    row(table);
                     Button2(table, table);
                     switch(TT){
                         case array -> {
+                            row(table);
                             table.add("L:"); field2(table, b, str -> b = str);
                             table.add("R:"); field2(table, c, str -> c = str);
                             table.add("C:"); field2(table, d, str -> d = str);
                             row(table);
                             table.add("to ");
                             field2(table, e, str -> e = str);
+                            break;
                         }
                         case number -> {
                             field2(table, b, str -> b = str);
