@@ -222,7 +222,6 @@ public class Array{
         l = new_size.clone();
     }
 
-    /*
     @Override
     public String toString(){
         StringBuilder o1 = new StringBuilder("");
@@ -247,10 +246,5 @@ public class Array{
 
         return final_.append(o1).append("] {").append(o2).append("}").toString();
     }
-    */
-
-    @Override
-    public String toString(){
-        return null;
-    }
+    
 }
