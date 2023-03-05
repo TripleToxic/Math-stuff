@@ -87,7 +87,7 @@ public enum Func{
         this.Func4 = null;
         this.Func5 = null;
         this.SingleInputCheck = true;
-        this.SingleOutputCheck = false;
+        this.SingleOutputCheck = true;
         this.isRealFunction = true;
     }
     

@@ -63,13 +63,14 @@ public class TheInstruction{
             Array arr1 = exec.obj(a) instanceof String astr ? new Array(astr) : null;
             Array arr2 = exec.obj(b) instanceof String bstr ? new Array(bstr) : null;
             double s0 = exec.num(b);
+            double s_1 = exec.num(c);
             double s = exec.num(e);
             boolean b1 = exec.bool(e);
             int s2 = exec.numi(b);
             int[] s3 = {s2, exec.numi(c), exec.numi(d)};
             try{
                 switch(OpA){
-                    case New ->{
+                    case New -> {
                         exec.setobj(result, new Array(exec.numi(a), s2, exec.numi(c)).toString());
                         break;
                     }
@@ -120,7 +121,7 @@ public class TheInstruction{
                                 exec.setobj(a, arr1.toString());
                             }
                             case number -> {
-                                arr1.Change(s2, s);
+                                arr1.Change(s2, s_1);
                                 exec.setobj(a, arr1.toString());
                             }
                         }

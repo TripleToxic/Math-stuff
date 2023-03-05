@@ -1,7 +1,6 @@
 package stuff.logic;
 
 import arc.math.Mathf;
-import java.util.Arrays;
 import java.util.Random;
 
 import static java.lang.Math.*;
@@ -60,7 +59,7 @@ public class Array{
     private static int[] NumToPos(int[] arr, int num){
         int l2 = arr.length, buffer = 1;
         int[] count_arr = new int[l2];
-        for(int j=l2-1; j>=0; j++){
+        for(int j=l2-1; j>=0; j--){
             count_arr[j] = num/buffer % arr[j];
             buffer *= arr[j];
         }
@@ -88,16 +87,11 @@ public class Array{
     }
 
     public double getNum(int[] pos){
-        int[] l2;
-        if(pos.length != l.length){
-            l2 = Arrays.copyOf(l, pos.length);
-            Arrays.fill(l2, l.length, pos.length, 1);
-        }else{l2 = l;}
         int s_pos = 0, buffer = 1;
         for(int i=pos.length-1; i>=0; i--){
-            if(pos[i] < l2[i]) s_pos += pos[i] * buffer;
+            if(pos[i] < l[i]) s_pos += pos[i] * buffer;
             else return 0;
-            buffer *= l2[i];
+            buffer *= l[i];
         }return s[s_pos];
     }
 
@@ -209,13 +203,12 @@ public class Array{
 
     public void Resize(int[] new_size, boolean Lossless){
         Limit(new_size);
-        new_size = new_size.clone();
         if(productAll(new_size) == All && Lossless){
             l = new_size.clone();
             return;
         }else if(Lossless) return;
         double[] new_arr = new double[productAll(new_size)];
-        for(int i=0; i<new_arr.length; i++){
+        for(int i = 0; i < productAll(new_size); i++){
             new_arr[i] = getNum(NumToPos(new_size, i));
         }
         s = new_arr.clone();
