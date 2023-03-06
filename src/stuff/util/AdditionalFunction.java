@@ -1,4 +1,4 @@
-package stuff;
+package stuff.util;
 import static java.lang.Math.*;
 
 public class AdditionalFunction{

@@ -3,9 +3,13 @@ import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.*;
 
 import static stuff.logic.Array.*;
+
+import java.util.Hashtable;
+
 import static stuff.logic.AFunc.TwoType;
 
 public class TheInstruction{
+    public Hashtable<String, Array> storage = new Hashtable<String, Array>();
 
     public static class Function implements LInstruction{
         public Func Op = Func.addC;
@@ -44,8 +48,9 @@ public class TheInstruction{
         public AFunc OpA = AFunc.New;
         public TwoType TT = TwoType.number;
         public int a, b, c, d, e, result;
+        public String A, B, Result;
 
-        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result){
+        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result){
             this.OpA = OpA;
             this.TT = TT;
             this.a = a;
@@ -54,14 +59,20 @@ public class TheInstruction{
             this.d = d;
             this.e = e;
             this.result = result;
+            this.A = A;
+            this.B = B;
+            this.Result = Result;
         }
 
         AFunction(){}
 
         @Override
         public void run(LExecutor exec){
-            Array arr1 = exec.obj(a) instanceof String astr ? new Array(astr) : null;
-            Array arr2 = exec.obj(b) instanceof String bstr ? new Array(bstr) : null;
+            Array arr1 = new Array(1, 1, 1),
+                  arr2 = new Array(1, 1, 1);
+            TheInstruction Inst = new TheInstruction();
+            try{arr1 = Inst.storage.get(A);}catch(Exception e){}
+            try{arr2 = Inst.storage.get(B);}catch(Exception e){}
             double s0 = exec.num(b);
             double s_1 = exec.num(c);
             double s = exec.num(e);
@@ -71,7 +82,7 @@ public class TheInstruction{
             try{
                 switch(OpA){
                     case New -> {
-                        exec.setobj(result, new Array(exec.numi(a), s2, exec.numi(c)).toString());
+                        Inst.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
                         break;
                     }
                     case Add -> {
@@ -158,8 +169,7 @@ public class TheInstruction{
                     }
                 }
             }catch(Exception n){
-                if(OpA.local) exec.setobj(a, arr1.toString());
-                else exec.setobj(result, null);
+                if(!OpA.local) exec.setobj(result, null);
             }
         }
     }

@@ -1,9 +1,9 @@
 package stuff.logic;
 
-import static stuff.AdditionalFunction.*;
-import stuff.AdditionalFunction;
-
 import static java.lang.Math.*;
+import static stuff.util.AdditionalFunction.*;
+
+import stuff.util.AdditionalFunction;
 
 public enum Func{
     addC("+", (r1, i1, r2, i2) -> r1 + r2, (r1, i1, r2, i2) -> i1 + i2),
