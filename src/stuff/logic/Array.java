@@ -215,7 +215,7 @@ public class Array{
         l = new_size.clone();
     }
 
-    @Override
+    /*@Override
     public String toString(){
         StringBuilder o1 = new StringBuilder("");
         StringBuilder o2 = new StringBuilder("");
@@ -238,6 +238,6 @@ public class Array{
         }else{o2.append(s[i]);}
 
         return final_.append(o1).append("] {").append(o2).append("}").toString();
-    }
+    }*/
     
 }

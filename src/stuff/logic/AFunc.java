@@ -7,12 +7,12 @@ public enum AFunc{
     Subtract("-"),
     Muliply("*"),
     Divide("/"),
-    DotProd("·"),
+    DotProd("·", false, true),
     CrossProduct("x"),
-    SumAll("sum"),
-    ProductAll("prod"),
+    SumAll("sum", false, true),
+    ProductAll("prod", false, true),
     Change("change", true),
-    Get("get"),
+    Get("get", false, true),
     Shuffle("shuffle", true),
     Resize("resize"),
     ;
@@ -20,7 +20,7 @@ public enum AFunc{
     public static final AFunc[] all = values();
 
     public final String symbol;
-    public final boolean local;
+    public final boolean local, number;
 
     @Override
     public String toString(){
@@ -30,11 +30,19 @@ public enum AFunc{
     AFunc(String symbol){
         this.symbol = symbol;
         this.local = false;
+        this.number = false;
     }
 
     AFunc(String symbol, boolean local){
         this.symbol = symbol;
         this.local = local;
+        this.number = false;
+    }
+
+    AFunc(String symbol, boolean local, boolean number){
+        this.symbol = symbol;
+        this.local = local;
+        this.number = number;
     }
 
     public static enum TwoType{
