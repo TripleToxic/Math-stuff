@@ -84,7 +84,7 @@ public class TheInstruction{
                 switch(OpA){
                     case New -> {
                         TInst.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
-                        break;
+                        break; 
                     }
                     case Add -> {
                         arr1.add(arr2);
