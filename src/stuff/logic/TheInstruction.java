@@ -9,7 +9,7 @@ import java.util.Hashtable;
 import static stuff.logic.AFunc.TwoType;
 
 public class TheInstruction{
-    public Hashtable<String, Array> storage = new Hashtable<String, Array>();
+    public static Hashtable<String, Array> storage = new Hashtable<String, Array>();
 
     public static class Function implements LInstruction{
         public Func Op = Func.addC;
@@ -45,7 +45,6 @@ public class TheInstruction{
     }
 
     public static class AFunction implements LInstruction{
-        TheInstruction TInst = new TheInstruction();
         public AFunc OpA = AFunc.New;
         public TwoType TT = TwoType.number;
         public int a, b, c, d, e, result;
@@ -71,8 +70,8 @@ public class TheInstruction{
         public void run(LExecutor exec){
             Array arr1 = null,
                   arr2 = null;
-            try{arr1 = TInst.storage.get(A);}catch(Exception e){}
-            try{arr2 = TInst.storage.get(B);}catch(Exception e){}
+            try{arr1 = TheInstruction.storage.get(A);}catch(Exception e){}
+            try{arr2 = TheInstruction.storage.get(B);}catch(Exception e){}
             double s0 = exec.num(b),
                   s_1 = exec.num(c),
                     s = exec.num(e);
@@ -82,26 +81,26 @@ public class TheInstruction{
             //try{
                 switch(OpA){
                     case New -> {
-                        TInst.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
-                        break; 
+                        TheInstruction.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
+                        break;
                     }
                     case Add -> {
                         arr1.add(arr2);
-                        TInst.storage.put(Result, arr1);
+                        TheInstruction.storage.put(Result, arr1);
                     }
                     case Subtract -> {
                         arr1.minus(arr2);
-                        TInst.storage.put(Result, arr1);
+                        TheInstruction.storage.put(Result, arr1);
                     }
                     case Muliply -> {
                         switch(TT){
                             case array -> {
                                 arr1.prodEach(arr2);
-                                TInst.storage.put(Result, arr1);
+                                TheInstruction.storage.put(Result, arr1);
                             }
                             case number -> {
                                 arr1.prod(s0);
-                                TInst.storage.put(Result, arr1);
+                                TheInstruction.storage.put(Result, arr1);
                             }
                         }
                         break;
@@ -110,11 +109,11 @@ public class TheInstruction{
                         switch(TT){
                             case array -> {
                                 arr1.divEach(arr2);
-                                TInst.storage.put(Result, arr1);
+                                TheInstruction.storage.put(Result, arr1);
                             }
                             case number -> {
                                 arr1.div(s0);
-                                TInst.storage.put(Result, arr1);
+                                TheInstruction.storage.put(Result, arr1);
                             }
                         }
                         break;
@@ -127,17 +126,17 @@ public class TheInstruction{
                         switch(TT){
                             case array -> {
                                 arr1.Change(s3, s);
-                                TInst.storage.put(A, arr1);
+                                TheInstruction.storage.put(A, arr1);
                             }
                             case number -> {
                                 arr1.Change(s2, s_1);
-                                TInst.storage.put(A, arr1);
+                                TheInstruction.storage.put(A, arr1);
                             }
                         }
                         break;
                     }
                     case CrossProduct -> {
-                        TInst.storage.put(Result, arr1.crossProd(arr2));
+                        TheInstruction.storage.put(Result, arr1.crossProd(arr2));
                         break;
                     }
                     case DotProd -> {
@@ -157,12 +156,12 @@ public class TheInstruction{
                     }
                     case Resize -> {
                         arr1.Resize(s3, b1);
-                        TInst.storage.put(Result, arr1);
+                        TheInstruction.storage.put(Result, arr1);
                         break;
                     }
                     case Shuffle -> {
                         arr1.shuffle();
-                        TInst.storage.put(A, arr1);
+                        TheInstruction.storage.put(A, arr1);
                         break;
                     }
                 }
