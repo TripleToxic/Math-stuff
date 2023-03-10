@@ -164,6 +164,12 @@ public class TheInstruction{
                         TheInstruction.storage.put(A, arr1);
                         break;
                     }
+                    case Length -> {
+                        switch(TT){
+                            case number -> exec.setnum(result, arr1.All);
+                            case array -> TheInstruction.storage.put(Result, arr1.Length());
+                        }
+                    }
                 }
             /*}catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);

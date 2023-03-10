@@ -134,7 +134,9 @@ public class Statements {
                         case array -> {
                             row(table);
                             table.add("L:"); field2(table, b, str -> b = str);
+                            row(table);
                             table.add("R:"); field2(table, c, str -> c = str);
+                            row(table);
                             table.add("C:"); field2(table, d, str -> d = str);
                             row(table);
                             table.add("to ");
@@ -147,15 +149,13 @@ public class Statements {
                             field2(table, c, str -> c = str);
                         }
                     }
-                    
-                    field2(table, e, str -> e = str);
                     break;
                 }                      
                 case CrossProduct->{
                     field2(table, a, str -> a = str);
                     Button(table, table);
                     field2(table, b, str -> b = str);
-                break;
+                    break;
                 }                        
                 case Divide->{
                     field2(table, a, str -> a = str);
@@ -163,7 +163,7 @@ public class Statements {
                     table.add(" by ");
                     Button2(table, table);
                     field2(table, b, str -> b = str);
-                break;
+                    break;
                 }                        
                 case DotProd->{
                     field2(table, a, str -> a = str);
@@ -180,7 +180,9 @@ public class Statements {
                         case array -> {
                             row(table);
                             table.add("L:"); field2(table, b, str -> b = str);
+                            row(table);
                             table.add("R:"); field2(table, c, str -> c = str);
+                            row(table);
                             table.add("C:"); field2(table, d, str -> d = str);
                         }
                         case number -> {
@@ -198,10 +200,14 @@ public class Statements {
                     break;
                 }                            
                 case New->{
-                    Button(table, table); table.add(" New array of: ");
+                    Button(table, table);
+                    row(table);
+                    table.add(" New array of: ");
                     row(table);
                     table.add("L:"); field2(table, a, str -> a = str);
+                    row(table);
                     table.add("R:"); field2(table, b, str -> b = str);
+                    row(table);
                     table.add("C:"); field2(table, c, str -> c = str);
                     break;
                 }         
@@ -220,7 +226,9 @@ public class Statements {
                     table.add(" to ");
                     row(table);
                     table.add("L:"); field2(table, b, str -> b = str);
+                    row(table);
                     table.add("R:"); field2(table, c, str -> c = str);
+                    row(table);
                     table.add("C:"); field2(table, d, str -> d = str);
                     break;
                 }                   
@@ -239,7 +247,27 @@ public class Statements {
                     Button(table, table);
                     field2(table, a, str -> a = str);
                     break;
-                }                      
+                }
+                case Length ->{
+                    Button(table, table);
+                    table.add(" of ");
+                    field2(table, a, str -> a = str);
+                    Button2(table, table);
+                    table.add(" as ");
+                    switch(TT){
+                        case array -> {
+                            row(table);
+                            table.add("L:"); field2(table, b, str -> b = str);
+                            row(table);
+                            table.add("R:"); field2(table, c, str -> c = str);
+                            row(table);
+                            table.add("C:"); field2(table, d, str -> d = str);
+                        }
+                        case number -> {
+                            field2(table, b, str -> b = str);
+                        }
+                    }
+                }                   
             }
         }
 

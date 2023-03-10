@@ -10,8 +10,8 @@ public class Array{
     private double[] Default2 = {1d};
     public int[] l;
     public double[] s;
+    public int All;
     private static int length_limit = 16;
-    private int All;
 
     public Array(String s){
         try{
@@ -34,6 +34,13 @@ public class Array{
         int f = productAll(this.l);
         this.s = new double[f];
         this.All = f;
+    }
+
+    public Array(double... arr){
+        int[] a = {1, 1, arr.length};
+        this.l = a;
+        this.s = arr;
+        this.All = productAll(this.l);
     }
 
     private static int[] StringToIntArray(String str){
@@ -213,6 +220,13 @@ public class Array{
         }
         s = new_arr.clone();
         l = new_size.clone();
+    }
+
+    public Array Length(){
+        double[] a = new double[3];
+        for(int i=0; i<3; i++){
+            a[i] = (double)l[i];
+        }return new Array(a);
     }
 
     /*@Override

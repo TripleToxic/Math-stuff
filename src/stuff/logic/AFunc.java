@@ -15,6 +15,7 @@ public enum AFunc{
     Get("get", false, true),
     Shuffle("shuffle", true),
     Resize("resize"),
+    Length("length"),
     ;
 
     public static final AFunc[] all = values();
