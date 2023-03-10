@@ -252,21 +252,8 @@ public class Statements {
                     Button(table, table);
                     table.add(" of ");
                     field2(table, a, str -> a = str);
-                    Button2(table, table);
                     table.add(" as ");
-                    switch(TT){
-                        case array -> {
-                            row(table);
-                            table.add("L:"); field2(table, b, str -> b = str);
-                            row(table);
-                            table.add("R:"); field2(table, c, str -> c = str);
-                            row(table);
-                            table.add("C:"); field2(table, d, str -> d = str);
-                        }
-                        case number -> {
-                            field2(table, b, str -> b = str);
-                        }
-                    }
+                    Button2(table, table);
                 }                   
             }
         }

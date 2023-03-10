@@ -154,7 +154,7 @@ public class Array{
 
     public double dotProd(Array b){
         double h = 0;
-        for(int i=0; i<min(l[0], b.l[0]); i++){
+        for(int i=0; i<min(l[3], b.l[3]); i++){
             h += s[i] * b.s[i];
         }return h;
     }
