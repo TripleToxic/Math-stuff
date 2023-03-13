@@ -1,6 +1,10 @@
 package stuff.logic;
+import mindustry.Vars;
+import mindustry.ctype.UnlockableContent;
+import mindustry.gen.DisplayCmd;
 import mindustry.logic.LExecutor;
-import mindustry.logic.LExecutor.*;
+import stuff.world.blocks.logic.DenseLogicDisplay;
+import stuff.world.blocks.logic.DenseLogicDisplay.DenseLogicDisplayBuild;
 
 import static stuff.logic.Array.*;
 
@@ -8,7 +12,7 @@ import java.util.Hashtable;
 
 import static stuff.logic.AFunc.TwoType;
 
-public class TheInstruction{
+public class TheInstruction extends LExecutor{
     public static Hashtable<String, Array> storage = new Hashtable<String, Array>();
 
     public static class Function implements LInstruction{
@@ -174,6 +178,68 @@ public class TheInstruction{
             /*}catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
             }*/
+        }
+    }
+
+    //if you want to look at the description of these method below
+    //look into the super class of this class below, I just copy the run() method, changed the class type inside, and deleted the comments
+    public static class DenseDraw extends DrawI{
+        public DenseDraw(byte type, int target, int x, int y, int p1, int p2, int p3, int p4){
+            super(type, target, x, y, p1, p2, p3, p4);
+        }
+
+        @Override
+        public void run(LExecutor exec) {
+            if(Vars.headless || exec.graphicsBuffer.size >= maxGraphicsBuffer) return;
+
+            int num1 = exec.numi(p1);
+
+            if(type == DenseLogicDisplay.commandImage){
+                num1 = exec.obj(p1) instanceof UnlockableContent u ? u.iconId : 0;
+            }
+            if(type == DenseLogicDisplay.commandColorPack){
+                double packed = exec.num(x);
+
+                int value = (int)(Double.doubleToRawLongBits(packed)),
+                r = ((value & 0xff000000) >>> 24),
+                g = ((value & 0x00ff0000) >>> 16),
+                b = ((value & 0x0000ff00) >>> 8),
+                a = ((value & 0x000000ff));
+
+                exec.graphicsBuffer.add(DisplayCmd.get(DenseLogicDisplay.commandColor, pack(r), pack(g), pack(b), pack(a), 0, 0));
+            }else{
+                exec.graphicsBuffer.add(DisplayCmd.get(type, packSign(exec.numi(x)), packSign(exec.numi(y)), packSign(num1), packSign(exec.numi(p2)), packSign(exec.numi(p3)), packSign(exec.numi(p4))));
+            }
+        }
+
+        //this one is changed
+        static int packSign(int value){
+            return (Math.abs(value) & 0b01111111111111) | (value < 0 ? 0b10000000000000 : 0);
+        }
+
+        //this one is not
+        static int pack(int value){
+            return value & 0b0111111111;
+        }
+    }
+
+    public static class DenseDrawFlush extends DrawFlushI{
+        public DenseDrawFlush(int target){
+            super(target);
+        }
+        
+        @Override
+        public void run(LExecutor exec){
+            if(Vars.headless) return;
+
+            if(exec.building(target) instanceof DenseLogicDisplayBuild d && (d.team == exec.team || exec.privileged)){
+                if(d.commands.size + exec.graphicsBuffer.size < maxDisplayBuffer){
+                    for(int i = 0; i < exec.graphicsBuffer.size; i++){
+                        d.commands.addLast(exec.graphicsBuffer.items[i]);
+                    }
+                }
+                exec.graphicsBuffer.clear();
+            }
         }
     }
 }

@@ -5,6 +5,8 @@ import arc.scene.ui.layout.*;
 import mindustry.gen.*;
 import mindustry.logic.*;
 import mindustry.logic.LExecutor.*;
+import mindustry.logic.LStatements.DrawFlushStatement;
+import mindustry.logic.LStatements.DrawStatement;
 import mindustry.ui.*;
 import stuff.logic.TheInstruction.*;
 
@@ -306,6 +308,45 @@ public class Statements {
         @Override
         public LCategory category(){
             return LCategory.operation;
+        }
+    }
+
+    public static class DenseDrawStatement extends DrawStatement{
+        @Override
+        public void build(Table table) {
+            super.build(table);
+        }
+
+        @Override
+        public void afterRead() {
+            super.afterRead();
+        }
+
+        @Override
+        public LCategory category() {
+            return super.category();
+        }
+
+        @Override
+        public LInstruction build(LAssembler builder) {
+            return new DenseDraw((byte)type.ordinal(), 0, builder.var(x), builder.var(y), builder.var(p1), builder.var(p2), builder.var(p3), builder.var(p4));
+        }
+    }
+
+    public static class DenseDrawFlushStatement extends DrawFlushStatement{
+        @Override
+        public void build(Table table) {
+            super.build(table);
+        }
+
+        @Override
+        public LCategory category() {
+            return super.category();
+        }
+
+        @Override
+        public LInstruction build(LAssembler builder) {
+            return new DenseDrawFlush(builder.var(target));
         }
     }
 
