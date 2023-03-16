@@ -13,7 +13,7 @@ import java.util.Hashtable;
 import static stuff.logic.AFunc.TwoType;
 
 public class TheInstruction extends LExecutor{
-    public static Hashtable<String, Array> storage = new Hashtable<String, Array>();
+    public Hashtable<String, Array> storage = new Hashtable<String, Array>();
 
     public static class Function implements LInstruction{
         public Func Op = Func.addC;
@@ -53,6 +53,7 @@ public class TheInstruction extends LExecutor{
         public TwoType TT = TwoType.number;
         public int a, b, c, d, e, result;
         public String A, B, Result;
+        public TheInstruction TInst = new TheInstruction();
 
         public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result){
             this.OpA = OpA;
@@ -74,8 +75,8 @@ public class TheInstruction extends LExecutor{
         public void run(LExecutor exec){
             Array arr1 = null,
                   arr2 = null;
-            try{arr1 = TheInstruction.storage.get(A);}catch(Exception e){}
-            try{arr2 = TheInstruction.storage.get(B);}catch(Exception e){}
+            try{arr1 = TInst.storage.get(A);}catch(Exception e){}
+            try{arr2 = TInst.storage.get(B);}catch(Exception e){}
             double s0 = exec.num(b),
                   s_1 = exec.num(c),
                     s = exec.num(e);
@@ -85,26 +86,26 @@ public class TheInstruction extends LExecutor{
             //try{
                 switch(OpA){
                     case New -> {
-                        TheInstruction.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
+                        TInst.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
                         break;
                     }
                     case Add -> {
                         arr1.add(arr2);
-                        TheInstruction.storage.put(Result, arr1);
+                        TInst.storage.put(Result, arr1);
                     }
                     case Subtract -> {
                         arr1.minus(arr2);
-                        TheInstruction.storage.put(Result, arr1);
+                        TInst.storage.put(Result, arr1);
                     }
                     case Muliply -> {
                         switch(TT){
                             case array -> {
                                 arr1.prodEach(arr2);
-                                TheInstruction.storage.put(Result, arr1);
+                                TInst.storage.put(Result, arr1);
                             }
                             case number -> {
                                 arr1.prod(s0);
-                                TheInstruction.storage.put(Result, arr1);
+                                TInst.storage.put(Result, arr1);
                             }
                         }
                         break;
@@ -113,11 +114,11 @@ public class TheInstruction extends LExecutor{
                         switch(TT){
                             case array -> {
                                 arr1.divEach(arr2);
-                                TheInstruction.storage.put(Result, arr1);
+                                TInst.storage.put(Result, arr1);
                             }
                             case number -> {
                                 arr1.div(s0);
-                                TheInstruction.storage.put(Result, arr1);
+                                TInst.storage.put(Result, arr1);
                             }
                         }
                         break;
@@ -130,17 +131,17 @@ public class TheInstruction extends LExecutor{
                         switch(TT){
                             case array -> {
                                 arr1.Change(s3, s);
-                                TheInstruction.storage.put(A, arr1);
+                                TInst.storage.put(A, arr1);
                             }
                             case number -> {
                                 arr1.Change(s2, s_1);
-                                TheInstruction.storage.put(A, arr1);
+                                TInst.storage.put(A, arr1);
                             }
                         }
                         break;
                     }
                     case CrossProduct -> {
-                        TheInstruction.storage.put(Result, arr1.crossProd(arr2));
+                        TInst.storage.put(Result, arr1.crossProd(arr2));
                         break;
                     }
                     case DotProd -> {
@@ -160,18 +161,18 @@ public class TheInstruction extends LExecutor{
                     }
                     case Resize -> {
                         arr1.Resize(s3, b1);
-                        TheInstruction.storage.put(Result, arr1);
+                        TInst.storage.put(Result, arr1);
                         break;
                     }
                     case Shuffle -> {
                         arr1.shuffle();
-                        TheInstruction.storage.put(A, arr1);
+                        TInst.storage.put(A, arr1);
                         break;
                     }
                     case Length -> {
                         switch(TT){
                             case number -> exec.setnum(result, arr1.All);
-                            case array -> TheInstruction.storage.put(Result, arr1.Length());
+                            case array -> TInst.storage.put(Result, arr1.Length());
                         }
                     }
                 }

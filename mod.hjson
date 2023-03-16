@@ -20,10 +20,10 @@ subtitle: "Math or M(letter next to d that not c)th"
 description: "More math stuff"
 
 #the mod version
-version: 1.1
+version: 1.2
 
 #minimum game version required to run this mod
-minGameVersion: 141.3
+minGameVersion: 142
 
 #is a java mod
 java: true

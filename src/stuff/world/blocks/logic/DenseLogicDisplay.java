@@ -37,7 +37,7 @@ public class DenseLogicDisplay extends LogicDisplay{
         public LongQueue commands = new LongQueue(256);
 
         @Override
-        public void draw() {
+        public void draw(){
             super.draw();
 
             if(!Vars.renderer.drawDisplays) return;
@@ -94,9 +94,11 @@ public class DenseLogicDisplay extends LogicDisplay{
         }
 
         @Override
-        public void remove() {
+        public void remove(){
             super.remove();
             if(buffer != null){
+                // test
+                // test
                 buffer.dispose();
                 buffer = null;
             }
