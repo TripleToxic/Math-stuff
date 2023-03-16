@@ -5,10 +5,7 @@ import arc.scene.ui.layout.*;
 import mindustry.gen.*;
 import mindustry.logic.*;
 import mindustry.logic.LExecutor.*;
-import mindustry.logic.LStatements.DrawFlushStatement;
-import mindustry.logic.LStatements.DrawStatement;
 import mindustry.ui.*;
-import mindustry.world.blocks.logic.LogicDisplay.GraphicsType;
 import stuff.logic.TheInstruction.*;
 
 import stuff.logic.AFunc.TwoType;
@@ -312,61 +309,9 @@ public class Statements {
         }
     }
 
-    public static class DenseDrawStatement extends DrawStatement{
-        public DenseDrawStatement(String type, String x, String y, String p1, String p2, String p3, String p4){
-            this.type = GraphicsType.valueOf(type);
-            this.x = x;
-            this.y = y;
-            this.p1 = p1;
-            this.p2 = p2;
-            this.p3 = p3;
-            this.p4 = p4;
-        }
-
-        public DenseDrawStatement(){}
-
-        @Override
-        public void build(Table table) {
-            super.build(table);
-        }
-
-        @Override
-        public void afterRead() {
-            super.afterRead();
-        }
-
-        @Override
-        public LCategory category() {
-            return super.category();
-        }
-
-        @Override
-        public LInstruction build(LAssembler builder) {
-            return new DenseDraw((byte)type.ordinal(), 0, builder.var(x), builder.var(y), builder.var(p1), builder.var(p2), builder.var(p3), builder.var(p4));
-        }
-    }
-
-    public static class DenseDrawFlushStatement extends DrawFlushStatement{
-        @Override
-        public void build(Table table) {
-            super.build(table);
-        }
-
-        @Override
-        public LCategory category() {
-            return super.category();
-        }
-
-        @Override
-        public LInstruction build(LAssembler builder) {
-            return new DenseDrawFlush(builder.var(target));
-        }
-    }
-
     public static void load(){
         registerStatement("Complex", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), ComplexOperationStatement::new);
         registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
-        registerStatement("DeDr", args -> new DenseDrawStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), DenseDrawStatement::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov){
