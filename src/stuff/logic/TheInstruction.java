@@ -71,10 +71,8 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            TheInstruction TInst = new TheInstruction();
-            try{
-                TInst = buffer.get(exec);
-            }catch(Exception e){}
+            TheInstruction TInst = buffer.get(exec);
+            if(TInst == null) TInst = new TheInstruction();
             Array arr1 = new Array(init),
                   arr2 = new Array(init);
             try{arr1 = TInst.storage.get(A);}catch(Exception e){}
