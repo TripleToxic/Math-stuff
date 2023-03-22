@@ -1,5 +1,6 @@
 package stuff.logic;
 import mindustry.logic.LExecutor;
+import mindustry.logic.LExecutor.*;
 
 import static stuff.logic.Array.*;
 
@@ -7,8 +8,11 @@ import java.util.Hashtable;
 
 import static stuff.logic.AFunc.TwoType;
 
-public class TheInstruction extends LExecutor{
-    public Hashtable<String, Array> storage = new Hashtable<String, Array>();
+public class TheInstruction{
+    public Hashtable<String, Array> storage = new Hashtable<>();
+
+    public static Hashtable<LExecutor, TheInstruction> buffer = new Hashtable<>();
+    private static int[] init = {0, 0, 1};
 
     public static class Function implements LInstruction{
         public Func Op = Func.addC;
@@ -48,7 +52,6 @@ public class TheInstruction extends LExecutor{
         public TwoType TT = TwoType.number;
         public int a, b, c, d, e, result;
         public String A, B, Result;
-        public TheInstruction TInst = new TheInstruction();
 
         public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result){
             this.OpA = OpA;
@@ -68,8 +71,12 @@ public class TheInstruction extends LExecutor{
 
         @Override
         public void run(LExecutor exec){
-            Array arr1 = null,
-                  arr2 = null;
+            TheInstruction TInst = new TheInstruction();
+            try{
+                TInst = buffer.get(exec);
+            }catch(Exception e){}
+            Array arr1 = new Array(init),
+                  arr2 = new Array(init);
             try{arr1 = TInst.storage.get(A);}catch(Exception e){}
             try{arr2 = TInst.storage.get(B);}catch(Exception e){}
             double s0 = exec.num(b),
@@ -166,11 +173,12 @@ public class TheInstruction extends LExecutor{
                     }
                     case Length -> {
                         switch(TT){
-                            case number -> exec.setnum(result, arr1.All);
-                            case array -> TInst.storage.put(Result, arr1.Length());
+                            case number -> {exec.setnum(result, arr1.All); break;}
+                            case array -> {TInst.storage.put(Result, arr1.Length()); break;}
                         }
                     }
                 }
+                buffer.put(exec, TInst);
             /*}catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
             }*/

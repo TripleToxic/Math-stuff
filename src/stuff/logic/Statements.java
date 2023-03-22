@@ -16,7 +16,7 @@ public class Statements {
         public String RealOutput = "Re", ImaginaryOutput = "Im", r1 = "r1", i1 = "i1", r2 = "r2", i2 = "i2";
         
         public ComplexOperationStatement(String Op, String r1, String i1, String r2, String i2, String RealOutput, String ImaginaryOutput){
-            try{this.Op = Func.valueOf(Op);}catch(Throwable ignored){}
+            try{this.Op = Func.valueOf(Op);}catch(Exception ignored){}
             this.RealOutput = RealOutput;
             this.ImaginaryOutput = ImaginaryOutput;
             this.r1 = r1;
@@ -95,8 +95,8 @@ public class Statements {
         public String result = "result", a = "A", b = "B", c = "c", d = "d", e = "e";
 
         public ArrayOperationStatement(String OpA, String TT, String a, String b, String c, String d, String e, String result){
-            try{this.OpA = AFunc.valueOf(OpA);}catch(Throwable h){}
-            try{this.TT = TwoType.valueOf(TT);}catch(Throwable h){}
+            try{this.OpA = AFunc.valueOf(OpA);}catch(Exception h){}
+            try{this.TT = TwoType.valueOf(TT);}catch(Exception h){}
             this.a = a;
             this.b = b;
             this.c = c;

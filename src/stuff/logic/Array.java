@@ -6,26 +6,16 @@ import java.util.Random;
 import static java.lang.Math.*;
 
 public class Array{
-    private int[] Default1 = {1};
-    private double[] Default2 = {1d};
+    private int[] DefaultLength = {0, 0, 1};
     public int[] l;
     public double[] s;
     public int All;
     private static int length_limit = 16;
 
-    public Array(String s){
-        try{
-            int[] m = StringToIntArray(s.substring(s.indexOf("[") + 1, s.indexOf("]")));
-            Limit(m);
-            this.l = m;
-            this.s = StringToDoubleArray(s.substring(s.indexOf("{") + 1, s.indexOf("}")));
-            if(this.s.length != productAll(this.l)) this.s = new double[productAll(this.l)];
-        }
-        catch(Throwable b){
-            this.l = Default1.clone();
-            this.s = Default2.clone();
-        }
-        All = productAll(this.l);
+    public Array(){
+        this.l = DefaultLength;
+        this.s = new double[1];
+        this.All = 1;
     }
 
     public Array(int... arr){
@@ -41,26 +31,6 @@ public class Array{
         this.l = a;
         this.s = arr;
         this.All = productAll(this.l);
-    }
-
-    private static int[] StringToIntArray(String str){
-        String[] s = str.split(" ", 0);
-        int l = s.length;
-        int[] I = new int[l];
-        for(int i=0; i<l; i++){
-            try{I[i] = Integer.parseInt(s[i]);}catch(Throwable a){I[i] = 1;}
-        }
-        return I;
-    }
-
-    private static double[] StringToDoubleArray(String str){
-        String[] s = str.split(" ", 0);
-        int l = s.length;
-        double[] I = new double[l];
-        for(int i=0; i<l; i++){
-            try{I[i] = Double.parseDouble(s[i]);}catch(Throwable a){I[i] = 0;}
-        }
-        return I;
     }
 
     private static int[] NumToPos(int[] arr, int num){
@@ -176,7 +146,7 @@ public class Array{
     */
 
     public Array crossProd(Array b){
-        Array c = new Array("[3] {0 0 0}");
+        Array c = new Array();
         if(l.length != 1 && b.l.length != 1 && l[0] < 3 && b.l[0] < 3) return c;
         for(int i=0; i<3; i++){
             c.s[i] = s[(i+1)%3]*b.s[(i+2)%3] - s[(i+2)%3]*b.s[(i+1)%3];
@@ -200,7 +170,7 @@ public class Array{
                 if(pos[i] < l[i]) s_pos += pos[i] * buffer;
                 else return;
                 buffer *= l[i];
-            }catch(Throwable invalid){return;}
+            }catch(Exception invalid){return;}
         }s[s_pos] = new_;
     }
 
@@ -228,30 +198,4 @@ public class Array{
             a[i] = (double)l[i];
         }return new Array(a);
     }
-
-    /*@Override
-    public String toString(){
-        StringBuilder o1 = new StringBuilder("");
-        StringBuilder o2 = new StringBuilder("");
-        StringBuilder final_ = new StringBuilder("[");
-        int i = 0;
-        
-        while(i<l.length - 1){
-            o1.append(l[i]).append(" ");
-            i++;
-        }o1.append(l[i]);
-        i = 0;
-        while(i<s.length - 1){
-            if(s[i] == floor(s[i])){;
-                o2.append((int)s[i]).append(" ");
-            }else{o2.append(s[i]).append(" ");}
-            i++;
-        }
-        if(s[i] == floor(s[i])){;
-            o2.append((int)s[i]);
-        }else{o2.append(s[i]);}
-
-        return final_.append(o1).append("] {").append(o2).append("}").toString();
-    }*/
-    
 }
