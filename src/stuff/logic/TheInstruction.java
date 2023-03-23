@@ -83,7 +83,7 @@ public class TheInstruction{
             boolean b1 = exec.bool(e);
             int s2 = exec.numi(b);
             int[] s3 = {s2, exec.numi(c), exec.numi(d)};
-            //try{
+            try{
                 switch(OpA){
                     case New -> {
                         TInst.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
@@ -177,9 +177,9 @@ public class TheInstruction{
                     }
                 }
                 buffer.put(exec, TInst);
-            /*}catch(Exception n){
+            }catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
-            }*/
+            }
         }
     }
 }
