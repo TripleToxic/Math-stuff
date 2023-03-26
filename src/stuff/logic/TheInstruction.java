@@ -10,8 +10,7 @@ import static stuff.logic.AFunc.TwoType;
 
 public class TheInstruction{
     public Hashtable<String, Array> storage = new Hashtable<>();
-
-    public static Hashtable<LExecutor, TheInstruction> buffer = new Hashtable<>();
+    
     private static int[] init = {0, 0, 1};
 
     public static class Function implements LInstruction{
@@ -71,8 +70,8 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            TheInstruction TInst = buffer.get(exec);
-            if(TInst == null) TInst = new TheInstruction();
+            TheInstruction TInst = new TheInstruction();
+            if(exec.counter.objval instanceof TheInstruction) TInst = (TheInstruction)exec.counter.objval;
             Array arr1 = new Array(init),
                   arr2 = new Array(init);
             try{arr1 = TInst.storage.get(A);}catch(Exception e){}
@@ -176,7 +175,7 @@ public class TheInstruction{
                         }
                     }
                 }
-                buffer.put(exec, TInst);
+                exec.counter.objval = TInst;
             }catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
             }
