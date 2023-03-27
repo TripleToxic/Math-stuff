@@ -11,11 +11,12 @@ public enum AFunc{
     CrossProduct("x"),
     SumAll("sum", false, true),
     ProductAll("prod", false, true),
-    Change("change", true),
+    Change("set", true),
     Get("get", false, true),
     Shuffle("shuffle", true),
     Resize("resize"),
     Length("length"),
+    Assign("=", true), //this thing exist.
     ;
 
     public static final AFunc[] all = values();

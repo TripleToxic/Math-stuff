@@ -254,7 +254,12 @@ public class Statements {
                     field2(table, a, str -> a = str);
                     table.add(" as ");
                     Button2(table, table);
-                }                   
+                }         
+                case Assign -> {
+                    field(table, result, str -> result = str);
+                    Button(table, table);
+                    field(table, a, str -> a = str);
+                }          
             }
         }
 
