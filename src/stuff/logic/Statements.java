@@ -92,7 +92,7 @@ public class Statements {
     public static class ArrayOperationStatement extends ShortStatement{
         public AFunc OpA = AFunc.New;
         public TwoType TT = TwoType.number;
-        public String result = "result", a = "A", b = "B", c = "c", d = "d", e = "e";
+        public String result = "result", a = "a", b = "b", c = "c", d = "d", e = "e";
 
         public ArrayOperationStatement(String OpA, String TT, String a, String b, String c, String d, String e, String result){
             try{this.OpA = AFunc.valueOf(OpA);}catch(Exception h){}
@@ -115,7 +115,7 @@ public class Statements {
         void rebuild(Table table){
             table.clearChildren();
             if(!OpA.local) {
-                field2(table, result, str -> result = str);
+                field(table, result, str -> result = str);
                 table.add(" = ");
             }
             switch(OpA){
@@ -128,6 +128,7 @@ public class Statements {
                 case Change->{
                     Button(table, table);
                     field2(table, a, str -> a = str);
+                    row(table);
                     table.add(" at ");
                     Button2(table, table);
                     switch(TT){
@@ -160,6 +161,7 @@ public class Statements {
                 case Divide->{
                     field2(table, a, str -> a = str);
                     Button(table, table);
+                    row(table);
                     table.add(" by ");
                     Button2(table, table);
                     field2(table, b, str -> b = str);
@@ -172,8 +174,11 @@ public class Statements {
                     break;
                 }                           
                 case Get->{
-                    Button(table, table); table.add(" from ");
+                    Button(table, table);
+                    row(table);
+                    table.add(" from ");
                     field2(table, a, str -> a = str);
+                    row(table);
                     table.add(" at ");
                     Button2(table, table);
                     switch(TT){
@@ -194,6 +199,7 @@ public class Statements {
                 case Muliply->{
                     field2(table, a, str -> a = str);
                     Button(table, table);
+                    row(table);
                     table.add(" by ");
                     Button2(table, table);
                     field2(table, b, str -> b = str);
@@ -220,10 +226,10 @@ public class Statements {
                     Button(table, table);
                     field2(table, a, str -> a = str);
                     row(table);
-                    table.add(" is lossless ");
+                    table.add(" is lossless: ");
                     field2(table, e, str -> e = str);
                     row(table);
-                    table.add(" to ");
+                    table.add(" to: ");
                     row(table);
                     table.add("L:"); field2(table, b, str -> b = str);
                     row(table);
@@ -250,8 +256,10 @@ public class Statements {
                 }
                 case Length ->{
                     Button(table, table);
+                    row(table);
                     table.add(" of ");
                     field2(table, a, str -> a = str);
+                    row(table);
                     table.add(" as ");
                     Button2(table, table);
                 }         
@@ -270,7 +278,7 @@ public class Statements {
                     OpA = o;
                     rebuild(parent);
                 }));
-            }, Styles.logict, () -> {}).size(100f, 40f).pad(2f).color(table.color);
+            }, Styles.logict, () -> {}).size(80f, 40f).pad(2f).color(table.color);
         }
 
         void Button2(Table table, Table parent){
