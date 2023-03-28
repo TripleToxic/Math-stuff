@@ -72,11 +72,6 @@ public class Array{
         }return s[s_pos];
     }
 
-    public double getNum(int pos){
-        if(pos >= All || pos < 0) return 0;
-        return l[pos];
-    }
-
     public double sumAll(){
         double sum = 0;
         for(double i : s){
@@ -84,7 +79,6 @@ public class Array{
         }
         return sum;
     }
-
 
     public void prod(double b){
         for(int i=0; i<s.length; i++){

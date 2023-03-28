@@ -70,7 +70,7 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            if(exec.counter.objval instanceof TheInstruction) exec.counter.objval = new TheInstruction();
+            if(!(exec.counter.objval instanceof TheInstruction)) exec.counter.objval = new TheInstruction();
             Array arr1 = new Array(init),
                   arr2 = new Array(init);
             try{arr1 = ((TheInstruction)exec.counter.objval).storage.get(A);}catch(Exception e){}
@@ -149,7 +149,7 @@ public class TheInstruction{
                     case Get -> {
                         switch(TT){
                             case array -> exec.setnum(result, arr1.getNum(s3));
-                            case number -> exec.setnum(result, arr1.getNum(s2));
+                            case number -> exec.setnum(result, arr1.s[s2]);
                         }
                         break;
                     }
