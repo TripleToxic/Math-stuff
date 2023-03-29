@@ -72,12 +72,12 @@ public class TheInstruction{
         @Override
         public void run(LExecutor exec){
             Var TInst = exec.var(constant);
-            if(!(TInst.objval instanceof TheInstruction)) TInst.objval = new TheInstruction();
-            TInst.constant = true;
+            TheInstruction OTInst = new TheInstruction();
+            if(!(TInst.objval instanceof TheInstruction)) OTInst = new TheInstruction();
             Array arr1 = new Array(init),
                   arr2 = new Array(init);
-            try{arr1 = ((TheInstruction)exec.counter.objval).storage.get(A);}catch(Exception e){}
-            try{arr2 = ((TheInstruction)exec.counter.objval).storage.get(B);}catch(Exception e){}
+            try{arr1 = OTInst.storage.get(A);}catch(Exception e){}
+            try{arr2 = OTInst.storage.get(B);}catch(Exception e){}
             double s0 = exec.num(b),
                   s_1 = exec.num(c),
                     s = exec.num(e);
@@ -87,26 +87,26 @@ public class TheInstruction{
             try{
                 switch(OpA){
                     case New -> {
-                        ((TheInstruction)exec.counter.objval).storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
+                        OTInst.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
                         break;
                     }
                     case Add -> {
                         arr1.add(arr2);
-                        ((TheInstruction)exec.counter.objval).storage.put(Result, arr1);
+                        OTInst.storage.put(Result, arr1);
                     }
                     case Subtract -> {
                         arr1.minus(arr2);
-                        ((TheInstruction)exec.counter.objval).storage.put(Result, arr1);
+                        OTInst.storage.put(Result, arr1);
                     }
                     case Muliply -> {
                         switch(TT){
                             case array -> {
                                 arr1.prodEach(arr2);
-                                ((TheInstruction)exec.counter.objval).storage.put(Result, arr1);
+                                OTInst.storage.put(Result, arr1);
                             }
                             case number -> {
                                 arr1.prod(s0);
-                                ((TheInstruction)exec.counter.objval).storage.put(Result, arr1);
+                                OTInst.storage.put(Result, arr1);
                             }
                         }
                         break;
@@ -115,11 +115,11 @@ public class TheInstruction{
                         switch(TT){
                             case array -> {
                                 arr1.divEach(arr2);
-                                ((TheInstruction)exec.counter.objval).storage.put(Result, arr1);
+                                OTInst.storage.put(Result, arr1);
                             }
                             case number -> {
                                 arr1.div(s0);
-                                ((TheInstruction)exec.counter.objval).storage.put(Result, arr1);
+                                OTInst.storage.put(Result, arr1);
                             }
                         }
                         break;
@@ -132,17 +132,17 @@ public class TheInstruction{
                         switch(TT){
                             case array -> {
                                 arr1.Change(s3, s);
-                                ((TheInstruction)exec.counter.objval).storage.put(A, arr1);
+                                OTInst.storage.put(A, arr1);
                             }
                             case number -> {
                                 arr1.Change(s2, s_1);
-                                ((TheInstruction)exec.counter.objval).storage.put(A, arr1);
+                                OTInst.storage.put(A, arr1);
                             }
                         }
                         break;
                     }
                     case CrossProduct -> {
-                        ((TheInstruction)exec.counter.objval).storage.put(Result, arr1.crossProd(arr2));
+                        OTInst.storage.put(Result, arr1.crossProd(arr2));
                         break;
                     }
                     case DotProd -> {
@@ -162,25 +162,25 @@ public class TheInstruction{
                     }
                     case Resize -> {
                         arr1.Resize(s3, b1);
-                        ((TheInstruction)exec.counter.objval).storage.put(Result, arr1);
+                        OTInst.storage.put(Result, arr1);
                         break;
                     }
                     case Shuffle -> {
                         arr1.shuffle();
-                        ((TheInstruction)exec.counter.objval).storage.put(A, arr1);
+                        OTInst.storage.put(A, arr1);
                         break;
                     }
                     case Length -> {
                         switch(TT){
                             case number -> {exec.setnum(result, arr1.All); break;}
-                            case array -> {((TheInstruction)exec.counter.objval).storage.put(Result, arr1.Length()); break;}
+                            case array -> {OTInst.storage.put(Result, arr1.Length()); break;}
                         }
                     }
                     case Assign -> {
-                        ((TheInstruction)exec.counter.objval).storage.put(Result, arr1);
+                        OTInst.storage.put(Result, arr1);
                     }
                 }
-                exec.setconst(constant, TInst.objval);
+                exec.setconst(constant, OTInst);
             }catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
             }
