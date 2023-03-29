@@ -49,12 +49,13 @@ public class TheInstruction{
     public static class AFunction implements LInstruction{
         public AFunc OpA = AFunc.New;
         public TwoType TT = TwoType.number;
-        public int a, b, c, d, e, result;
+        public int a, b, c, d, e, result, constant;
         public String A, B, Result;
 
-        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result){
+        public AFunction(AFunc OpA, TwoType TT, int constant, int a, int b, int c, int d, int e, int result, String A, String B, String Result){
             this.OpA = OpA;
             this.TT = TT;
+            this.constant = constant;
             this.a = a;
             this.b = b;
             this.c = c;
@@ -70,7 +71,9 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            if(!(exec.counter.objval instanceof TheInstruction)) exec.counter.objval = new TheInstruction();
+            Var TInst = exec.var(constant);
+            if(!(TInst.objval instanceof TheInstruction)) TInst.objval = new TheInstruction();
+            TInst.constant = true;
             Array arr1 = new Array(init),
                   arr2 = new Array(init);
             try{arr1 = ((TheInstruction)exec.counter.objval).storage.get(A);}catch(Exception e){}
@@ -177,6 +180,7 @@ public class TheInstruction{
                         ((TheInstruction)exec.counter.objval).storage.put(Result, arr1);
                     }
                 }
+                exec.setconst(constant, TInst.objval);
             }catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
             }
