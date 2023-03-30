@@ -1,4 +1,5 @@
 package stuff.logic;
+import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.*;
 
@@ -51,8 +52,9 @@ public class TheInstruction{
         public TwoType TT = TwoType.number;
         public int a, b, c, d, e, result;
         public String A, B, Result;
+        public LAssembler builder;
 
-        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result){
+        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result, LAssembler builder){
             this.OpA = OpA;
             this.TT = TT;
             this.a = a;
@@ -64,20 +66,17 @@ public class TheInstruction{
             this.A = A;
             this.B = B;
             this.Result = Result;
+            this.builder = builder;
         }
 
         AFunction(){}
 
         @Override
         public void run(LExecutor exec){
-            Var OTInst = exec.var(3);
-            OTInst.constant = true;
-            if(!(OTInst.objval instanceof TheInstruction)) OTInst.objval = new TheInstruction();
-            TheInstruction TInst = (TheInstruction)OTInst.objval;
             Array arr1 = new Array(init),
                   arr2 = new Array(init);
-            try{arr1 = TInst.storage.get(A);}catch(Exception e){}
-            try{arr2 = TInst.storage.get(B);}catch(Exception e){}
+            try{arr1 = (Array)builder.getVar(A).value;}catch(Exception e){}
+            try{arr2 = (Array)builder.getVar(B).value;}catch(Exception e){}
             double s0 = exec.num(b),
                   s_1 = exec.num(c),
                     s = exec.num(e);
@@ -87,26 +86,26 @@ public class TheInstruction{
             try{
                 switch(OpA){
                     case New -> {
-                        TInst.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
+                        builder.putConst(Result, new Array(exec.numi(a), s2, exec.numi(c)));
                         break;
                     }
                     case Add -> {
                         arr1.add(arr2);
-                        TInst.storage.put(Result, arr1);
+                        builder.putConst(Result, arr1);
                     }
                     case Subtract -> {
                         arr1.minus(arr2);
-                        TInst.storage.put(Result, arr1);
+                        builder.putConst(Result, arr1);
                     }
                     case Muliply -> {
                         switch(TT){
                             case array -> {
                                 arr1.prodEach(arr2);
-                                TInst.storage.put(Result, arr1);
+                                builder.putConst(Result, arr1);
                             }
                             case number -> {
                                 arr1.prod(s0);
-                                TInst.storage.put(Result, arr1);
+                                builder.putConst(Result, arr1);
                             }
                         }
                         break;
@@ -115,11 +114,11 @@ public class TheInstruction{
                         switch(TT){
                             case array -> {
                                 arr1.divEach(arr2);
-                                TInst.storage.put(Result, arr1);
+                                builder.putConst(Result, arr1);
                             }
                             case number -> {
                                 arr1.div(s0);
-                                TInst.storage.put(Result, arr1);
+                                builder.putConst(Result, arr1);
                             }
                         }
                         break;
@@ -132,17 +131,17 @@ public class TheInstruction{
                         switch(TT){
                             case array -> {
                                 arr1.Change(s3, s);
-                                TInst.storage.put(A, arr1);
+                                builder.putConst(A, arr1);
                             }
                             case number -> {
                                 arr1.Change(s2, s_1);
-                                TInst.storage.put(A, arr1);
+                                builder.putConst(A, arr1);
                             }
                         }
                         break;
                     }
                     case CrossProduct -> {
-                        TInst.storage.put(Result, arr1.crossProd(arr2));
+                        builder.putConst(Result, arr1.crossProd(arr2));
                         break;
                     }
                     case DotProd -> {
@@ -162,26 +161,24 @@ public class TheInstruction{
                     }
                     case Resize -> {
                         arr1.Resize(s3, b1);
-                        TInst.storage.put(Result, arr1);
+                        builder.putConst(Result, arr1);
                         break;
                     }
                     case Shuffle -> {
                         arr1.shuffle();
-                        TInst.storage.put(A, arr1);
+                        builder.putConst(A, arr1);
                         break;
                     }
                     case Length -> {
                         switch(TT){
                             case number -> {exec.setnum(result, arr1.All); break;}
-                            case array -> {TInst.storage.put(Result, arr1.Length()); break;}
+                            case array -> {builder.putConst(Result, arr1.Length()); break;}
                         }
                     }
                     case Assign -> {
-                        TInst.storage.put(Result, arr1);
+                        builder.putConst(Result, arr1);
                     }
                 }
-                OTInst.objval = TInst;
-                exec.setconst(3, OTInst.objval);
             }catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
             }
