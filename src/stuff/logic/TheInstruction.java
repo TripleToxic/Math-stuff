@@ -49,13 +49,12 @@ public class TheInstruction{
     public static class AFunction implements LInstruction{
         public AFunc OpA = AFunc.New;
         public TwoType TT = TwoType.number;
-        public int a, b, c, d, e, result, constant;
+        public int a, b, c, d, e, result;
         public String A, B, Result;
 
-        public AFunction(AFunc OpA, TwoType TT, int constant, int a, int b, int c, int d, int e, int result, String A, String B, String Result){
+        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result){
             this.OpA = OpA;
             this.TT = TT;
-            this.constant = constant;
             this.a = a;
             this.b = b;
             this.c = c;
@@ -71,13 +70,14 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            Var TInst = exec.var(constant);
-            TheInstruction OTInst = new TheInstruction();
-            if(!(TInst.objval instanceof TheInstruction)) OTInst = new TheInstruction();
+            Var OTInst = exec.var(3);
+            OTInst.constant = true;
+            if(!(OTInst.objval instanceof TheInstruction)) OTInst.objval = new TheInstruction();
+            TheInstruction TInst = (TheInstruction)OTInst.objval;
             Array arr1 = new Array(init),
                   arr2 = new Array(init);
-            try{arr1 = OTInst.storage.get(A);}catch(Exception e){}
-            try{arr2 = OTInst.storage.get(B);}catch(Exception e){}
+            try{arr1 = TInst.storage.get(A);}catch(Exception e){}
+            try{arr2 = TInst.storage.get(B);}catch(Exception e){}
             double s0 = exec.num(b),
                   s_1 = exec.num(c),
                     s = exec.num(e);
@@ -87,26 +87,26 @@ public class TheInstruction{
             try{
                 switch(OpA){
                     case New -> {
-                        OTInst.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
+                        TInst.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
                         break;
                     }
                     case Add -> {
                         arr1.add(arr2);
-                        OTInst.storage.put(Result, arr1);
+                        TInst.storage.put(Result, arr1);
                     }
                     case Subtract -> {
                         arr1.minus(arr2);
-                        OTInst.storage.put(Result, arr1);
+                        TInst.storage.put(Result, arr1);
                     }
                     case Muliply -> {
                         switch(TT){
                             case array -> {
                                 arr1.prodEach(arr2);
-                                OTInst.storage.put(Result, arr1);
+                                TInst.storage.put(Result, arr1);
                             }
                             case number -> {
                                 arr1.prod(s0);
-                                OTInst.storage.put(Result, arr1);
+                                TInst.storage.put(Result, arr1);
                             }
                         }
                         break;
@@ -115,11 +115,11 @@ public class TheInstruction{
                         switch(TT){
                             case array -> {
                                 arr1.divEach(arr2);
-                                OTInst.storage.put(Result, arr1);
+                                TInst.storage.put(Result, arr1);
                             }
                             case number -> {
                                 arr1.div(s0);
-                                OTInst.storage.put(Result, arr1);
+                                TInst.storage.put(Result, arr1);
                             }
                         }
                         break;
@@ -132,17 +132,17 @@ public class TheInstruction{
                         switch(TT){
                             case array -> {
                                 arr1.Change(s3, s);
-                                OTInst.storage.put(A, arr1);
+                                TInst.storage.put(A, arr1);
                             }
                             case number -> {
                                 arr1.Change(s2, s_1);
-                                OTInst.storage.put(A, arr1);
+                                TInst.storage.put(A, arr1);
                             }
                         }
                         break;
                     }
                     case CrossProduct -> {
-                        OTInst.storage.put(Result, arr1.crossProd(arr2));
+                        TInst.storage.put(Result, arr1.crossProd(arr2));
                         break;
                     }
                     case DotProd -> {
@@ -162,25 +162,26 @@ public class TheInstruction{
                     }
                     case Resize -> {
                         arr1.Resize(s3, b1);
-                        OTInst.storage.put(Result, arr1);
+                        TInst.storage.put(Result, arr1);
                         break;
                     }
                     case Shuffle -> {
                         arr1.shuffle();
-                        OTInst.storage.put(A, arr1);
+                        TInst.storage.put(A, arr1);
                         break;
                     }
                     case Length -> {
                         switch(TT){
                             case number -> {exec.setnum(result, arr1.All); break;}
-                            case array -> {OTInst.storage.put(Result, arr1.Length()); break;}
+                            case array -> {TInst.storage.put(Result, arr1.Length()); break;}
                         }
                     }
                     case Assign -> {
-                        OTInst.storage.put(Result, arr1);
+                        TInst.storage.put(Result, arr1);
                     }
                 }
-                exec.setconst(constant, OTInst);
+                OTInst.objval = TInst;
+                exec.setconst(3, OTInst.objval);
             }catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
             }
