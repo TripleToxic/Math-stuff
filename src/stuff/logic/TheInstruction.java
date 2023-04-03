@@ -10,7 +10,6 @@ import static stuff.logic.AFunc.TwoType;
 
 public class TheInstruction{
     public Hashtable<String, Array> storage = new Hashtable<>();
-    public static Hashtable<LExecutor, TheInstruction> BigStorage = new Hashtable<>();
     
     private static int[] init = {0, 0, 1};
 
@@ -72,8 +71,8 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            TheInstruction TInst = BigStorage.get(exec);
-            if(TInst == null) TInst = new TheInstruction();
+            TheInstruction TInst = new TheInstruction();
+            if(exec.obj(h) instanceof TheInstruction) TInst = (TheInstruction)exec.obj(h);
             Array arr1 = new Array(init),
                   arr2 = new Array(init);
             try{arr1 = (Array)TInst.storage.get(A);}catch(Exception e){}
@@ -181,10 +180,14 @@ public class TheInstruction{
                     }
                 }
                 exec.setobj(h, TInst);
-                BigStorage.put(exec, TInst);
             }catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
             }
         }
+    }
+
+    @Override
+    public String toString(){
+        return "h";
     }
 }
