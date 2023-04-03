@@ -115,7 +115,7 @@ public class Statements {
         void rebuild(Table table){
             table.clearChildren();
             if(!OpA.local) {
-                field(table, result, str -> result = str);
+                field3(table, result, str -> result = str);
                 table.add(" = ");
             }
             switch(OpA){
@@ -264,10 +264,10 @@ public class Statements {
                     Button2(table, table);
                 }         
                 case Assign -> {
-                    field(table, result, str -> result = str);
+                    field3(table, result, str -> result = str);
                     Button(table, table);
                     field(table, a, str -> a = str);
-                }          
+                }
             }
         }
 
