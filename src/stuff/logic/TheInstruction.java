@@ -11,6 +11,7 @@ import static stuff.logic.AFunc.TwoType;
 
 public class TheInstruction{
     public Hashtable<String, Array> storage = new Hashtable<>();
+    public static Hashtable<LExecutor, TheInstruction> BigStorage = new Hashtable<>();
     
     private static int[] init = {0, 0, 1};
 
