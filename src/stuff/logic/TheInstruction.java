@@ -1,5 +1,4 @@
 package stuff.logic;
-import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.*;
 
@@ -51,11 +50,10 @@ public class TheInstruction{
     public static class AFunction implements LInstruction{
         public AFunc OpA = AFunc.New;
         public TwoType TT = TwoType.number;
-        public int a, b, c, d, e, result;
+        public int a, b, c, d, e, result, h;
         public String A, B, Result;
-        public LAssembler builder;
 
-        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result, LAssembler builder){
+        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result, int h){
             this.OpA = OpA;
             this.TT = TT;
             this.a = a;
@@ -67,7 +65,7 @@ public class TheInstruction{
             this.A = A;
             this.B = B;
             this.Result = Result;
-            this.builder = builder;
+            this.h = h;
         }
 
         AFunction(){}
@@ -182,6 +180,7 @@ public class TheInstruction{
                         TInst.storage.put(Result, arr1);
                     }
                 }
+                exec.setobj(h, TInst);
                 BigStorage.put(exec, TInst);
             }catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);

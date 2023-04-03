@@ -192,4 +192,9 @@ public class Array{
             a[i] = (double)l[i];
         }return new Array(a);
     }
+
+    @Override
+    public String toString(){
+        return "h";
+    }
 }
