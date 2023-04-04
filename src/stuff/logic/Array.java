@@ -1,6 +1,8 @@
 package stuff.logic;
 
 import arc.math.Mathf;
+
+import java.util.Objects;
 import java.util.Random;
 
 import static java.lang.Math.*;
@@ -194,7 +196,7 @@ public class Array{
     }
 
     @Override
-    public String toString(){
-        return "h";
+    public int hashCode() {
+        return Objects.hash(l, s, All);
     }
 }

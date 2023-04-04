@@ -5,11 +5,14 @@ import mindustry.logic.LExecutor.*;
 import static stuff.logic.Array.*;
 
 import java.util.Hashtable;
+import java.util.Objects;
 
 import static stuff.logic.AFunc.TwoType;
 
 public class TheInstruction{
     public Hashtable<String, Array> storage = new Hashtable<>();
+
+    public static Hashtable<String, TheInstruction> BigStorage = new Hashtable<>();
     
     private static int[] init = {0, 0, 1};
 
@@ -71,6 +74,7 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
+            int i = unpack(exec.num(h));
             TheInstruction TInst = new TheInstruction();
             if(exec.obj(h) instanceof TheInstruction) TInst = (TheInstruction)exec.obj(h);
             Array arr1 = new Array(init),
@@ -184,10 +188,18 @@ public class TheInstruction{
                 if(OpA.number) exec.setnum(result, 0d);
             }
         }
+
+        static int unpack(double d){
+            return (int)(Double.doubleToRawLongBits(d) >> 31);
+        }
+
+        static double pack(long l){
+            return Double.longBitsToDouble(l << 31);
+        }
     }
 
     @Override
-    public String toString(){
-        return "h";
+    public int hashCode(){
+        return Objects.hash(storage);
     }
 }
