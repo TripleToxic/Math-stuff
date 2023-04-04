@@ -12,7 +12,7 @@ import static stuff.logic.AFunc.TwoType;
 public class TheInstruction{
     public Hashtable<String, Array> storage = new Hashtable<>();
 
-    public static Hashtable<String, TheInstruction> BigStorage = new Hashtable<>();
+    public static Hashtable<Integer, TheInstruction> BigStorage = new Hashtable<>();
     
     private static int[] init = {0, 0, 1};
 
@@ -74,9 +74,11 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            int i = unpack(exec.num(h));
-            TheInstruction TInst = new TheInstruction();
-            if(exec.obj(h) instanceof TheInstruction) TInst = (TheInstruction)exec.obj(h);
+            int i = exec.numi(h);
+
+            TheInstruction TInst = BigStorage.get(i);
+            if(TInst == null)TInst = new TheInstruction();
+            
             Array arr1 = new Array(init),
                   arr2 = new Array(init);
             try{arr1 = (Array)TInst.storage.get(A);}catch(Exception e){}
@@ -87,6 +89,7 @@ public class TheInstruction{
             boolean b1 = exec.bool(e);
             int s2 = exec.numi(b);
             int[] s3 = {s2, exec.numi(c), exec.numi(d)};
+            
             try{
                 switch(OpA){
                     case New -> {
@@ -183,18 +186,13 @@ public class TheInstruction{
                         TInst.storage.put(Result, arr1);
                     }
                 }
-                exec.setobj(h, TInst);
+                BigStorage.remove(i);
+                int i2 = TInst.hashCode();
+                exec.setnum(h, i2);
+                BigStorage.put(i2, TInst);
             }catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
             }
-        }
-
-        static int unpack(double d){
-            return (int)(Double.doubleToRawLongBits(d) >> 31);
-        }
-
-        static double pack(long l){
-            return Double.longBitsToDouble(l << 31);
         }
     }
 
