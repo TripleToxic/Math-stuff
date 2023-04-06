@@ -7,13 +7,16 @@ import static stuff.logic.Array.*;
 
 import java.util.Hashtable;
 import java.util.Objects;
+import java.util.Random;
 
 import static stuff.logic.AFunc.TwoType;
 
 public class TheInstruction{
     public Hashtable<String, Array> storage = new Hashtable<>();
 
-    public static Hashtable<Integer, TheInstruction> BigStorage = new Hashtable<>();
+    public static Hashtable<Long, TheInstruction> BigStorage = new Hashtable<>();
+
+    private static Random R = new Random();
     
     private static int[] init = {0, 0, 1};
 
@@ -76,7 +79,7 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            int i = exec.numi(h);
+            long i = (long)exec.num(h);
 
             TheInstruction TInst = BigStorage.get(i);
             if(TInst == null)TInst = new TheInstruction();
@@ -189,7 +192,10 @@ public class TheInstruction{
                     }
                 }
                 BigStorage.remove(i);
-                int i2 = TInst.hashCode();
+                long i2 = R.nextLong();
+                while(BigStorage.containsKey(i2)){
+                    i2 = R.nextLong();
+                }
                 exec.setnum(h, i2);
                 BigStorage.put(i2, TInst);
             }catch(Exception n){
