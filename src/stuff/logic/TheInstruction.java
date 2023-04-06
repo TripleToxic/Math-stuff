@@ -1,4 +1,5 @@
 package stuff.logic;
+import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.*;
 
@@ -54,8 +55,9 @@ public class TheInstruction{
         public TwoType TT = TwoType.number;
         public int a, b, c, d, e, result, h;
         public String A, B, Result;
+        public LAssembler build;
 
-        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result, int h){
+        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result, LAssembler build){
             this.OpA = OpA;
             this.TT = TT;
             this.a = a;
@@ -67,7 +69,7 @@ public class TheInstruction{
             this.A = A;
             this.B = B;
             this.Result = Result;
-            this.h = h;
+            this.build = build;
         }
 
         AFunction(){}
