@@ -1,12 +1,12 @@
 package stuff.logic;
-import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.*;
 
 import static stuff.logic.Array.*;
 
+import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Objects;
+import java.util.LinkedList;
 import java.util.Random;
 
 import static stuff.logic.AFunc.TwoType;
@@ -14,11 +14,13 @@ import static stuff.logic.AFunc.TwoType;
 public class TheInstruction{
     public Hashtable<String, Array> storage = new Hashtable<>();
 
-    public static Hashtable<Long, TheInstruction> BigStorage = new Hashtable<>();
+    public static HashMap<Integer, TheInstruction> BigStorage = new HashMap<>();
 
-    private static Random R = new Random();
+    private static LinkedList<Integer> memory = new LinkedList<>();
     
-    private static int[] init = {0, 0, 1};
+    public static final int cleanup = 200000;
+    private static int counter = 0;
+    private static Random R = new Random();
 
     public static class Function implements LInstruction{
         public Func Op = Func.addC;
@@ -58,9 +60,8 @@ public class TheInstruction{
         public TwoType TT = TwoType.number;
         public int a, b, c, d, e, result, h;
         public String A, B, Result;
-        public LAssembler build;
 
-        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result, LAssembler build){
+        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result, int h){
             this.OpA = OpA;
             this.TT = TT;
             this.a = a;
@@ -72,22 +73,34 @@ public class TheInstruction{
             this.A = A;
             this.B = B;
             this.Result = Result;
-            this.build = build;
+            this.h = h;
         }
 
         AFunction(){}
 
         @Override
         public void run(LExecutor exec){
-            long i = (long)exec.num(h);
+            if(counter >= cleanup){
+                for(Integer l : memory){
+                    if(BigStorage.containsKey(l)) BigStorage.remove(l);
+                }
+                memory.addAll(BigStorage.keySet());
+                counter = 0;
+            }counter++;
+
+            int i = exec.numi(h);
 
             TheInstruction TInst = BigStorage.get(i);
-            if(TInst == null)TInst = new TheInstruction();
+            if(TInst == null) {
+                TInst = new TheInstruction();
+            }
             
-            Array arr1 = new Array(init),
-                  arr2 = new Array(init);
-            try{arr1 = (Array)TInst.storage.get(A);}catch(Exception e){}
-            try{arr2 = (Array)TInst.storage.get(B);}catch(Exception e){}
+            Array arr1 = TInst.storage.get(A),
+                  arr2 = TInst.storage.get(B);
+
+            if(arr1 == null) arr1 = new Array(0, 0, 1);
+            if(arr2 == null) arr2 = new Array(0, 0, 1);
+            
             double s0 = exec.num(b),
                   s_1 = exec.num(c),
                     s = exec.num(e);
@@ -101,22 +114,22 @@ public class TheInstruction{
                         TInst.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
                         break;
                     }
-                    case Add -> {
-                        arr1.add(arr2);
+                    case Add -> {                     
+                        arr1.add(arr2);  
                         TInst.storage.put(Result, arr1);
                     }
-                    case Subtract -> {
-                        arr1.minus(arr2);
+                    case Subtract -> {      
+                        arr1.minus(arr2);                  
                         TInst.storage.put(Result, arr1);
                     }
                     case Muliply -> {
                         switch(TT){
-                            case array -> {
-                                arr1.prodEach(arr2);
+                            case array -> { 
+                                arr1.prodEach(arr2);                              
                                 TInst.storage.put(Result, arr1);
                             }
-                            case number -> {
-                                arr1.prod(s0);
+                            case number -> {  
+                                arr1.prod(s0);                              
                                 TInst.storage.put(Result, arr1);
                             }
                         }
@@ -191,21 +204,19 @@ public class TheInstruction{
                         TInst.storage.put(Result, arr1);
                     }
                 }
+
                 BigStorage.remove(i);
-                long i2 = R.nextLong();
-                while(BigStorage.containsKey(i2)){
-                    i2 = R.nextLong();
+
+                i = R.nextInt();
+                while(BigStorage.containsKey(i) || memory.contains(i) || i == 0){
+                    i = R.nextInt();
                 }
-                exec.setnum(h, i2);
-                BigStorage.put(i2, TInst);
+                exec.setnum(h, i);
+
+                BigStorage.put(i, TInst);
             }catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
             }
         }
-    }
-
-    @Override
-    public int hashCode(){
-        return Objects.hash(storage);
     }
 }

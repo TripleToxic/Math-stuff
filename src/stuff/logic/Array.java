@@ -127,7 +127,7 @@ public class Array{
 
     // a
     /*
-    public ArrayStringDouble ArrMultiplication(ArrayStringDouble b){
+    public Array ArrMultiplication(Array b){
         if(l.length > 2 || b.l.length > 2) return new ArrayStringDouble("none");
         if(l.length == 1 && b.l.length == 1) return new ArrayStringDouble("none");
         int buffer1 = min(l[0], b.l[1]);
