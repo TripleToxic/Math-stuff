@@ -1,9 +1,11 @@
 package stuff.logic;
+import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.*;
 
 import static stuff.logic.Array.*;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -217,6 +219,28 @@ public class TheInstruction{
             }catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
             }
+        }
+    }
+
+    public static class MTBVar extends LAssembler.BVar{
+        public Object value2;
+
+        public MTBVar(int id) {
+            super(id);
+        }
+
+        public static MTBVar putVar(LAssembler build, String name) throws Exception{
+            if(build.vars.containsKey(name) && build.vars.get(name) instanceof MTBVar var) return var;
+
+            Field f = LAssembler.class.getDeclaredField("lastVar");
+            f.setAccessible(true);
+
+            int a = f.getInt(build);
+            MTBVar var = new MTBVar(a);
+            f.setInt(build, a++);
+            build.vars.put(name, var);
+
+            return var;
         }
     }
 }
