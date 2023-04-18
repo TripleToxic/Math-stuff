@@ -1,9 +1,8 @@
 package stuff.logic;
 import mindustry.logic.LAssembler;
+import mindustry.logic.LAssembler.BVar;
 import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.*;
-
-import static stuff.logic.Array.*;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -11,6 +10,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Random;
 
+import static stuff.logic.Array.*;
 import static stuff.logic.AFunc.TwoType;
 
 public class TheInstruction{
@@ -62,8 +62,9 @@ public class TheInstruction{
         public TwoType TT = TwoType.number;
         public int a, b, c, d, e, result, h;
         public String A, B, Result;
+        LAssembler build;
 
-        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result, int h){
+        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result, int h, LAssembler build){
             this.OpA = OpA;
             this.TT = TT;
             this.a = a;
@@ -76,6 +77,7 @@ public class TheInstruction{
             this.B = B;
             this.Result = Result;
             this.h = h;
+            this.build = build;
         }
 
         AFunction(){}
@@ -91,6 +93,15 @@ public class TheInstruction{
             }counter++;
 
             int i = exec.numi(h);
+
+            //for testing
+            try{
+                BVar m = MTBVar.putVar(build, "yes");
+                m.value = 10;
+            }catch (Exception e){
+                throw new RuntimeException(e);
+            }
+
 
             TheInstruction TInst = BigStorage.get(i);
             if(TInst == null) {
@@ -222,22 +233,23 @@ public class TheInstruction{
         }
     }
 
-    public static class MTBVar extends LAssembler.BVar{
+    public static class MTBVar extends BVar{
         public Object value2;
 
         public MTBVar(int id) {
             super(id);
+            constant = false;
         }
 
-        public static MTBVar putVar(LAssembler build, String name) throws Exception{
-            if(build.vars.containsKey(name) && build.vars.get(name) instanceof MTBVar var) return var;
+        public static BVar putVar(LAssembler build, String name) throws Exception{
+            if(build.vars.containsKey(name)) return build.vars.get(name);
 
             Field f = LAssembler.class.getDeclaredField("lastVar");
             f.setAccessible(true);
 
             int a = f.getInt(build);
-            MTBVar var = new MTBVar(a);
-            f.setInt(build, a++);
+            BVar var = new MTBVar(a++);
+            f.setInt(build, a);
             build.vars.put(name, var);
 
             return var;
