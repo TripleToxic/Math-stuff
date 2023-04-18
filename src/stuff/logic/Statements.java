@@ -7,7 +7,6 @@ import mindustry.logic.*;
 import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
 import stuff.logic.TheInstruction.*;
-
 import stuff.logic.AFunc.TwoType;
 
 public class Statements {
@@ -293,7 +292,7 @@ public class Statements {
 
         @Override
         public LInstruction build(LAssembler build) {
-            return new AFunction(OpA, TT, build.var(a), build.var(b), build.var(c), build.var(d), build.var(e), build.var(result), a, b, result, build.putVar("Stuff he").id);
+            return new AFunction(OpA, TT, build.var(a), build.var(b), build.var(c), build.var(d), build.var(e), build.var(result), a, b, result, build.putVar("Stuff he").id, build);
         }
 
         public void write(StringBuilder builder){
