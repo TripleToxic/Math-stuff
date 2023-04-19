@@ -5,24 +5,13 @@ import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.*;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.Random;
 
 import static stuff.logic.Array.*;
 import static stuff.logic.AFunc.TwoType;
 
 public class TheInstruction{
     public Hashtable<String, Array> storage = new Hashtable<>();
-
-    public static HashMap<Integer, TheInstruction> BigStorage = new HashMap<>();
-
-    private static LinkedList<Integer> memory = new LinkedList<>();
-    
-    public static final int cleanup = 200000;
-    private static int counter = 0;
-    private static Random R = new Random();
 
     public static class Function implements LInstruction{
         public Func Op = Func.addC;
@@ -84,36 +73,21 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            if(counter >= cleanup){
-                for(Integer l : memory){
-                    if(BigStorage.containsKey(l)) BigStorage.remove(l);
-                }
-                memory.addAll(BigStorage.keySet());
-                counter = 0;
-            }counter++;
+            Var v = exec.var(h);
+            v.numval = 1;
+            v.isobj = false;
+            v.constant = false;
 
-            int i = exec.numi(h);
+            TheInstruction TInst = new TheInstruction();
 
-            //for testing
-            try{
-                BVar m = MTBVar.putVar(build, "yes");
-                m.value = 10;
-            }catch (Exception e){
-                throw new RuntimeException(e);
-            }
-
-
-            TheInstruction TInst = BigStorage.get(i);
-            if(TInst == null) {
-                TInst = new TheInstruction();
-            }
+            if(v.objval instanceof TheInstruction TI) TInst = TI;
             
             Array arr1 = TInst.storage.get(A),
-                  arr2 = TInst.storage.get(B);
-
+            arr2 = TInst.storage.get(B);
+            
             if(arr1 == null) arr1 = new Array(0, 0, 1);
             if(arr2 == null) arr2 = new Array(0, 0, 1);
-            
+
             double s0 = exec.num(b),
                   s_1 = exec.num(c),
                     s = exec.num(e);
@@ -130,6 +104,7 @@ public class TheInstruction{
                     case Add -> {                     
                         arr1.add(arr2);  
                         TInst.storage.put(Result, arr1);
+                        
                     }
                     case Subtract -> {      
                         arr1.minus(arr2);                  
@@ -218,37 +193,29 @@ public class TheInstruction{
                     }
                 }
 
-                BigStorage.remove(i);
-
-                i = R.nextInt();
-                while(BigStorage.containsKey(i) || memory.contains(i) || i == 0){
-                    i = R.nextInt();
-                }
-                exec.setnum(h, i);
-
-                BigStorage.put(i, TInst);
+                v.objval = TInst;
             }catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
             }
         }
     }
 
-    public static class MTBVar extends BVar{
+    public static class MSBVar extends BVar{
         public Object value2;
 
-        public MTBVar(int id) {
+        public MSBVar(int id) {
             super(id);
             constant = false;
         }
 
-        public static BVar putVar(LAssembler build, String name) throws Exception{
+        public static BVar putVar(LAssembler build, String name) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
             if(build.vars.containsKey(name)) return build.vars.get(name);
 
             Field f = LAssembler.class.getDeclaredField("lastVar");
             f.setAccessible(true);
 
             int a = f.getInt(build);
-            BVar var = new MTBVar(a++);
+            MSBVar var = new MSBVar(a++);
             f.setInt(build, a);
             build.vars.put(name, var);
 
