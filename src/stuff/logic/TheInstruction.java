@@ -1,14 +1,12 @@
 package stuff.logic;
-import mindustry.logic.LAssembler;
-import mindustry.logic.LAssembler.BVar;
 import mindustry.logic.LExecutor;
-import mindustry.logic.LExecutor.*;
 
-import java.lang.reflect.Field;
 import java.util.Hashtable;
 
 import static stuff.logic.Array.*;
 import static stuff.logic.AFunc.TwoType;
+
+import static mindustry.logic.LExecutor.*;
 
 public class TheInstruction{
     public Hashtable<String, Array> storage = new Hashtable<>();
@@ -49,11 +47,9 @@ public class TheInstruction{
     public static class AFunction implements LInstruction{
         public AFunc OpA = AFunc.New;
         public TwoType TT = TwoType.number;
-        public int a, b, c, d, e, result, h;
-        public String A, B, Result;
-        LAssembler build;
+        public int a, b, c, d, e, result;
 
-        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result, int h, LAssembler build){
+        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result){
             this.OpA = OpA;
             this.TT = TT;
             this.a = a;
@@ -62,31 +58,31 @@ public class TheInstruction{
             this.d = d;
             this.e = e;
             this.result = result;
-            this.A = A;
-            this.B = B;
-            this.Result = Result;
-            this.h = h;
-            this.build = build;
         }
 
         AFunction(){}
 
         @Override
         public void run(LExecutor exec){
-            Var v = exec.var(h);
-            v.numval = 1;
-            v.isobj = false;
-            v.constant = false;
-
-            TheInstruction TInst = new TheInstruction();
-
-            if(v.objval instanceof TheInstruction TI) TInst = TI;
+            Array arr1 = null,
+                  arr2 = null;
             
-            Array arr1 = TInst.storage.get(A),
-            arr2 = TInst.storage.get(B);
+            if(result == varCounter || result == varUnit || result == varThis) return;
             
-            if(arr1 == null) arr1 = new Array(0, 0, 1);
-            if(arr2 == null) arr2 = new Array(0, 0, 1);
+            Var A = exec.var(a),
+                B = exec.var(b),
+                R = exec.var(result);
+            
+            if(A.objval instanceof Array ar) {
+                arr1 = ar;
+                A.isobj = false;
+                A.constant = false;
+            }
+            if(B.objval instanceof Array ar) {
+                arr2 = ar;
+                B.isobj = false;
+                B.constant = false;
+            }
 
             double s0 = exec.num(b),
                   s_1 = exec.num(c),
@@ -98,27 +94,26 @@ public class TheInstruction{
             try{
                 switch(OpA){
                     case New -> {
-                        TInst.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
+                        R.objval = new Array(exec.numi(a), s2, exec.numi(c));
                         break;
                     }
                     case Add -> {                     
                         arr1.add(arr2);  
-                        TInst.storage.put(Result, arr1);
-                        
+                        R.objval = arr1;
                     }
                     case Subtract -> {      
                         arr1.minus(arr2);                  
-                        TInst.storage.put(Result, arr1);
+                        R.objval = arr1;
                     }
                     case Muliply -> {
                         switch(TT){
                             case array -> { 
                                 arr1.prodEach(arr2);                              
-                                TInst.storage.put(Result, arr1);
+                                R.objval = arr1;
                             }
                             case number -> {  
                                 arr1.prod(s0);                              
-                                TInst.storage.put(Result, arr1);
+                                R.objval = arr1;
                             }
                         }
                         break;
@@ -127,11 +122,11 @@ public class TheInstruction{
                         switch(TT){
                             case array -> {
                                 arr1.divEach(arr2);
-                                TInst.storage.put(Result, arr1);
+                                R.objval = arr1;
                             }
                             case number -> {
                                 arr1.div(s0);
-                                TInst.storage.put(Result, arr1);
+                                R.objval = arr1;
                             }
                         }
                         break;
@@ -144,17 +139,17 @@ public class TheInstruction{
                         switch(TT){
                             case array -> {
                                 arr1.Change(s3, s);
-                                TInst.storage.put(A, arr1);
+                                A.objval = arr1;
                             }
                             case number -> {
                                 arr1.Change(s2, s_1);
-                                TInst.storage.put(A, arr1);
+                                A.objval = arr1;
                             }
                         }
                         break;
                     }
                     case CrossProduct -> {
-                        TInst.storage.put(Result, arr1.crossProd(arr2));
+                        R.objval = arr1.crossProd(arr2);
                         break;
                     }
                     case DotProd -> {
@@ -174,52 +169,30 @@ public class TheInstruction{
                     }
                     case Resize -> {
                         arr1.Resize(s3, b1);
-                        TInst.storage.put(Result, arr1);
+                        R.objval = arr1;
                         break;
                     }
                     case Shuffle -> {
                         arr1.shuffle();
-                        TInst.storage.put(A, arr1);
+                        A.objval = arr1;
                         break;
                     }
                     case Length -> {
                         switch(TT){
                             case number -> {exec.setnum(result, arr1.All); break;}
-                            case array -> {TInst.storage.put(Result, arr1.Length()); break;}
+                            case array -> {R.objval = arr1.Length(); break;}
                         }
                     }
                     case Assign -> {
-                        TInst.storage.put(Result, arr1);
+                        R.objval = arr1;
                     }
                 }
 
-                v.objval = TInst;
+                R.isobj = false;
+                R.constant = false;
             }catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
             }
-        }
-    }
-
-    public static class MSBVar extends BVar{
-        public Object value2;
-
-        public MSBVar(int id) {
-            super(id);
-            constant = false;
-        }
-
-        public static BVar putVar(LAssembler build, String name) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
-            if(build.vars.containsKey(name)) return build.vars.get(name);
-
-            Field f = LAssembler.class.getDeclaredField("lastVar");
-            f.setAccessible(true);
-
-            int a = f.getInt(build);
-            MSBVar var = new MSBVar(a++);
-            f.setInt(build, a);
-            build.vars.put(name, var);
-
-            return var;
         }
     }
 }
