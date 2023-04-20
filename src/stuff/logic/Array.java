@@ -2,8 +2,10 @@ package stuff.logic;
 
 import arc.math.Mathf;
 
+import java.util.Hashtable;
 import java.util.Objects;
 import java.util.Random;
+import mindustry.game.Team;
 
 import static java.lang.Math.*;
 
@@ -195,8 +197,11 @@ public class Array{
         }return new Array(a);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(l, s, All);
+    public static class Arrays extends Team{ // False inheritance
+        public Hashtable<String, Array> storage = new Hashtable<>();
+
+        public Arrays(){
+            id = 128;
+        }
     }
 }

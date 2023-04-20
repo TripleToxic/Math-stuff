@@ -70,13 +70,10 @@ public class TheInstruction{
         @Override
         public void run(LExecutor exec){
             Var v = exec.var(h);
-            v.numval = 0;
-            v.isobj = false;
-            v.constant = false;
 
-            TheInstruction TInst = new TheInstruction();
+            Arrays TInst = new Arrays();
 
-            if(v.objval instanceof TheInstruction TI) TInst = TI;
+            if(v.objval instanceof Arrays TI) TInst = TI;
 
             Array arr1 = TInst.storage.get(A),
                   arr2 = TInst.storage.get(B);
