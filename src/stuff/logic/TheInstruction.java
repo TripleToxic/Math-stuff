@@ -1,16 +1,12 @@
 package stuff.logic;
 import mindustry.logic.LExecutor;
 
-import java.util.Hashtable;
-
 import static stuff.logic.Array.*;
 import static stuff.logic.AFunc.TwoType;
 
 import static mindustry.logic.LExecutor.*;
 
 public class TheInstruction{
-    public Hashtable<String, Array> storage = new Hashtable<>();
-
     public static class Function implements LInstruction{
         public Func Op = Func.addC;
         public int r1, r2, i1, i2, RealOutput, ImaginaryOutput;
@@ -70,8 +66,9 @@ public class TheInstruction{
         @Override
         public void run(LExecutor exec){
             Var v = exec.var(h);
+            v.isobj = true;
 
-            Arrays TInst = new Arrays();
+            Arrays TInst = new Arrays(1);
 
             if(v.objval instanceof Arrays TI) TInst = TI;
 
