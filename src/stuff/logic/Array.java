@@ -1,10 +1,9 @@
 package stuff.logic;
 
 import arc.math.Mathf;
-import arc.struct.IntSeq;
-import mindustry.io.TypeIO;
 
-import java.util.Hashtable;
+import java.util.ArrayDeque;
+import java.util.HashMap;
 import java.util.Random;
 
 import static java.lang.Math.*;
@@ -197,11 +196,23 @@ public class Array{
         }return new Array(a);
     }
 
-    public static class Arrays extends IntSeq{// False inheritance
-        public Hashtable<String, Array> storage = new Hashtable<>();
-        
-        public Arrays(int id) {
-            super(id);
+    public static class Arrays{
+        public static HashMap<Integer, Arrays> stuff = new HashMap<>();
+        public static ArrayDeque<Integer> paststuff = new ArrayDeque<>();
+        public HashMap<String, Array> storage = new HashMap<>();
+
+        public static int put(Arrays s, int Old){
+            stuff.remove(Old);
+            Random a = new Random();
+
+            int New = a.nextInt();
+            while(stuff.containsKey(New)){
+                New = a.nextInt();
+            }
+
+            stuff.put(New, s);
+
+            return New;
         }
     }
 }

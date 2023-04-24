@@ -1,12 +1,20 @@
 package stuff.logic;
+
 import mindustry.logic.LExecutor;
+import java.util.ArrayDeque;
 
 import static stuff.logic.Array.*;
 import static stuff.logic.AFunc.TwoType;
-
 import static mindustry.logic.LExecutor.*;
 
 public class TheInstruction{
+    private static int counter = 0;
+    private static long timecounter, interval = 300000000l;
+
+    static{
+        timecounter = System.nanoTime();
+    }
+
     public static class Function implements LInstruction{
         public Func Op = Func.addC;
         public int r1, r2, i1, i2, RealOutput, ImaginaryOutput;
@@ -65,15 +73,23 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            Var v = exec.var(h);
-            v.isobj = true;
+            int i = exec.numi(h);
 
-            Arrays TInst = new Arrays(1);
+            counter++;
+            if(counter >= 100000 || System.nanoTime() - timecounter >= interval){
+                new Thread(() -> {
+                    for(Integer j : Arrays.paststuff){
+                        if(Arrays.stuff.containsKey(j)) Arrays.stuff.remove(j);
+                    }
+                    Arrays.paststuff = new ArrayDeque<>(Arrays.stuff.keySet());
+                }).start();
+            } counter = 0; timecounter = System.nanoTime();
 
-            if(v.objval instanceof Arrays TI) TInst = TI;
-
-            Array arr1 = TInst.storage.get(A),
-                  arr2 = TInst.storage.get(B);
+            Arrays Arrs = Arrays.stuff.get(i);
+            if(Arrs == null) Arrs = new Arrays();
+            
+            Array arr1 = Arrs.storage.get(A),
+                  arr2 = Arrs.storage.get(B);
             
             if(arr1 == null) arr1 = new Array(0, 0, 1);
             if(arr2 == null) arr2 = new Array(0, 0, 1);
@@ -88,26 +104,26 @@ public class TheInstruction{
             try{
                 switch(OpA){
                     case New -> {
-                        TInst.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
+                        Arrs.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
                         break;
                     }
                     case Add -> {                     
                         arr1.add(arr2);  
-                        TInst.storage.put(Result, arr1);
+                        Arrs.storage.put(Result, arr1);
                     }
                     case Subtract -> {      
                         arr1.minus(arr2);                  
-                        TInst.storage.put(Result, arr1);
+                        Arrs.storage.put(Result, arr1);
                     }
                     case Muliply -> {
                         switch(TT){
                             case array -> { 
                                 arr1.prodEach(arr2);                              
-                                TInst.storage.put(Result, arr1);
+                                Arrs.storage.put(Result, arr1);
                             }
                             case number -> {  
                                 arr1.prod(s0);                              
-                                TInst.storage.put(Result, arr1);
+                                Arrs.storage.put(Result, arr1);
                             }
                         }
                         break;
@@ -116,11 +132,11 @@ public class TheInstruction{
                         switch(TT){
                             case array -> {
                                 arr1.divEach(arr2);
-                                TInst.storage.put(Result, arr1);
+                                Arrs.storage.put(Result, arr1);
                             }
                             case number -> {
                                 arr1.div(s0);
-                                TInst.storage.put(Result, arr1);
+                                Arrs.storage.put(Result, arr1);
                             }
                         }
                         break;
@@ -133,17 +149,17 @@ public class TheInstruction{
                         switch(TT){
                             case array -> {
                                 arr1.Change(s3, s);
-                                TInst.storage.put(A, arr1);
+                                Arrs.storage.put(A, arr1);
                             }
                             case number -> {
                                 arr1.Change(s2, s_1);
-                                TInst.storage.put(A, arr1);
+                                Arrs.storage.put(A, arr1);
                             }
                         }
                         break;
                     }
                     case CrossProduct -> {
-                        TInst.storage.put(Result, arr1.crossProd(arr2));
+                        Arrs.storage.put(Result, arr1.crossProd(arr2));
                         break;
                     }
                     case DotProd -> {
@@ -163,26 +179,26 @@ public class TheInstruction{
                     }
                     case Resize -> {
                         arr1.Resize(s3, b1);
-                        TInst.storage.put(Result, arr1);
+                        Arrs.storage.put(Result, arr1);
                         break;
                     }
                     case Shuffle -> {
                         arr1.shuffle();
-                        TInst.storage.put(A, arr1);
+                        Arrs.storage.put(A, arr1);
                         break;
                     }
                     case Length -> {
                         switch(TT){
                             case number -> {exec.setnum(result, arr1.All); break;}
-                            case array -> {TInst.storage.put(Result, arr1.Length()); break;}
+                            case array -> {Arrs.storage.put(Result, arr1.Length()); break;}
                         }
                     }
                     case Assign -> {
-                        TInst.storage.put(Result, arr1);
+                        Arrs.storage.put(Result, arr1);
                     }
                 }
 
-                v.objval = TInst;
+                exec.setnum(h, Arrays.put(Arrs, i));
             }catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
             }
