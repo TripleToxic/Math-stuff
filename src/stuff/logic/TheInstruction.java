@@ -77,22 +77,18 @@ public class TheInstruction{
 
             counter++;
             if(counter >= 100000 || System.nanoTime() - timecounter >= interval){
-                new Thread(() -> {
-                    for(Integer j : Arrays.paststuff){
-                        if(Arrays.stuff.containsKey(j)) Arrays.stuff.remove(j);
-                    }
-                    Arrays.paststuff = new ArrayDeque<>(Arrays.stuff.keySet());
-                }).start();
-            } counter = 0; timecounter = System.nanoTime();
+                for(Integer j : Arrays.paststuff){
+                    if(Arrays.stuff.containsKey(j)) Arrays.stuff.remove(j);
+                }
+                Arrays.paststuff = new ArrayDeque<>(Arrays.stuff.keySet());
+                
+            }counter = 0; timecounter = System.nanoTime();
 
             Arrays Arrs = Arrays.stuff.get(i);
             if(Arrs == null) Arrs = new Arrays();
             
             Array arr1 = Arrs.storage.get(A),
                   arr2 = Arrs.storage.get(B);
-            
-            if(arr1 == null) arr1 = new Array(0, 0, 1);
-            if(arr2 == null) arr2 = new Array(0, 0, 1);
 
             double s0 = exec.num(b),
                   s_1 = exec.num(c),
