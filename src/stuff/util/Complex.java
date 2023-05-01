@@ -1,7 +1,7 @@
 package stuff.util;
 
 /** 
- * Operations with complex number, returning using "this" for chaining
+ * Operations with complex number, returning new complex number for chaining
 */
 public class Complex{
     public static final Complex real = new Complex(1, 0),
@@ -44,27 +44,19 @@ public class Complex{
     }
 
     public Complex add(Complex c){
-        r += c.r;
-        i += c.i;
-        return this;
+        return new Complex(r + c.r, i + c.i);
     }
 
     public Complex add(double x, double y){
-        r += x;
-        i += y;
-        return this;
+        return new Complex(r + x, i + y);
     }
 
     public Complex sub(Complex c){
-        r -= c.r;
-        i -= c.i;
-        return this;
+        return new Complex(r - c.r, i - c.i);
     }
 
     public Complex sub(double x, double y){
-        r -= x;
-        i -= y;
-        return this;
+        return new Complex(r - x, i - y);
     }
 
     /**
@@ -74,9 +66,8 @@ public class Complex{
      * @return a complex number that has one or all component(s) become negative
      */
     public Complex neg(boolean n1, boolean n2){
-        r = n1 ? -r : r;
-        i = n2 ? -i : i;
-        return this;
+        return new Complex(n1 ? -r : r, 
+                           n2 ? -i : i);
     }
 
     /**
@@ -88,9 +79,7 @@ public class Complex{
     }
 
     public Complex mul(double x){
-        r *= x;
-        i *= x;
-        return this;
+        return new Complex(r * x, i * x);
     }
 
     public Complex mul(Complex c){
@@ -100,9 +89,8 @@ public class Complex{
 
     public Complex div(double x){
         double x1 = 1/x;
-        r *= x1;
-        i *= x1;
-        return this;
+
+        return new Complex(r * x1, i * x1);
     }
     
     public Complex div(Complex c){
@@ -122,7 +110,8 @@ public class Complex{
     }
 
     public Complex polarToComplex(){
-        return new Complex(Math.cos(Angle()), Math.sin(Angle())).mul(length());
+        return new Complex(Math.cos(Angle()), 
+                           Math.sin(Angle())).mul(length());
     }
 
     public Complex pow(Complex c){
@@ -131,7 +120,7 @@ public class Complex{
                
                var5 = 1, var6 = 0;
 
-        if(c.i != 0){
+        if(c.i != 0d){
             var5 = Math.exp(-var2 * c.i);
             var6 = c.i * Math.log(var1);
 
@@ -144,7 +133,7 @@ public class Complex{
 
         if(c.r == 0) return new Complex(1d, 0d);
         if(c.r == 1) return this;
-        if(c.r == 2) return sqrt();
+        if(c.r == 2) return square();
 
         double var3 = Math.pow(var1, c.r),
                var4 = c.r * var1;
@@ -152,9 +141,8 @@ public class Complex{
         var3 *= var5;
         var4 += var6;
 
-        r = var3 * Math.cos(var4);
-        i = var3 * Math.sin(var4);
-        return this;
+        return new Complex(var3 * Math.cos(var4), 
+                           var3 * Math.sin(var4));
     }
 
     /**

@@ -5,7 +5,7 @@ import stuff.util.*;
 
 public enum CFunc{
     New("new"),
-    get(" = "),
+    get("extract"),
     addC("+", (Complex c1,  Complex c2) -> c1.add(c2)),
     subC("-", (Complex c1, Complex c2) -> c1.sub(c2)),
     mulC("*", (Complex c1, Complex c2) -> c1.mul(c2)),
@@ -30,8 +30,8 @@ public enum CFunc{
     public Lambda2 Unary = null;
     public Lambda3 Binary = null;
     public boolean unary = false, 
-                         binary = false, 
-                         real = false;
+                   binary = false, 
+                   real = false;
     
     CFunc(String symbol){this.symbol = symbol;}
 

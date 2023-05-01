@@ -37,10 +37,10 @@ public class Statements {
                 field(table, result, str -> result = str);
                 row(table);
                 field(table, r, str -> r = str);
-                table.add(new StringBuffer(" ").append(result).append(".real"));
+                table.add(new StringBuffer(" = ").append(result).append(".real"));
                 row(table);
                 field(table, i, str -> i = str);
-                table.add(new StringBuffer(" ").append(result).append(".imaginary"));
+                table.add(new StringBuffer(" = ").append(result).append(".imaginary"));
                 return;
             }
 
