@@ -1,4 +1,4 @@
-package stuff.logic;
+package stuff.util;
 
 import arc.math.Mathf;
 

@@ -1,9 +1,11 @@
 package stuff.logic;
 
 import mindustry.logic.LExecutor;
+import stuff.util.Array;
+import stuff.util.Complex;
 import java.util.ArrayDeque;
 
-import static stuff.logic.Array.*;
+import static stuff.util.Array.*;
 import static stuff.logic.AFunc.TwoType;
 import static mindustry.logic.LExecutor.*;
 
@@ -16,35 +18,45 @@ public class TheInstruction{
     }
 
     public static class Function implements LInstruction{
-        public Func Op = Func.addC;
-        public int r1, r2, i1, i2, RealOutput, ImaginaryOutput;
+        public CFunc Op = CFunc.New;
+        public int r, i, result;
 
-        public Function(Func Op, int r1, int i1, int r2, int i2, int RealOutput, int ImaginaryOutput){
+        public Function(CFunc Op, int r, int i, int result){
             this.Op = Op;
-            this.r1 = r1;
-            this.r2 = r2;
-            this.i1 = i1;
-            this.i2 = i2;
-            this.RealOutput = RealOutput;
-            this.ImaginaryOutput = ImaginaryOutput;
+            this.r = r;
+            this.i = i;
+            this.result = result;
         }
 
         Function(){}
 
         @Override
         public void run(LExecutor exec){
-            if(Op.isRealFunction) exec.setnum(RealOutput, Op.RealFunction.get(exec.num(r1)));
-            if (Op.SingleInputCheck){
-                if (Op.SingleOutputCheck){
-                    exec.setnum(RealOutput, Op.SingleOutput.get(exec.num(r1), exec.num(i1)));
+            if(Op == CFunc.New) {exec.setobj(result, new Complex(exec.num(r), exec.num(i)).toString()); return;}
+
+            if(Op == CFunc.get){
+                if(exec.obj(result) instanceof String pRe){
+                    Complex Re = new Complex(pRe);
+                    exec.setnum(r, Re.r);
+                    exec.setnum(i, Re.i);
                 }else{
-                    exec.setnum(RealOutput, Op.Func2.get(exec.num(r1), exec.num(i1)));
-                    exec.setnum(ImaginaryOutput, Op.Func3.get(exec.num(r1), exec.num(i1)));
+                    exec.setnum(r, 0d);
+                    exec.setnum(i, 0d);
                 }
-            }else{
-                exec.setnum(RealOutput, Op.Func4.get(exec.num(r1), exec.num(i1), exec.num(r2), exec.num(i2)));
-                exec.setnum(ImaginaryOutput, Op.Func5.get(exec.num(r1), exec.num(i1), exec.num(r2), exec.num(i2)));
+                return;
             }
+
+            if(Op.real) {exec.setnum(result, Op.RealFunction.get(exec.num(r))); return;}
+            
+            if(!(exec.obj(r) instanceof String pR)){exec.setobj(result, null); return;}
+
+            Complex R = new Complex(pR);
+            if(Op.unary){exec.setobj(result, Op.Unary.get(R).toString()); return;}
+
+            if(!(exec.obj(i) instanceof String pI)){exec.setobj(result, null); return;}
+
+            Complex I = new Complex(pI);
+            exec.setobj(result, Op.Binary.get(R, I).toString());
         }
     }
 
