@@ -1,10 +1,9 @@
 package stuff.util;
 
 import arc.math.Mathf;
-
-import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.WeakHashMap;
 
 import static java.lang.Math.*;
 
@@ -197,22 +196,7 @@ public class Array{
     }
 
     public static class Arrays{
-        public static HashMap<Integer, Arrays> stuff = new HashMap<>();
-        public static ArrayDeque<Integer> paststuff = new ArrayDeque<>();
+        public static WeakHashMap<String, Arrays> stuff = new WeakHashMap<>();
         public HashMap<String, Array> storage = new HashMap<>();
-
-        public static int put(Arrays s, int Old){
-            stuff.remove(Old);
-            Random a = new Random();
-
-            int New = a.nextInt();
-            while(stuff.containsKey(New)){
-                New = a.nextInt();
-            }
-
-            stuff.put(New, s);
-
-            return New;
-        }
     }
 }

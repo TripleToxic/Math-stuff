@@ -305,7 +305,7 @@ public class Statements {
 
         @Override
         public LInstruction build(LAssembler build) {
-            return new AFunction(OpA, TT, build.var(a), build.var(b), build.var(c), build.var(d), build.var(e), build.var(result), a, b, result, build.putVar("Stuff h").id);
+            return new AFunction(OpA, TT, build.var(a), build.var(b), build.var(c), build.var(d), build.var(e), build.var(result), a, b, result);
         }
 
         public void write(StringBuilder builder){

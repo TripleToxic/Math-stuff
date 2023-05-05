@@ -3,20 +3,12 @@ package stuff.logic;
 import mindustry.logic.LExecutor;
 import stuff.util.Array;
 import stuff.util.Complex;
-import java.util.ArrayDeque;
 
 import static stuff.util.Array.*;
 import static stuff.logic.AFunc.TwoType;
 import static mindustry.logic.LExecutor.*;
 
 public class TheInstruction{
-    private static int counter = 0;
-    private static long timecounter, interval = 300000000l;
-
-    static{
-        timecounter = System.nanoTime();
-    }
-
     public static class Function implements LInstruction{
         public CFunc Op = CFunc.New;
         public int r, i, result;
@@ -33,6 +25,7 @@ public class TheInstruction{
         @Override
         public void run(LExecutor exec){
             if(Op == CFunc.New) {exec.setobj(result, new Complex(exec.num(r), exec.num(i)).toString()); return;}
+            
 
             if(Op == CFunc.get){
                 if(exec.obj(result) instanceof String pRe){
@@ -60,13 +53,14 @@ public class TheInstruction{
         }
     }
 
+    //Currently delay
     public static class AFunction implements LInstruction{
         public AFunc OpA = AFunc.New;
         public TwoType TT = TwoType.number;
-        public int a, b, c, d, e, result, h;
+        public int a, b, c, d, e, result;
         public String A, B, Result;
 
-        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result, int h){
+        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result){
             this.OpA = OpA;
             this.TT = TT;
             this.a = a;
@@ -78,25 +72,13 @@ public class TheInstruction{
             this.A = A;
             this.B = B;
             this.Result = Result;
-            this.h = h;
         }
 
         AFunction(){}
 
         @Override
         public void run(LExecutor exec){
-            int i = exec.numi(h);
-
-            counter++;
-            if(counter >= 100000 || System.nanoTime() - timecounter >= interval){
-                for(Integer j : Arrays.paststuff){
-                    if(Arrays.stuff.containsKey(j)) Arrays.stuff.remove(j);
-                }
-                Arrays.paststuff = new ArrayDeque<>(Arrays.stuff.keySet());
-                
-            }counter = 0; timecounter = System.nanoTime();
-
-            Arrays Arrs = Arrays.stuff.get(i);
+            Arrays Arrs = Arrays.stuff.get(exec.build.toString());
             if(Arrs == null) Arrs = new Arrays();
             
             Array arr1 = Arrs.storage.get(A),
@@ -206,7 +188,7 @@ public class TheInstruction{
                     }
                 }
 
-                exec.setnum(h, Arrays.put(Arrs, i));
+                Arrays.stuff.put(exec.build.toString(), Arrs);
             }catch(Exception n){
                 if(OpA.number) exec.setnum(result, 0d);
             }

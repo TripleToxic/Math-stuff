@@ -203,7 +203,7 @@ public class Complex{
     }
 
     public Complex atan(){
-        return this.add(imaginary).div(this.neg(true, true).add(imaginary)).log().trade().neg(true, false).div(2d);
+        return this.add(imaginary).div(imaginary.sub(this)).log().trade().neg(true, false).div(2d);
     }
 
     @Override
