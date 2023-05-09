@@ -101,7 +101,7 @@ public class Statements {
         }
     }
     
-    public static class ArrayOperationStatement extends ShortStatement{
+    /*public static class ArrayOperationStatement extends ShortStatement{
         public AFunc OpA = AFunc.New;
         public TwoType TT = TwoType.number;
         public String result = "result", a = "a", b = "b", c = "c", d = "d", e = "e";
@@ -332,11 +332,11 @@ public class Statements {
         public LCategory category(){
             return LCategory.operation;
         }
-    }
+    }*/
 
     public static void load(){
         registerStatement("Complex", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4]), ComplexOperationStatement::new);
-        registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
+        //registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
     }
 
     public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov){

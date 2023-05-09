@@ -3,7 +3,6 @@ package stuff.util;
 import arc.math.Mathf;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.WeakHashMap;
 
 import static java.lang.Math.*;
 
@@ -196,7 +195,7 @@ public class Array{
     }
 
     public static class Arrays{
-        public static WeakHashMap<String, Arrays> stuff = new WeakHashMap<>();
+        public static HashMap<String, Arrays> stuff = new HashMap<>();
         public HashMap<String, Array> storage = new HashMap<>();
     }
 }

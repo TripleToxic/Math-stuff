@@ -53,7 +53,8 @@ public class TheInstruction{
         }
     }
 
-    //Currently delay
+    //Currently halted
+    /* 
     public static class AFunction implements LInstruction{
         public AFunc OpA = AFunc.New;
         public TwoType TT = TwoType.number;
@@ -193,5 +194,5 @@ public class TheInstruction{
                 if(OpA.number) exec.setnum(result, 0d);
             }
         }
-    }
+    }*/
 }
