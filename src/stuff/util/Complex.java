@@ -23,9 +23,9 @@ public class Complex{
     // unboxing a String
     public Complex(String arr){
         try{
-        int a = arr.indexOf(" ");
-        r = Double.parseDouble(arr.substring(0, a));
-        i = Double.parseDouble(arr.substring(a + 2, arr.length() - 1));
+            int a = arr.indexOf(" ");
+            r = Double.parseDouble(arr.substring(0, a));
+            i = Double.parseDouble(arr.substring(a + 2, arr.length() - 1));
         }catch(Exception e){}
     }
 
@@ -44,19 +44,23 @@ public class Complex{
     }
 
     public Complex add(Complex c){
-        return new Complex(r + c.r, i + c.i);
+        return new Complex(r + c.r, 
+                           i + c.i);
     }
 
     public Complex add(double x, double y){
-        return new Complex(r + x, i + y);
+        return new Complex(r + x, 
+                           i + y);
     }
 
     public Complex sub(Complex c){
-        return new Complex(r - c.r, i - c.i);
+        return new Complex(r - c.r, 
+                           i - c.i);
     }
 
     public Complex sub(double x, double y){
-        return new Complex(r - x, i - y);
+        return new Complex(r - x, 
+                           i - y);
     }
 
     /**
@@ -79,7 +83,8 @@ public class Complex{
     }
 
     public Complex mul(double x){
-        return new Complex(r * x, i * x);
+        return new Complex(r * x, 
+                           i * x);
     }
 
     public Complex mul(Complex c){

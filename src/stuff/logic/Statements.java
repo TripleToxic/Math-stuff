@@ -1,6 +1,7 @@
 package stuff.logic;
 
 import arc.func.*;
+import arc.graphics.Color;
 import arc.scene.ui.layout.*;
 import mindustry.gen.*;
 import mindustry.logic.*;
@@ -37,10 +38,10 @@ public class Statements {
                 field(table, result, str -> result = str);
                 row(table);
                 field(table, r, str -> r = str);
-                table.add(new StringBuffer(" = ").append(result).append(".real"));
+                table.add(new StringBuffer(" = ").append(result).append(".real")).color(Color.green);
                 row(table);
                 field(table, i, str -> i = str);
-                table.add(new StringBuffer(" = ").append(result).append(".imaginary"));
+                table.add(new StringBuffer(" = ").append(result).append(".imaginary")).color(Color.green);
                 return;
             }
 

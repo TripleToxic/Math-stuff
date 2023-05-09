@@ -25,7 +25,7 @@ public enum CFunc{
 
     public static final CFunc[] all = values();
 
-    public String symbol;
+    public final String symbol;
     public Lambda1 RealFunction = null;
     public Lambda2 Unary = null;
     public Lambda3 Binary = null;
