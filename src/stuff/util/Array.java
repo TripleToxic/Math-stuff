@@ -7,7 +7,7 @@ import java.util.Random;
 import static java.lang.Math.*;
 
 public class Array{
-    private int[] DefaultLength = {0, 0, 1};
+    /*private int[] DefaultLength = {0, 0, 1};
     public int[] l;
     public double[] s;
     public int All;
@@ -125,7 +125,7 @@ public class Array{
     }
 
     // a
-    /*
+    
     public Array ArrMultiplication(Array b){
         if(l.length > 2 || b.l.length > 2) return new ArrayStringDouble("none");
         if(l.length == 1 && b.l.length == 1) return new ArrayStringDouble("none");
@@ -138,7 +138,7 @@ public class Array{
             }
         }
     }
-    */
+    
 
     public Array crossProd(Array b){
         Array c = new Array();
@@ -198,4 +198,5 @@ public class Array{
         public static HashMap<String, Arrays> stuff = new HashMap<>();
         public HashMap<String, Array> storage = new HashMap<>();
     }
+    */
 }

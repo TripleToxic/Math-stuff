@@ -80,7 +80,7 @@ public class Statements {
         }
 
         public LInstruction build(LAssembler builder){
-            return new Function(Op, builder.var(r), builder.var(i), builder.var(result));
+            return new ComplexOperationI(Op, builder.var(r), builder.var(i), builder.var(result));
         }
 
         @Override

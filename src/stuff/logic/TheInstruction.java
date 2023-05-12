@@ -9,18 +9,18 @@ import static stuff.logic.AFunc.TwoType;
 import static mindustry.logic.LExecutor.*;
 
 public class TheInstruction{
-    public static class Function implements LInstruction{
+    public static class ComplexOperationI implements LInstruction{
         public CFunc Op = CFunc.New;
         public int r, i, result;
 
-        public Function(CFunc Op, int r, int i, int result){
+        public ComplexOperationI(CFunc Op, int r, int i, int result){
             this.Op = Op;
             this.r = r;
             this.i = i;
             this.result = result;
         }
 
-        Function(){}
+        ComplexOperationI(){}
 
         @Override
         public void run(LExecutor exec){
