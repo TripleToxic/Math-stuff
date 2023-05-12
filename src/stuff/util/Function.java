@@ -1,10 +1,9 @@
 package stuff.util;
 
-import mindustry.logic.LogicOp;
-
-public abstract class Function{
+public class Function{
     public Function f1, f2;
     public DVar var1, var2;
+    public boolean isUnary;
 
     /**
         A double variable with name and value
@@ -18,11 +17,15 @@ public abstract class Function{
         }
     }
 
-    public interface Evaluate{
-        double evaluate(Function F);
+    public static class Add extends Function implements BinaryFunctionStuff{
+
+        @Override
+        public double evaluate(Function F){
+            return 0;
+        }
     }
 
-    
-
-    public abstract boolean isUnary();
+    public interface BinaryFunctionStuff{
+        double evaluate(Function F);
+    }
 }
