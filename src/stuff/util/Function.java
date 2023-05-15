@@ -8,16 +8,16 @@ public abstract class Function{
     public Function f1, f2;
     public String inputName;
 
-    public static Function process(LExecutor exec, String in){
+    public static void process(Function f, LExecutor exec, String in, int subIn){
         StringBuilder out = new StringBuilder();
         String buffer = "";
 
-        buffer = in.substring(0, in.indexOf("("));
-
-        return New[0];
+        f.f1 = New[Integer.parseInt(in.substring(subIn + 1, in.indexOf("(")))];
     }
 
     public abstract double evaluate(double x);
+
+    public abstract boolean isUnary();
 
     public static class DVar extends Function{
         public String name;
@@ -31,6 +31,11 @@ public abstract class Function{
         public double evaluate(double x) {
             return name.equals(inputName) ? x : value;
         }
+
+		@Override
+		public boolean isUnary() {
+			return true;
+		}
     }
 
     public static class Add extends Function{
@@ -38,6 +43,11 @@ public abstract class Function{
         public double evaluate(double x){
            return f1.evaluate(x) + f2.evaluate(x);
         }
+
+        @Override
+		public boolean isUnary() {
+			return false;
+		}
     }
 
     public static class Sub extends Function{
@@ -45,5 +55,10 @@ public abstract class Function{
         public double evaluate(double x){
            return f1.evaluate(x) - f2.evaluate(x);
         }
+
+        @Override
+		public boolean isUnary() {
+			return false;
+		}
     }
 }
