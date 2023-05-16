@@ -340,7 +340,7 @@ public class Statements {
         //registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
     }
 
-    public static void registerStatement(String name, arc.func.Func<String[], LStatement> func, Prov<LStatement> prov){
+    public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){
         LAssembler.customParsers.put(name, func);
         LogicIO.allStatements.add(prov);
     }

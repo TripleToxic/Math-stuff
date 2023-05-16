@@ -5,24 +5,47 @@ import mindustry.logic.LExecutor;
 
 public abstract class Function{
     public static final Function[] New = {new Add(), new Sub()};
+    public static final String[] separateList = {",", "|", ":", "#", "?"};
 
     public Function f1, f2;
     public String inputName;
 
-    public static void process(Function f, DVar var, LExecutor exec, LAssembler builder, String in){
-        String buffer = new StringBuilder(in).reverse().toString(), buffer2 = "";
-        int pos = 0;
+    public static void process(Function f, LExecutor exec, LAssembler builder, String in){
+        process(f, exec, builder, in, 0);
+    }
+
+    private static void process(Function f, LExecutor exec, LAssembler builder, String in, int count){
+        String buffer2 = "";
+        
+        buffer2 = in.substring(in.indexOf("("), in.indexOf(separateList[count]));
         try{
-            buffer2 = in.substring(in.indexOf("("), buffer.indexOf(","));
-            try{
-                f.f1 = new DVar("x x", (double)builder.getVar(buffer2).value);
-            }catch(Exception e){
-                
+            // Check for number
+            f.f1 = new DVar("x x", Double.parseDouble(buffer2));
+        }catch(Exception e){
+            //Check for variable
+            if(builder.vars.containsKey(buffer2)){
+                f.f1 = new DVar("x x", exec.num(builder.vars.get(buffer2).id));
+            }else{// Otherwise, assign a function to the object
+                f.f1 = New[Integer.parseInt(buffer2.substring(1, 2))];
+                process(f.f1, exec, builder, buffer2, ++count);
             }
-            if(pos == 0) f.f1 = new DVar(in, pos);
-        }catch(Exception e){f.f1 = new DVar("x x", 0d);}
+        }
         
-        
+        if(!f.isUnary()){
+            buffer2 = in.substring(in.indexOf(separateList[count] + 1));
+        try{
+            // Check for number
+            f.f1 = new DVar("x x", Double.parseDouble(buffer2));
+        }catch(Exception e){
+            //Check for variable
+            if(builder.vars.containsKey(buffer2)){
+                f.f1 = new DVar("x x", exec.num(builder.vars.get(buffer2).id));
+            }else{// Otherwise, assign a function to the object
+                f.f1 = New[Integer.parseInt(buffer2.substring(1, 2))];
+                process(f.f1, exec, builder, buffer2, ++count);
+            }
+        }
+        }
     }
 
     public abstract double evaluate(double x);
