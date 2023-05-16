@@ -1,5 +1,6 @@
 package stuff.util;
 
+import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
 
 public abstract class Function{
@@ -8,11 +9,20 @@ public abstract class Function{
     public Function f1, f2;
     public String inputName;
 
-    public static void process(Function f, LExecutor exec, String in, int subIn){
-        StringBuilder out = new StringBuilder();
-        String buffer = "";
-
-        f.f1 = New[Integer.parseInt(in.substring(subIn + 1, in.indexOf("(")))];
+    public static void process(Function f, DVar var, LExecutor exec, LAssembler builder, String in){
+        String buffer = new StringBuilder(in).reverse().toString(), buffer2 = "";
+        int pos = 0;
+        try{
+            buffer2 = in.substring(in.indexOf("("), buffer.indexOf(","));
+            try{
+                f.f1 = new DVar("x x", (double)builder.getVar(buffer2).value);
+            }catch(Exception e){
+                
+            }
+            if(pos == 0) f.f1 = new DVar(in, pos);
+        }catch(Exception e){f.f1 = new DVar("x x", 0d);}
+        
+        
     }
 
     public abstract double evaluate(double x);
@@ -21,10 +31,11 @@ public abstract class Function{
 
     public static class DVar extends Function{
         public String name;
-        public double value = 0;
+        public double value;
     
-        public DVar(String name){
+        public DVar(String name, double value){
             this.name = name;
+            this.value = value;
         }
 
         @Override
