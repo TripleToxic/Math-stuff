@@ -336,7 +336,14 @@ public class Statements {
     }*/
 
     public static class FunctionsStatement extends ShortStatement{
+        public String output = "f", input = "x";
         public String[] names;
+
+        public FunctionsStatement(String[] names){
+            this.names = names;
+        }
+
+        public FunctionsStatement(){}
 
         @Override
         public void build(Table table) {
@@ -344,26 +351,40 @@ public class Statements {
         }
 
         void rebuild(Table table){
+            table.clearChildren();
+
+            field3(table, output, str -> output = str);
+            table.add("(");
+            field3(table, input, str -> input = str);
+            table.add(")");
+            table.add(" = ");
+            Button(table, table);
+        }
+
+        void Button(Table table, Table parent){
 
         }
 
         @Override
         public LInstruction build(LAssembler builder) {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'build'");
+            return new FunctionI(names, builder);
         }
+        
+        @Override
+        public void write(StringBuilder builder) {
+            builder
+            .append("Function");
 
-        static String[] nameGen(){
-            char[] a = new char[10];
-             
-
-            return new String(a).split("");
+            for(String name : names){
+                builder.append(" ").append(name);
+            }
         }
     }
-
+    
     public static void load(){
         registerStatement("Complex", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4]), ComplexOperationStatement::new);
         //registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
+        registerStatement("Function", args -> new FunctionsStatement(args), FunctionsStatement::new);
     }
 
     public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){

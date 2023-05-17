@@ -82,6 +82,11 @@ public abstract class Function{
 		public boolean isUnary() {
 			return false;
 		}
+
+        @Override
+        public String toString() {
+            return new StringBuilder("add").append(f1).append(f2).toString();
+        }
     }
 
     public static class Sub extends Function{
@@ -94,5 +99,10 @@ public abstract class Function{
 		public boolean isUnary() {
 			return false;
 		}
+
+        @Override
+        public String toString() {
+            return "sub";
+        }
     }
 }
