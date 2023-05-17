@@ -335,6 +335,32 @@ public class Statements {
         }
     }*/
 
+    public static class FunctionsStatement extends ShortStatement{
+        public String[] names;
+
+        @Override
+        public void build(Table table) {
+            rebuild(table);
+        }
+
+        void rebuild(Table table){
+
+        }
+
+        @Override
+        public LInstruction build(LAssembler builder) {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'build'");
+        }
+
+        static String[] nameGen(){
+            char[] a = new char[10];
+             
+
+            return new String(a).split("");
+        }
+    }
+
     public static void load(){
         registerStatement("Complex", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4]), ComplexOperationStatement::new);
         //registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);

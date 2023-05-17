@@ -1,6 +1,7 @@
 package stuff.logic;
 
 public enum Functions {
+    variable("var"),
     add("+"),
     sub("-"),
     ;

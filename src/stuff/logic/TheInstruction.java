@@ -1,5 +1,6 @@
 package stuff.logic;
 
+import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
 import stuff.util.Array;
 import stuff.util.Complex;
@@ -51,6 +52,22 @@ public class TheInstruction{
             Complex I = new Complex(pI);
             exec.setobj(result, Op.Binary.get(R, I).toString());
         }
+    }
+
+    public static class FunctionI implements LInstruction{
+        public String[] names;
+        public LAssembler builder;
+
+        public FunctionI(String[] names, LAssembler builder){
+            this.names = names;
+            this.builder = builder;
+        }
+
+        @Override
+        public void run(LExecutor exec) {
+            
+        }
+        
     }
 
     //Currently halted
