@@ -337,20 +337,23 @@ public class Statements {
 
     public static class FunctionsStatement extends ShortStatement{
         public String output = "f", input = "x";
-        public String[] names;
+        public Object[] names;
 
         public FunctionsStatement(String[] names){
-            this.names = names;
+            this.names = new Object[names.length];
+            for(int i=0; i<names.length; i++){
+                this.names[i] = Functions.add;
+            }
         }
 
         public FunctionsStatement(){}
 
         @Override
         public void build(Table table) {
-            rebuild(table);
+            rebuild(table, 0);
         }
 
-        void rebuild(Table table){
+        void rebuild(Table table, int i){
             table.clearChildren();
 
             field3(table, output, str -> output = str);
@@ -358,11 +361,23 @@ public class Statements {
             field3(table, input, str -> input = str);
             table.add(")");
             table.add(" = ");
-            Button(table, table);
+            Button(table, table, i);
         }
 
-        void Button(Table table, Table parent){
+        void Button(Table table, Table parent, int i){
+            table.button(b -> {
+                b.label(() -> names[i].toString());
+                b.clicked(() -> showSelect(b, Functions.all, (Functions)names[i], o -> {
+                    if(o == Functions.variable){
+                        names[i] = "";
+                        field3(table, (String)names[i], str -> names[i] = str);
+                        return;
+                    }
 
+                    names[i] = o;
+                    rebuild(parent, i);
+                }));
+            }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
 
         @Override
@@ -374,17 +389,21 @@ public class Statements {
         public void write(StringBuilder builder) {
             builder
             .append("Function");
-
-            for(String name : names){
-                builder.append(" ").append(name);
-            }
         }
     }
     
     public static void load(){
         registerStatement("Complex", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4]), ComplexOperationStatement::new);
         //registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
-        registerStatement("Function", args -> new FunctionsStatement(args), FunctionsStatement::new);
+        registerStatement("Function", args -> new FunctionsStatement(load(args, 15)), FunctionsStatement::new);
+    }
+
+    static String[] load(String[] args, int count){ 
+        String[] s = new String[count];
+        for(int i=0; i<count; i++){
+            s[i] = args[i];
+        }
+        return s;
     }
 
     public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){

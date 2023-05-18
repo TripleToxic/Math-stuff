@@ -13,4 +13,9 @@ public enum Functions {
     Functions(String symbol){
         this.symbol = symbol;
     }
+
+    @Override
+    public String toString() {
+        return symbol;
+    }
 }

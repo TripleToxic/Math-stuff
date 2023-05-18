@@ -55,10 +55,10 @@ public class TheInstruction{
     }
 
     public static class FunctionI implements LInstruction{
-        public String[] names;
+        public Object[] names;
         public LAssembler builder;
 
-        public FunctionI(String[] names, LAssembler builder){
+        public FunctionI(Object[] names, LAssembler builder){
             this.names = names;
             this.builder = builder;
         }
