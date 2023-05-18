@@ -3,6 +3,7 @@ package stuff.logic;
 import arc.func.*;
 import arc.graphics.Color;
 import arc.scene.ui.layout.*;
+import mindustry.Vars;
 import mindustry.gen.*;
 import mindustry.logic.*;
 import mindustry.logic.LExecutor.*;
@@ -344,6 +345,8 @@ public class Statements {
             for(int i=0; i<names.length; i++){
                 this.names[i] = Functions.add;
             }
+            
+            Vars.ui.showInfoToast("" + names.length, 5f);
         }
 
         public FunctionsStatement(){}
@@ -369,13 +372,13 @@ public class Statements {
                 b.label(() -> names[i].toString());
                 b.clicked(() -> showSelect(b, Functions.all, (Functions)names[i], o -> {
                     if(o == Functions.variable){
-                        names[i] = "";
+                        names[i] = "a";
                         field3(table, (String)names[i], str -> names[i] = str);
                         return;
                     }
 
                     names[i] = o;
-                    rebuild(parent, i);
+                    rebuild(parent, i + 1);
                 }));
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
@@ -395,15 +398,7 @@ public class Statements {
     public static void load(){
         registerStatement("Complex", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4]), ComplexOperationStatement::new);
         //registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
-        registerStatement("Function", args -> new FunctionsStatement(load(args, 15)), FunctionsStatement::new);
-    }
-
-    static String[] load(String[] args, int count){ 
-        String[] s = new String[count];
-        for(int i=0; i<count; i++){
-            s[i] = args[i];
-        }
-        return s;
+        registerStatement("Function", args -> new FunctionsStatement(args), FunctionsStatement::new);
     }
 
     public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){
