@@ -9,7 +9,10 @@ import mindustry.logic.*;
 import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
 import stuff.logic.TheInstruction.*;
+import stuff.util.Function;
 import stuff.logic.AFunc.TwoType;
+
+import static stuff.util.Function.*;
 
 public class Statements {
     public static class ComplexOperationStatement extends ShortStatement{
@@ -339,6 +342,7 @@ public class Statements {
     public static class FunctionsStatement extends ShortStatement{
         public String output = "f", input = "x";
         public Object[] names;
+        public Function F = new Add();
 
         public FunctionsStatement(String[] names){
             this.names = new Object[names.length];
@@ -353,10 +357,10 @@ public class Statements {
 
         @Override
         public void build(Table table) {
-            rebuild(table, 0);
+            rebuild(table, 0, F);
         }
 
-        void rebuild(Table table, int i){
+        void rebuild(Table table, int i, Function f){
             table.clearChildren();
 
             field3(table, output, str -> output = str);
@@ -371,27 +375,23 @@ public class Statements {
             table.button(b -> {
                 b.label(() -> names[i].toString());
                 b.clicked(() -> showSelect(b, Functions.all, (Functions)names[i], o -> {
-                    if(o == Functions.variable){
-                        names[i] = "a";
-                        field3(table, (String)names[i], str -> names[i] = str);
-                        return;
-                    }
-
                     names[i] = o;
-                    rebuild(parent, i + 1);
+                    rebuild(parent, i, F);
                 }));
+                
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
 
         @Override
         public LInstruction build(LAssembler builder) {
-            return new FunctionI(names, builder);
+            return null;
         }
         
         @Override
         public void write(StringBuilder builder) {
             builder
-            .append("Function");
+            .append("Function ")
+            .append(F);
         }
     }
     

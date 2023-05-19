@@ -54,22 +54,6 @@ public class TheInstruction{
         }
     }
 
-    public static class FunctionI implements LInstruction{
-        public Object[] names;
-        public LAssembler builder;
-
-        public FunctionI(Object[] names, LAssembler builder){
-            this.names = names;
-            this.builder = builder;
-        }
-
-        @Override
-        public void run(LExecutor exec) {
-            
-        }
-        
-    }
-
     //Currently halted
     /* 
     public static class AFunction implements LInstruction{
