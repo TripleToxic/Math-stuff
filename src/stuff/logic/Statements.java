@@ -341,26 +341,30 @@ public class Statements {
 
     public static class FunctionsStatement extends ShortStatement{
         public String output = "f", input = "x";
-        public Object[] names;
         public Function F = new Add();
 
         public FunctionsStatement(String[] names){
-            this.names = new Object[names.length];
-            for(int i=0; i<names.length; i++){
-                this.names[i] = Functions.add;
-            }
-            
             Vars.ui.showInfoToast("" + names.length, 5f);
+            try{ F = Functions.valueOf(names[0]).nf.get(); }
+            catch(Exception e){}
+            
+            
         }
 
         public FunctionsStatement(){}
 
+        /*static Object[] isNumber(String arg){
+            try{
+                double a = Double.parseDouble(arg);
+            }
+        }*/
+
         @Override
         public void build(Table table) {
-            rebuild(table, 0, F);
+            rebuild(table, F);
         }
 
-        void rebuild(Table table, int i, Function f){
+        void rebuild(Table table, Function f){
             table.clearChildren();
 
             field3(table, output, str -> output = str);
@@ -368,18 +372,32 @@ public class Statements {
             field3(table, input, str -> input = str);
             table.add(")");
             table.add(" = ");
-            Button(table, table, i);
+            Button(table, table, F);
         }
 
-        void Button(Table table, Table parent, int i){
+        void Button(Table table, Table parent, Function f){
+            Functions FEnum = f.get();
+            f.f1 = f.f2 = new Add();
             table.button(b -> {
-                b.label(() -> names[i].toString());
-                b.clicked(() -> showSelect(b, Functions.all, (Functions)names[i], o -> {
-                    names[i] = o;
-                    rebuild(parent, i, F);
+                b.label(() -> FEnum.symbol);
+                b.clicked(() -> showSelect(b, Functions.all, FEnum, o -> {
+                    modify(f, o);
+                    rebuild(parent, F);
                 }));
-                
+            
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
+
+            Functions FEnum2 = f.get();
+            if(FEnum2 == Functions.variable){
+                field3(table, ((DVar)f).name, str -> ((DVar)f).name = str);
+            }else{
+                Button(table, parent, f.f1);
+                if(!FEnum2.isUnary) Button(table, parent, f.f2);
+            }
+        }
+
+        void modify(Function f, Functions fs){
+            f = fs.nf.get();
         }
 
         @Override

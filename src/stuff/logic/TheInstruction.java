@@ -1,6 +1,5 @@
 package stuff.logic;
 
-import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
 import stuff.util.Array;
 import stuff.util.Complex;
