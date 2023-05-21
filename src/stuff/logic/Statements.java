@@ -352,12 +352,15 @@ public class Statements {
 
             int i = 0, j = 0;
             Object[] b;
+            double n = 0;
             
             while(true){
                 b = isNumber(names[++j]);
-                while(i < 3 && (boolean)b[0]){
+                while(i < 3 && !(boolean)b[0]){
                     
+                    b = isNumber(names[++j]); i++;
                 }
+                i--;
             }
         }
 
@@ -417,6 +420,7 @@ public class Statements {
 
         @Override
         public LInstruction build(LAssembler builder) {
+            builder.putConst(output, F);
             return null;
         }
         
