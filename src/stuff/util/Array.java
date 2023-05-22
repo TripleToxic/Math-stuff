@@ -1,10 +1,10 @@
 package stuff.util;
 
-import arc.math.Mathf;
+/*import arc.math.Mathf;
 import java.util.HashMap;
 import java.util.Random;
 
-import static java.lang.Math.*;
+import static java.lang.Math.*;*/
 
 public class Array{
     /*private int[] DefaultLength = {0, 0, 1};

@@ -3,14 +3,14 @@ package stuff.logic;
 import arc.func.*;
 import arc.graphics.Color;
 import arc.scene.ui.layout.*;
-import mindustry.Vars;
+//import mindustry.Vars;
 import mindustry.gen.*;
 import mindustry.logic.*;
 import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
 import stuff.logic.TheInstruction.*;
 import stuff.util.Function;
-import stuff.logic.AFunc.TwoType;
+//import stuff.logic.AFunc.TwoType;
 
 import static stuff.util.Function.*;
 

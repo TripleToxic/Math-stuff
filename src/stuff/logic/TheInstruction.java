@@ -1,11 +1,11 @@
 package stuff.logic;
 
 import mindustry.logic.LExecutor;
-import stuff.util.Array;
+//import stuff.util.Array;
 import stuff.util.Complex;
 
-import static stuff.util.Array.*;
-import static stuff.logic.AFunc.TwoType;
+//import static stuff.util.Array.*;
+//import static stuff.logic.AFunc.TwoType;
 import static mindustry.logic.LExecutor.*;
 
 public class TheInstruction{

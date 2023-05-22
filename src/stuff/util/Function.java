@@ -1,41 +1,42 @@
 package stuff.util;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 import stuff.logic.Functions;
 
 public abstract class Function{
-    //public static final Function[] New = {new Add(), new Sub()};
-    //public static final String[] separateList = {",", "|", ":", "#", "?"};
-
     public Function f1, f2;
     public String inputName;
 
-    /*public static Function process(String arg, Function f){
-        return process(splitSpace(arg), f, 0, 0);
+    public static Function process(String[] args, Function f){
+        return process(Arrays.copyOfRange(args, 3, args.length), f, 1);
     }
 
-    static Function process(String[] arg, Function f, int i, int j){
+    static Function process(String[] args, Function f, int i){
+        Functions F_Enum;
         try{
-            f.f1 = Functions.valueOf(arg[j + 1]).nf.get(); 
+            if(args[i].equals("variable") || i >= 7) throw new Exception();
+            F_Enum =  Functions.valueOf(args[i]);
+            f.f1 = F_Enum.nf.get();
+            process(args, f.f1, ++i);
+        }catch(Exception e){
+            f.f1 = new DVar(args[i], 0);
+            F_Enum = Functions.variable;
         }
-        catch(Exception e){
-            f.f1 = new DVar(arg[j + 1], 0);
+
+        if(F_Enum.isUnary){;
+            try{
+                if(args[i].equals("variable") || i >= 7) throw new Exception();
+                F_Enum =  Functions.valueOf(args[i + 1]);
+                f.f2 = F_Enum.nf.get();
+                process(args, f.f1, ++i);
+            }catch(Exception e){
+                f.f2 = new DVar(args[i + 1], 0);
+                F_Enum = Functions.variable;
+            }
         }
-        process(arg, f.f1, ++i, ++j);
+        return f;
     }
-
-    static String[] splitSpace(String arg){
-        int index = 0, prevIndex = 0;
-        ArrayList<String> out = new ArrayList<>();
-
-        while((index = arg.indexOf(" ", prevIndex)) != -1){
-            out.add(arg.substring(prevIndex, index));
-            index = prevIndex + 1;
-        }
-
-        return out.toArray(new String[out.size()]);
-    }*/
 
     public abstract double evaluate(double x);
 
@@ -59,7 +60,7 @@ public abstract class Function{
 
         @Override
         public String toString() {
-            return name;
+            return name.concat(" ");
         }
 
         @Override
@@ -76,7 +77,7 @@ public abstract class Function{
 
         @Override
         public String toString() {
-            return new StringBuilder("add").append(f1).append(f2).toString();
+            return new StringBuilder("add ").append(f1).append(f2).toString();
         }
 
         @Override
@@ -93,7 +94,7 @@ public abstract class Function{
 
         @Override
         public String toString() {
-            return new StringBuilder("sub").append(f1).append(f2).toString();
+            return new StringBuilder("sub ").append(f1).append(f2).toString();
         }
 
         @Override
