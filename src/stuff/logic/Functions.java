@@ -26,7 +26,7 @@ public enum Functions {
         return symbol;
     }
 
-    interface NewFunc{
+    public interface NewFunc{
         Function get();
     }
 }

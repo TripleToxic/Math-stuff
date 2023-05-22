@@ -344,38 +344,10 @@ public class Statements {
         public Function F = new Add();
 
         public FunctionsStatement(String[] names){
-            F.f1 = new DVar();
-            F.f2 = new DVar(); 
-            Vars.ui.showInfoToast("" + names.length, 5f);
-            try{ F = Functions.valueOf(names[0]).nf.get(); }
-            catch(Exception e){}
-
-            int i = 0, j = 0;
-            Object[] b;
-            double n = 0;
             
-            while(true){
-                b = isNumber(names[++j]);
-                while(i < 3 && !(boolean)b[0]){
-                    
-                    b = isNumber(names[++j]); i++;
-                }
-                i--;
-            }
         }
 
         public FunctionsStatement(){}
-
-        static Object[] isNumber(String arg){
-            try{
-                double a = Double.parseDouble(arg);
-                Object[] o = {true, a};
-                return o;
-            }catch(Exception e){
-                Object[] o = {false};
-                return o;
-            }
-        }
 
         @Override
         public void build(Table table) {

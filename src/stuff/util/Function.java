@@ -1,5 +1,7 @@
 package stuff.util;
 
+import java.util.ArrayList;
+
 import stuff.logic.Functions;
 
 public abstract class Function{
@@ -8,6 +10,32 @@ public abstract class Function{
 
     public Function f1, f2;
     public String inputName;
+
+    /*public static Function process(String arg, Function f){
+        return process(splitSpace(arg), f, 0, 0);
+    }
+
+    static Function process(String[] arg, Function f, int i, int j){
+        try{
+            f.f1 = Functions.valueOf(arg[j + 1]).nf.get(); 
+        }
+        catch(Exception e){
+            f.f1 = new DVar(arg[j + 1], 0);
+        }
+        process(arg, f.f1, ++i, ++j);
+    }
+
+    static String[] splitSpace(String arg){
+        int index = 0, prevIndex = 0;
+        ArrayList<String> out = new ArrayList<>();
+
+        while((index = arg.indexOf(" ", prevIndex)) != -1){
+            out.add(arg.substring(prevIndex, index));
+            index = prevIndex + 1;
+        }
+
+        return out.toArray(new String[out.size()]);
+    }*/
 
     public abstract double evaluate(double x);
 
