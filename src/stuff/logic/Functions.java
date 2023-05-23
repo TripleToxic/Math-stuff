@@ -4,7 +4,7 @@ import stuff.util.Function;
 import static stuff.util.Function.*;
 
 public enum Functions {
-    variable("var", () -> new DVar(), true),
+    variable("var", () -> new DVar("unused"), true),
     add("+", () -> new Add(), false),
     sub("-", () -> new Sub(), false),
     ;

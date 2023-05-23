@@ -344,7 +344,8 @@ public class Statements {
         public Function F = new Add();
 
         public FunctionsStatement(String[] names){
-            
+            F.f1 = new DVar("a");
+            F.f2 = new DVar("b"); 
         }
 
         public FunctionsStatement(){}
@@ -367,7 +368,7 @@ public class Statements {
 
         void Button(Table table, Table parent, Function f){
             Functions FEnum = f.get();
-            f.f1 = f.f2 = new Add();
+            
             table.button(b -> {
                 b.label(() -> FEnum.symbol);
                 b.clicked(() -> showSelect(b, Functions.all, FEnum, o -> {
@@ -377,6 +378,7 @@ public class Statements {
             
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
 
+            f.f1 = f.f2 = new Add();
             Functions FEnum2 = f.get();
             if(FEnum2 == Functions.variable){
                 field3(table, ((DVar)f).name, str -> ((DVar)f).name = str);
