@@ -1,5 +1,6 @@
 package stuff.util;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
 
 import mindustry.logic.LExecutor;
@@ -10,34 +11,53 @@ public abstract class Function{
     public String inputName;
     public LExecutor exec;
 
-    public static Function process(String[] args, Function f){
-        return process(Arrays.copyOfRange(args, 3, args.length), f, 1);
+    public void process(String[] args, Function f){
+        ArrayDeque<String> nArgs = new ArrayDeque<>(Arrays.asList(args));
+        for(int i=0; i<4; i++) nArgs.removeFirst();
+
+        process(nArgs, f, 1);
     }
 
-    static Function process(String[] args, Function f, int i){
-        Functions F_Enum;
+    static ArrayDeque<String> process(ArrayDeque<String> args, Function f, int i){
+        String rev = args.pollFirst();
+        Functions F_Enum = Functions.valueOf(rev);
         try{
-            if(args[i].equals("variable") || i >= 3) throw new Exception();
-            F_Enum =  Functions.valueOf(args[i]);
-            f.f1 = F_Enum.nf.get();
-            process(args, f.f1, ++i);
+            if(rev.equals("variable") || i > 2) throw new Exception();
+            F_Enum =  Functions.valueOf(rev);
+            f.f1 = F_Enum.nf.get(); 
+            args = process(args, f.f1, ++i);
         }catch(Exception e){
-            f.f1 = new DVar(args[i]);
-            F_Enum = Functions.variable;
+            while(true){
+                try{
+                    Functions.valueOf(args.getFirst());
+                    rev = args.pollFirst();
+                }catch(Exception e2){ break; }
+            }
+            
+            if(rev == null) f.f2 = new DVar("invalid");
+            else f.f2 = new DVar(rev);
         }
 
-        if(F_Enum.isUnary){
+        if(!F_Enum.isUnary){
+            rev = args.pollFirst();
             try{
-                if(args[i].equals("variable") || i >= 3) throw new Exception();
-                F_Enum =  Functions.valueOf(args[i]);
+                if(rev.equals("variable") || i > 2) throw new Exception();
+                F_Enum =  Functions.valueOf(rev);
                 f.f2 = F_Enum.nf.get();
-                process(args, f.f1, ++i);
+                args = process(args, f.f2, i);
             }catch(Exception e){
-                f.f2 = new DVar(args[i]);
-                F_Enum = Functions.variable;
+                while(true){
+                    try{
+                        Functions.valueOf(args.getFirst());
+                        rev = args.pollFirst();
+                    }catch(Exception e2){ break; }
+                }
+
+                if(rev == null) f.f2 = new DVar("invalid");
+                else f.f2 = new DVar(rev);
             }
         }
-        return f;
+        return args;
     }
 
     public abstract double evaluate(double x);
@@ -45,7 +65,7 @@ public abstract class Function{
     public abstract Functions get();
 
     public static class DVar extends Function{
-        public String name;
+        public String name = "a";
         public int id;
 
         public DVar(String name){
