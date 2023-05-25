@@ -344,8 +344,16 @@ public class Statements {
         public Function F = new Add();
 
         public FunctionsStatement(String[] names){
-            F.f1 = new DVar("a");
-            F.f2 = new DVar("b"); 
+            try{
+                F = Functions.valueOf(names[3]).nf.get();
+            }catch(Exception ignore){}
+
+            if(!(F instanceof DVar)){
+                F.f1 = new DVar("a");
+                F.f2 = new DVar("b");
+            
+                Function.process(names, F);
+            }
         }
 
         public FunctionsStatement(){}
@@ -394,6 +402,7 @@ public class Statements {
 
         @Override
         public LInstruction build(LAssembler builder) {
+            Function.assign(F, builder);
             builder.putConst(output, F);
             return null;
         }

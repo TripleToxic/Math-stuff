@@ -3,6 +3,7 @@ package stuff.util;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 
+import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
 import stuff.logic.Functions;
 
@@ -11,28 +12,28 @@ public abstract class Function{
     public String inputName;
     public LExecutor exec;
 
-    public void process(String[] args, Function f){
+    public static void process(String[] args, Function f){
         ArrayDeque<String> nArgs = new ArrayDeque<>(Arrays.asList(args));
         for(int i=0; i<4; i++) nArgs.removeFirst();
 
         process(nArgs, f, 1);
     }
 
-    static ArrayDeque<String> process(ArrayDeque<String> args, Function f, int i){
+    static void process(ArrayDeque<String> args, Function f, int i){
         String rev = args.pollFirst();
         Functions F_Enum = Functions.valueOf(rev);
         try{
             if(rev.equals("variable") || i > 2) throw new Exception();
             F_Enum =  Functions.valueOf(rev);
             f.f1 = F_Enum.nf.get(); 
-            args = process(args, f.f1, ++i);
+            process(args, f.f1, ++i);
         }catch(Exception e){
-            while(true){
-                try{
+            try{
+                while(true){
                     Functions.valueOf(args.getFirst());
                     rev = args.pollFirst();
-                }catch(Exception e2){ break; }
-            }
+                }
+            }catch(Exception e2){}
             
             if(rev == null) f.f2 = new DVar("invalid");
             else f.f2 = new DVar(rev);
@@ -44,20 +45,29 @@ public abstract class Function{
                 if(rev.equals("variable") || i > 2) throw new Exception();
                 F_Enum =  Functions.valueOf(rev);
                 f.f2 = F_Enum.nf.get();
-                args = process(args, f.f2, i);
+                process(args, f.f2, i);
             }catch(Exception e){
-                while(true){
-                    try{
+                try{
+                    while(true){
                         Functions.valueOf(args.getFirst());
                         rev = args.pollFirst();
-                    }catch(Exception e2){ break; }
-                }
+                    }
+                }catch(Exception e2){}
 
                 if(rev == null) f.f2 = new DVar("invalid");
                 else f.f2 = new DVar(rev);
             }
         }
-        return args;
+    }
+
+    public static void assign(Function f, LAssembler builder){
+        if(f instanceof DVar var) {
+            if(!var.name.equals(var.inputName))
+                ((DVar)f).id = builder.var(var.name);
+        }else{
+            assign(f.f1, builder);
+            assign(f.f2, builder);
+        }
     }
 
     public abstract double evaluate(double x);
