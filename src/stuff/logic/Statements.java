@@ -348,14 +348,15 @@ public class Statements {
             input = names[2];
             F.inputName = input;
             try{
+                if(names[3].equals("variable")) throw new Exception();
                 F = Functions.valueOf(names[3]).nf.get();
-            }catch(Exception ignore){}
 
-            if(!(F instanceof DVar)){
-                F.f1 = new DVar("a");
-                F.f2 = new DVar("b");
+                F.f1 = new DVar("x");
+                F.f2 = new DVar("x");
             
                 Function.process(names, F);
+            }catch(Exception ignore){
+                F = new DVar(names[3]);
             }
         }
 
@@ -421,6 +422,11 @@ public class Statements {
             .append(input)
             .append(" ")
             .append(F);
+        }
+
+        @Override
+        public LCategory category() {
+            return LCategory.operation;
         }
     }
     

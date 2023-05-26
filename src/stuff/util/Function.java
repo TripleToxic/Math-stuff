@@ -21,7 +21,7 @@ public abstract class Function{
 
     static void process(ArrayDeque<String> args, Function f, int i){
         String rev = args.pollFirst();
-        Functions F_Enum = Functions.valueOf(rev);
+        Functions F_Enum;
         try{
             if(rev.equals("variable") || i > 2) throw new Exception();
             F_Enum =  Functions.valueOf(rev);
@@ -37,6 +37,7 @@ public abstract class Function{
             
             if(rev == null) f.f1 = new DVar("invalid");
             else f.f1 = new DVar(rev);
+            F_Enum = Functions.variable;
         }
 
         if(!F_Enum.isUnary){

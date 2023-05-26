@@ -8,7 +8,6 @@ public class AdditionalFunction{
 
     private static double RationalDiscreteFactorial(double decimal, int term, boolean x_is_positive){
         double p = 1;
-        decimal %= 1;
         if(x_is_positive){
             for(int i=0; i<term; i++){
                 p *= term - i + decimal;
@@ -26,13 +25,13 @@ public class AdditionalFunction{
         int floor_x = (int)x;
         if(floor_x == x) return RationalDiscreteFactorial(0, floor_x, x >= 0);
 
-        double part = (x - 1.5d), prod1 = part, sum = con[0], decimal = x % 1d;
+        double decimal = x % 1d, part = decimal - 0.5, prod1 = part, sum = con[0];
         
         for(int i=1; i<con.length; i++){
             sum += prod1 * con[i];
             prod1 *= part;
         }
 
-        return sum * RationalDiscreteFactorial(decimal, floor_x - 1, x >= 0);
+        return sum / (x + 1) * RationalDiscreteFactorial(decimal, floor_x - 1, x >= 0);
     }
 }
