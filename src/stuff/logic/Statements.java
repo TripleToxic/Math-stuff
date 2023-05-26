@@ -344,6 +344,9 @@ public class Statements {
         public Function F = new Add();
 
         public FunctionsStatement(String[] names){
+            output = names[1];
+            input = names[2];
+            F.inputName = input;
             try{
                 F = Functions.valueOf(names[3]).nf.get();
             }catch(Exception ignore){}
@@ -368,31 +371,33 @@ public class Statements {
 
             field3(table, output, str -> output = str);
             table.add("(");
-            field3(table, input, str -> input = str);
+            field2(table, input, str -> input = str);
+            F.inputName = input;
             table.add(")");
             table.add(" = ");
-            Button(table, table, F);
+            Button(table, table, F, F);
         }
 
-        void Button(Table table, Table parent, Function f){
+        void Button(Table table, Table parent, Function f, Function f_parent){
             Functions FEnum = f.get();
             
             table.button(b -> {
                 b.label(() -> FEnum.symbol);
                 b.clicked(() -> showSelect(b, Functions.all, FEnum, o -> {
                     modify(f, o);
-                    rebuild(parent, F);
+                    rebuild(parent, f_parent);
                 }));
             
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
 
-            f.f1 = f.f2 = new Add();
+            f.f1 = new DVar(input);
+            f.f2 = new DVar(input);
             Functions FEnum2 = f.get();
             if(FEnum2 == Functions.variable){
                 field3(table, ((DVar)f).name, str -> ((DVar)f).name = str);
             }else{
-                Button(table, parent, f.f1);
-                if(!FEnum2.isUnary) Button(table, parent, f.f2);
+                Button(table, parent, f.f1, f_parent);
+                if(!FEnum2.isUnary) Button(table, parent, f.f2, f_parent);
             }
         }
 
@@ -411,6 +416,10 @@ public class Statements {
         public void write(StringBuilder builder) {
             builder
             .append("Function ")
+            .append(output)
+            .append(" ")
+            .append(input)
+            .append(" ")
             .append(F);
         }
     }

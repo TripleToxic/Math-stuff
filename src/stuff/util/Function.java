@@ -35,8 +35,8 @@ public abstract class Function{
                 }
             }catch(Exception e2){}
             
-            if(rev == null) f.f2 = new DVar("invalid");
-            else f.f2 = new DVar(rev);
+            if(rev == null) f.f1 = new DVar("invalid");
+            else f.f1 = new DVar(rev);
         }
 
         if(!F_Enum.isUnary){
@@ -66,7 +66,7 @@ public abstract class Function{
                 ((DVar)f).id = builder.var(var.name);
         }else{
             assign(f.f1, builder);
-            assign(f.f2, builder);
+            if(!f.get().isUnary) assign(f.f2, builder);
         }
     }
 
