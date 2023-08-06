@@ -457,7 +457,7 @@ public class Statements {
 
         @Override
         public LInstruction build(LAssembler builder){
-            builder.putConst(output, new Function(output, input, op, a, b, recur, builder).NewRecur(parseDouble(recur_num)));
+            builder.putConst(output, new Function(output, input, op, a, b, recur, recur_num, builder));
             return null;
         }
         

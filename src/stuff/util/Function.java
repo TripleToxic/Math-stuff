@@ -4,6 +4,8 @@ import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
 import stuff.logic.FunctionEnum;
 
+import static stuff.util.AdditionalFunction.*;
+
 public class Function{
     String functionName, inputname, a, b;
     int id1, id2;
@@ -13,20 +15,16 @@ public class Function{
 
     static int length = 5;
 
-    public Function(String output, String input, FunctionEnum ope, String name1, String name2, boolean recurs, LAssembler builder){
+    public Function(String output, String input, FunctionEnum ope, String name1, String name2, boolean recurs, String recur_n, LAssembler builder){
         functionName = output;
         inputname = input;
         op = ope;
         a = name1;
         b = name2;
         recur = recurs;
+        recur_num = parseDouble(builder.putVar(recur_n).value);
         id1 = builder.var(name1);
         id2 = builder.var(name2);
-    }
-
-    public Function NewRecur(double num){
-        recur_num = num;
-        return this;
     }
 
     public double evaluate(LExecutor exec, double val){
@@ -60,7 +58,7 @@ public class Function{
                 :
                 b.equals(inputname) ? val : exec.num(id2)
         );
-        recur_num = out;
+        if(recur) recur_num = out;
         return out;
     }
 
