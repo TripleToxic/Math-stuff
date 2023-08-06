@@ -338,12 +338,12 @@ public class Statements {
         }
     }*/
 
-    public static class FunctionsStatement extends ShortStatement{
+    public static class FunctionStatement extends ShortStatement{
         public String output = "f", input = "x", a = "a", b = "b", recur_num = "0";
         public boolean recur = false;
         public FunctionEnum op = FunctionEnum.add;
 
-        public FunctionsStatement(String[] names){
+        public FunctionStatement(String[] names){
             output = names[1];
             input = names[2];
 
@@ -360,7 +360,7 @@ public class Statements {
             recur_num = parseDouble(names[7]) + "";  //return 0 if the argument is not a number
         }
 
-        public FunctionsStatement(){}
+        public FunctionStatement(){}
 
         @Override
         public void build(Table table){
@@ -501,7 +501,7 @@ public class Statements {
     public static void load(){
         registerStatement("Complex", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4]), ComplexOperationStatement::new);
         //registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
-        registerStatement("Function", args -> new FunctionsStatement(args), FunctionsStatement::new);
+        registerStatement("Function", args -> new FunctionStatement(args), FunctionStatement::new);
         registerStatement("FunctionOp", args -> new FunctionOperationStatement(args[1], args[2], args[3]), FunctionOperationStatement::new);
     }
 
