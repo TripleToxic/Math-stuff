@@ -3,6 +3,7 @@ package stuff.logic;
 import arc.func.*;
 import arc.graphics.Color;
 import arc.scene.ui.layout.*;
+import mindustry.Vars;
 import mindustry.gen.*;
 import mindustry.logic.*;
 import mindustry.logic.LExecutor.*;
@@ -364,7 +365,8 @@ public class Statements {
 
         @Override
         public void build(Table table){
-            rebuild(table);
+            if(Vars.mobile) rebuildMobile(table);
+            else rebuild(table);
         }
 
         void rebuild(Table table){
@@ -373,7 +375,7 @@ public class Statements {
 
             field3(table, output, str -> output = str);
             table.add("(");
-            field4(table, input, str -> input = str);
+            field3(table, input, str -> input = str);
             table.add(")");
             table.add("=");
             if(unary){
@@ -397,6 +399,36 @@ public class Statements {
             }
         }
 
+        void rebuildMobile(Table table){
+            table.clearChildren();
+            boolean unary = op.isUnary;
+
+            field2(table, output, str -> output = str);
+            table.add("(");
+            field2(table, input, str -> input = str);
+            table.add(")");
+            table.add("=");
+            if(unary){
+                Button(table, table);
+                field2(table, a, str -> a = str);
+            }else{
+                field2(table, a, str -> a = str);
+                Button(table, table);
+                field2(table, b, str -> b = str);
+            }
+
+            table.row();
+            repeat(4, table);
+            table.add("enable: ");
+            Button2(table, table);
+            if(recur){
+                table.row();
+                repeat(4, table);
+                table.add("number: ");
+                field2(table, recur_num, str -> recur_num = str);
+            }
+        }
+
         void repeat(int n, Table table){
             for(int i=0; i<n; i++){
                 table.add();
@@ -408,7 +440,7 @@ public class Statements {
                 b.label(() -> op.symbol);
                 b.clicked(() -> showSelect(b, FunctionEnum.all, op, o -> {
                     op = o;
-                    rebuild(parent);
+                    build(parent);
                 }));
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
@@ -418,7 +450,7 @@ public class Statements {
                 b.label(() -> recur + "");
                 b.clicked(() -> {
                     recur = !recur;
-                    rebuild(parent);
+                    build(parent);
                 });
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
@@ -467,11 +499,18 @@ public class Statements {
 
         @Override
         public void build(Table table) {
-            field(table, result, str -> result = str);
-            table.add(" = ");
-            field(table, F, str -> F = str);
-            table.add("(");
-            field4(table, x, str -> x = str);
+            if(Vars.mobile){
+                field3(table, result, str -> result = str);
+                table.add(" = ");
+                field3(table, F, str -> F = str);
+                table.add("(");
+            }else{
+                field(table, result, str -> result = str);
+                table.add(" = ");
+                field(table, F, str -> F = str);
+                table.add("(");
+            }
+            field3(table, x, str -> x = str);
             table.add(")");
         }
 
