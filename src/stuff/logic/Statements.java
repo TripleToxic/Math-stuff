@@ -12,7 +12,6 @@ import stuff.logic.TheInstruction.*;
 import stuff.util.Function;
 
 //import stuff.logic.AFunc.TwoType;
-import static stuff.util.AdditionalFunction.*;
 
 public class Statements {
     public static class ComplexOperationStatement extends ShortStatement{
@@ -358,7 +357,7 @@ public class Statements {
             if(names[6].equals("true")) recur = true;
             else recur = false;
 
-            recur_num = parseDouble(names[7]) + "";  //return 0 if the argument is not a number
+            recur_num = names[7];
         }
 
         public FunctionStatement(){}
