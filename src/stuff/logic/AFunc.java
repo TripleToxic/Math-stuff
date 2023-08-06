@@ -1,6 +1,6 @@
 package stuff.logic;
 
-public enum AFunc{
+/*public enum AFunc{
     // Array section
     New("new"),
     Add("+"),
@@ -53,4 +53,4 @@ public enum AFunc{
 
         public static final TwoType[] all = values();
     }
-}
+}*/

@@ -3,16 +3,15 @@ package stuff.logic;
 import arc.func.*;
 import arc.graphics.Color;
 import arc.scene.ui.layout.*;
-//import mindustry.Vars;
 import mindustry.gen.*;
 import mindustry.logic.*;
 import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
 import stuff.logic.TheInstruction.*;
 import stuff.util.Function;
-//import stuff.logic.AFunc.TwoType;
 
-import static stuff.util.Function.*;
+//import stuff.logic.AFunc.TwoType;
+import static stuff.util.AdditionalFunction.*;
 
 public class Statements {
     public static class ComplexOperationStatement extends ShortStatement{
@@ -340,76 +339,93 @@ public class Statements {
     }*/
 
     public static class FunctionsStatement extends ShortStatement{
-        public String output = "f", input = "x";
-        public Function F = new Add();
+        public String output = "f", input = "x", a = "a", b = "b", recur_num = "0";
+        public boolean recur = false;
+        public FunctionEnum op = FunctionEnum.add;
 
         public FunctionsStatement(String[] names){
             output = names[1];
             input = names[2];
-            F.inputName = input;
-            try{
-                if(names[3].equals("variable")) throw new Exception();
-                F = Functions.valueOf(names[3]).nf.get();
 
-                F.f1 = new DVar("x");
-                F.f2 = new DVar("x");
-            
-                Function.process(names, F);
-            }catch(Exception ignore){
-                F = new DVar(names[3]);
-            }
+            try{
+                op = FunctionEnum.valueOf(names[3]);
+            }catch(Exception ignore){}
+
+            a = names[4];
+            b = names[5];
+
+            if(names[6].equals("true")) recur = true;
+            else recur = false;
+
+            recur_num = parseDouble(names[7]) + "";  //return 0 if the argument is not a number
         }
 
         public FunctionsStatement(){}
 
         @Override
-        public void build(Table table) {
-            rebuild(table, F);
+        public void build(Table table){
+            rebuild(table);
         }
 
-        void rebuild(Table table, Function f){
+        void rebuild(Table table){
             table.clearChildren();
+            boolean unary = op.isUnary;
 
             field3(table, output, str -> output = str);
             table.add("(");
-            field2(table, input, str -> input = str);
-            F.inputName = input;
+            field4(table, input, str -> input = str);
             table.add(")");
-            table.add(" = ");
-            Button(table, table, F, F);
-        }
-
-        void Button(Table table, Table parent, Function f, Function f_parent){
-            Functions FEnum = f.get();
-            
-            table.button(b -> {
-                b.label(() -> FEnum.symbol);
-                b.clicked(() -> showSelect(b, Functions.all, FEnum, o -> {
-                    modify(f, o);
-                    rebuild(parent, f_parent);
-                }));
-            
-            }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
-
-            f.f1 = new DVar(input);
-            f.f2 = new DVar(input);
-            Functions FEnum2 = f.get();
-            if(FEnum2 == Functions.variable){
-                field3(table, ((DVar)f).name, str -> ((DVar)f).name = str);
+            table.add("=");
+            if(unary){
+                Button(table, table);
+                field(table, a, str -> a = str);
             }else{
-                Button(table, parent, f.f1, f_parent);
-                if(!FEnum2.isUnary) Button(table, parent, f.f2, f_parent);
+                field(table, a, str -> a = str);
+                Button(table, table);
+                field(table, b, str -> b = str);
+            }
+
+            table.row();
+            repeat(4, table);
+            table.add("enable: ");
+            Button2(table, table);
+            if(recur){
+                table.row();
+                repeat(4, table);
+                table.add("number: ");
+                field(table, recur_num, str -> recur_num = str);
             }
         }
 
-        void modify(Function f, Functions fs){
-            f = fs.nf.get();
+        void repeat(int n, Table table){
+            for(int i=0; i<n; i++){
+                table.add();
+            }
+        }
+
+        void Button(Table table, Table parent){
+            table.button(b -> {
+                b.label(() -> op.symbol);
+                b.clicked(() -> showSelect(b, FunctionEnum.all, op, o -> {
+                    op = o;
+                    rebuild(parent);
+                }));
+            }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
+        }
+
+        void Button2(Table table, Table parent){
+            table.button(b -> {
+                b.label(() -> recur + "");
+                b.clicked(() -> {
+                    recur = !recur;
+                    rebuild(parent);
+                });
+            }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
 
         @Override
-        public LInstruction build(LAssembler builder) {
-            Function.assign(F, builder);
-            builder.putConst(output, F);
+        public LInstruction build(LAssembler builder){
+            builder.putConst(output, new Function(output, input, op, a, b, recur, builder).NewRecur(parseDouble(recur_num)));
             return null;
         }
         
@@ -421,7 +437,15 @@ public class Statements {
             .append(" ")
             .append(input)
             .append(" ")
-            .append(F);
+            .append(op.name())
+            .append(" ")
+            .append(a)
+            .append(" ")
+            .append(b)
+            .append(" ")
+            .append(recur)
+            .append(" ")
+            .append(recur_num);
         }
 
         @Override
@@ -429,11 +453,56 @@ public class Statements {
             return LCategory.operation;
         }
     }
+
+    public static class FunctionOperationStatement extends ShortStatement{
+        public String result = "result", F = "f", x = "x";
+
+        public FunctionOperationStatement(String result, String F, String x){
+            this.result = result;
+            this.F = F;
+            this.x = x;
+        }
+
+        public FunctionOperationStatement(){}
+
+        @Override
+        public void build(Table table) {
+            field(table, result, str -> result = str);
+            table.add(" = ");
+            field(table, F, str -> F = str);
+            table.add("(");
+            field4(table, x, str -> x = str);
+            table.add(")");
+        }
+
+        @Override
+        public LInstruction build(LAssembler builder) {
+            return new FunctionOperationI(builder.var(F), builder.var(x), builder.var(result));
+        }
+
+        @Override
+        public void write(StringBuilder builder) {
+            builder
+            .append("FunctionOp ")
+            .append(result)
+            .append(" ")
+            .append(F)
+            .append(" ")
+            .append(x);
+        }
+
+        @Override
+        public LCategory category() {
+            return LCategory.operation;
+        }
+        
+    }
     
     public static void load(){
         registerStatement("Complex", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4]), ComplexOperationStatement::new);
         //registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
         registerStatement("Function", args -> new FunctionsStatement(args), FunctionsStatement::new);
+        registerStatement("FunctionOp", args -> new FunctionOperationStatement(args[1], args[2], args[3]), FunctionOperationStatement::new);
     }
 
     public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){

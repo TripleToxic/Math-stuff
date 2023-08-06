@@ -3,6 +3,7 @@ package stuff.logic;
 import mindustry.logic.LExecutor;
 //import stuff.util.Array;
 import stuff.util.Complex;
+import stuff.util.Function;
 
 //import static stuff.util.Array.*;
 //import static stuff.logic.AFunc.TwoType;
@@ -195,4 +196,22 @@ public class TheInstruction{
             }
         }
     }*/
+
+    public static class FunctionOperationI implements LInstruction{
+        public int F, x, result;
+
+        public FunctionOperationI(int F, int x, int result){
+            this.F = F;
+            this.x = x;
+            this.result = result;
+        }
+
+        @Override
+        public void run(LExecutor exec) {
+            exec.setnum(result, 
+                exec.obj(F) instanceof Function f ? 
+                f.evaluate(exec, exec.num(x)) : 0
+            );
+        }
+    }
 }
