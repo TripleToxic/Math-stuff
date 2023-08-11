@@ -23,7 +23,7 @@ description: "More math stuff"
 version: 3.0
 
 #minimum game version required to run this mod
-minGameVersion: 145
+minGameVersion: 143
 
 #is a java mod
 java: true

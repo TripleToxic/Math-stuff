@@ -8,7 +8,7 @@ import stuff.logic.FunctionEnum;
 import static stuff.util.AdditionalFunction.*;
 
 public class Function{
-    public String functionName, inputname, a, b;
+    public String functionName, inputname;
     int id1, id2, id3;
     FunctionEnum op;
     boolean recur;
@@ -19,14 +19,16 @@ public class Function{
         functionName = output;
         inputname = input;
         op = ope;
-        a = name1;
-        b = name2;
         recur = recurs;
-        id1 = builder.var(name1);
-        id2 = builder.var(name2);
-        BVar v = builder.putVar("".concat(functionName).concat(" recur"));
-        v.value = parseDouble(recur_string);
-        id3 = v.id;
+
+        if(!name1.equals(inputname)) id1 = builder.var(name1);
+        if(!name2.equals(inputname)) id2 = builder.var(name2);
+
+        if(recur){
+            BVar v = builder.putVar("recur ".concat(functionName));
+            v.value = parseDouble(recur_string);
+            id3 = v.id;
+        }
     }
 
     public Function(){}
@@ -49,18 +51,18 @@ public class Function{
             f1 != null && i < length ?
                 p1 != names.length ? (names[p1].recur ? exec.num(names[p1].id3) : 0) : f1.evaluate(exec, val, names, i + 1)
                 :
-                a.equals(inputname) ? val : exec.num(id1))
+                id1 == 0 ? val : exec.num(id1))
         :
         op.evals.eval(
             f1 != null && i < length ?
                 p1 != names.length ? (names[p1].recur ? exec.num(names[p1].id3) : 0) : f1.evaluate(exec, val, names, i + 1)
                 :
-                a.equals(inputname) ? val : exec.num(id1),
+                id1 == 0 ? val : exec.num(id1),
 
             f2 != null && i < length ?
                 p2 != names.length ? (names[p2].recur ? exec.num(names[p2].id3) : 0) : f2.evaluate(exec, val, names, i + 1) 
                 :
-                b.equals(inputname) ? val : exec.num(id2)
+                id2 == 0 ? val : exec.num(id2)
         );
 
         if(recur) exec.setnum(id3, out);

@@ -10,7 +10,7 @@ public enum FunctionEnum {
     add("+", (a, b) -> a + b),
     sub("-", (a, b) -> a - b),
     mul("*", (a, b) -> a * b),
-    div("*", (a, b) -> a / b),
+    div("/", (a, b) -> a / b),
     idiv("//", (a, b) -> floor(a / b)),
     mod("%", (a, b) -> a % b),
     pow("^", (a, b) -> pow(a, b)),
