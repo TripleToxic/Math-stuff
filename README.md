@@ -1,4 +1,4 @@
 # Math stuff
 adding:
 - Complex operation
-- Array operation (halted)
+- Function operation
