@@ -73,9 +73,9 @@ public class AdditionalFunction{
         return out;
     }
 
-    public static double parseDouble(Object s){
+    public static double parseDouble(String s){
         try{
-            return Double.parseDouble((String)s);
+            return Double.parseDouble(s);
         }catch(Exception e){
             return 0;
         }

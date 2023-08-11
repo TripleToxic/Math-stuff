@@ -339,10 +339,9 @@ public class Statements {
     }*/
 
     public static class FunctionStatement extends ShortStatement{
-        public String output = "f", input = "x", a = "a", b = "b";
+        public String output = "f", input = "x", a = "a", b = "b", recur_string = "0";
         public boolean recur = false;
         public FunctionEnum op = FunctionEnum.add;
-        public Function f = new Function();
 
         public FunctionStatement(String[] names){
             output = names[1];
@@ -358,7 +357,7 @@ public class Statements {
             if(names[6].equals("true")) recur = true;
             else recur = false;
 
-            f.recur_string = names[7];
+            recur_string = names[7];
         }
 
         public FunctionStatement(){}
@@ -395,7 +394,7 @@ public class Statements {
                 table.row();
                 repeat(4, table);
                 table.add("number: ");
-                field(table, f.recur_string, str -> f.recur_string = str);
+                field(table, recur_string, str -> recur_string = str);
             }
         }
 
@@ -425,7 +424,7 @@ public class Statements {
                 table.row();
                 repeat(4, table);
                 table.add("number: ");
-                field2(table, f.recur_string, str -> f.recur_string = str);
+                field2(table, recur_string, str -> recur_string = str);
             }
         }
 
@@ -457,7 +456,7 @@ public class Statements {
 
         @Override
         public LInstruction build(LAssembler builder){
-            builder.putConst(output, f.modifyThings(output, input, op, a, b, recur, builder));
+            builder.putConst(output, new Function(output, input, op, a, b, recur, recur_string, builder));
             return null;
         }
         
@@ -477,7 +476,7 @@ public class Statements {
             .append(" ")
             .append(recur)
             .append(" ")
-            .append(f.newRecur().recur_num);
+            .append(recur_string);
         }
 
         @Override
