@@ -7,24 +7,31 @@ import stuff.logic.FunctionEnum;
 import static stuff.util.AdditionalFunction.*;
 
 public class Function{
-    String functionName, inputname, a, b;
+    public String functionName, inputname, a, b, recur_string = "0";
+    public double recur_num = 0;
     int id1, id2;
     FunctionEnum op;
-    double recur_num = 0;
     boolean recur;
 
     static int length = 5;
 
-    public Function(String output, String input, FunctionEnum ope, String name1, String name2, boolean recurs, String recur_n, LAssembler builder){
+    public Function(){}
+
+    public Function newRecur(){
+        recur_num = parseDouble(recur_string);
+        return this;
+    }
+
+    public Function modifyThings(String output, String input, FunctionEnum ope, String name1, String name2, boolean recurs, LAssembler builder){
         functionName = output;
         inputname = input;
         op = ope;
         a = name1;
         b = name2;
         recur = recurs;
-        recur_num = parseDouble(builder.putVar(recur_n).value);
         id1 = builder.var(name1);
         id2 = builder.var(name2);
+        return this;
     }
 
     public double evaluate(LExecutor exec, double val){
@@ -58,7 +65,11 @@ public class Function{
                 :
                 b.equals(inputname) ? val : exec.num(id2)
         );
-        if(recur) recur_num = out;
+        if(recur){
+            recur_num = out;
+            recur_string = recur_num + "";
+        }
+
         return out;
     }
 
