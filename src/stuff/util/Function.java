@@ -9,9 +9,10 @@ import static stuff.util.AdditionalFunction.*;
 
 public class Function{
     public String functionName, inputname;
-    int id1, id2, id3;
+    int id1, id2, id3, ptr1, ptr2;
     FunctionEnum op;
-    boolean recur;
+    boolean recur, unchecked = true;
+    Function f1, f2;
 
     static int length = 5;
 
@@ -40,27 +41,30 @@ public class Function{
     public double evaluate(LExecutor exec, double val, Function[] names, int i){
         names[i] = this;
 
-        Function f1 = exec.obj(id1) instanceof Function f ? f : null, 
-                 f2 = exec.obj(id2) instanceof Function f ? f : null;
-
-        int p1 = check(names, f1), 
-            p2 = check(names, f2);
+        if(unchecked){
+            f1 = exec.obj(id1) instanceof Function f ? f : null;
+            f2 = exec.obj(id2) instanceof Function f ? f : null;
+            
+            ptr1 = check(names, f1);
+            ptr2 = check(names, f2);
+            unchecked = false;
+        }
 
         double out = op.isUnary ?
         op.eval.eval(
             f1 != null && i < length ?
-                p1 != names.length ? (names[p1].recur ? exec.num(names[p1].id3) : 0) : f1.evaluate(exec, val, names, i + 1)
+                ptr1 != names.length ? (names[ptr1].recur ? exec.num(names[ptr1].id3) : 0) : f1.evaluate(exec, val, names, i + 1)
                 :
                 id1 == 0 ? val : exec.num(id1))
         :
         op.evals.eval(
             f1 != null && i < length ?
-                p1 != names.length ? (names[p1].recur ? exec.num(names[p1].id3) : 0) : f1.evaluate(exec, val, names, i + 1)
+                ptr1 != names.length ? (names[ptr1].recur ? exec.num(names[ptr1].id3) : 0) : f1.evaluate(exec, val, names, i + 1)
                 :
                 id1 == 0 ? val : exec.num(id1),
 
             f2 != null && i < length ?
-                p2 != names.length ? (names[p2].recur ? exec.num(names[p2].id3) : 0) : f2.evaluate(exec, val, names, i + 1) 
+                ptr2 != names.length ? (names[ptr2].recur ? exec.num(names[ptr2].id3) : 0) : f2.evaluate(exec, val, names, i + 1) 
                 :
                 id2 == 0 ? val : exec.num(id2)
         );
