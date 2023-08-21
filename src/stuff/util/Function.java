@@ -13,6 +13,7 @@ public class Function{
     FunctionEnum op;
     boolean recur, unchecked = true;
     Function f1, f2;
+    double recurBuffer;
 
     static int length = 5;
 
@@ -35,7 +36,12 @@ public class Function{
     public Function(){}
 
     public double evaluate(LExecutor exec, double val){
-        return evaluate(exec, val, new Function[length + 1], 0);
+        Function[] names = new Function[length];
+        double out = evaluate(exec, val, names, 0);
+        for(int i=0; i<length; i++){
+            if(names[i].recur) exec.setnum(names[i].id3, recurBuffer);
+        }
+        return out;
     }
 
     public double evaluate(LExecutor exec, double val, Function[] names, int i){
@@ -52,34 +58,34 @@ public class Function{
 
         double out = op.isUnary ?
         op.eval.eval(
-            f1 != null && i < length ?
-                ptr1 != names.length ? (names[ptr1].recur ? exec.num(names[ptr1].id3) : 0) : f1.evaluate(exec, val, names, i + 1)
+            f1 != null && i < length - 1 ?
+                ptr1 != length ? (names[ptr1].recur ? exec.num(names[ptr1].id3) : 0) : f1.evaluate(exec, val, names, i + 1)
                 :
                 id1 == 0 ? val : exec.num(id1))
         :
         op.evals.eval(
-            f1 != null && i < length ?
-                ptr1 != names.length ? (names[ptr1].recur ? exec.num(names[ptr1].id3) : 0) : f1.evaluate(exec, val, names, i + 1)
+            f1 != null && i < length - 1 ?
+                ptr1 != length ? (names[ptr1].recur ? exec.num(names[ptr1].id3) : 0) : f1.evaluate(exec, val, names, i + 1)
                 :
                 id1 == 0 ? val : exec.num(id1),
 
-            f2 != null && i < length ?
-                ptr2 != names.length ? (names[ptr2].recur ? exec.num(names[ptr2].id3) : 0) : f2.evaluate(exec, val, names, i + 1) 
+            f2 != null && i < length - 1 ?
+                ptr2 != length ? (names[ptr2].recur ? exec.num(names[ptr2].id3) : 0) : f2.evaluate(exec, val, names, i + 1) 
                 :
                 id2 == 0 ? val : exec.num(id2)
         );
 
-        if(recur) exec.setnum(id3, out);
+        if(recur) recurBuffer = out;
 
         return out;
     }
 
     private static int check(Function[] fs, Function f){
-        if(f == null) return fs.length;
+        if(f == null) return length;
         int i = 0;
         while(!fs[i].functionName.equals(f.functionName)){
             i++;
-            if(i == fs.length || fs[i] == null) return fs.length;
+            if(i == fs.length || fs[i] == null) return length;
         }
         return i;
     }
