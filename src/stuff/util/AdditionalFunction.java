@@ -46,7 +46,7 @@ public class AdditionalFunction{
         b %= 360;
         return min((a - b) < 0 ? a - b + 360 : a - b, (b - a) < 0 ? b - a + 360 : b - a);
     }
-
+    
     public static double ByteArrayToDouble(byte[] bytes){
         long out = 0;
         if(bytes.length < 8){

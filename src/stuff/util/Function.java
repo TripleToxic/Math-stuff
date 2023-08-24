@@ -7,7 +7,7 @@ import stuff.logic.FunctionEnum;
 
 import static stuff.util.AdditionalFunction.*;
 
-public class Function{
+public class Function implements FunctionEval{
     public String functionName, inputname;
     int id1, id2, id3, ptr1, ptr2;
     FunctionEnum op;
@@ -35,6 +35,7 @@ public class Function{
 
     public Function(){}
 
+    @Override
     public double evaluate(LExecutor exec, double val){
         Function[] names = new Function[length];
         double out = evaluate(exec, val, names, 0);

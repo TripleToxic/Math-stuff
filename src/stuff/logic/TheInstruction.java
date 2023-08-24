@@ -3,7 +3,7 @@ package stuff.logic;
 import mindustry.logic.LExecutor;
 //import stuff.util.Array;
 import stuff.util.Complex;
-import stuff.util.Function;
+import stuff.util.FunctionEval;
 
 //import static stuff.util.Array.*;
 //import static stuff.logic.AFunc.TwoType;
@@ -209,7 +209,7 @@ public class TheInstruction{
         @Override
         public void run(LExecutor exec) {
             exec.setnum(result, 
-                exec.obj(F) instanceof Function f ? 
+                exec.obj(F) instanceof FunctionEval f ? 
                 f.evaluate(exec, exec.num(x)) : 0
             );
         }

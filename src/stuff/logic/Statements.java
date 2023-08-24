@@ -93,7 +93,7 @@ public class Statements {
 
         public void write(StringBuilder builder){
             builder
-                .append("Comp ")
+                .append("comp ")
                 .append(Op.name())
                 .append(" ")
                 .append(r)
@@ -463,7 +463,7 @@ public class Statements {
         @Override
         public void write(StringBuilder builder) {
             builder
-            .append("Fn ")
+            .append("fn ")
             .append(output)
             .append(" ")
             .append(input)
@@ -521,7 +521,7 @@ public class Statements {
         @Override
         public void write(StringBuilder builder) {
             builder
-            .append("FnOp ")
+            .append("fnop ")
             .append(result)
             .append(" ")
             .append(F)
@@ -537,10 +537,10 @@ public class Statements {
     }
     
     public static void load(){
-        registerStatement("Comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4]), ComplexOperationStatement::new);
+        registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4]), ComplexOperationStatement::new);
         //registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
-        registerStatement("Fn", args -> new FunctionStatement(args), FunctionStatement::new);
-        registerStatement("Fnop", args -> new FunctionOperationStatement(args[1], args[2], args[3]), FunctionOperationStatement::new);
+        registerStatement("fn", args -> new FunctionStatement(args), FunctionStatement::new);
+        registerStatement("fnop", args -> new FunctionOperationStatement(args[1], args[2], args[3]), FunctionOperationStatement::new);
     }
 
     public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){
