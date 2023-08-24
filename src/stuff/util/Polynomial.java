@@ -1,18 +1,26 @@
 package stuff.util;
 
+import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
-
 
 public class Polynomial implements FunctionEval{
     String functionName;
     int[] coefficents;
 
+    public Polynomial(String[] strs, LAssembler builder){
+        coefficents = new int[strs.length];
+        for(int i=0; i< strs.length; i++){
+            coefficents[i] = builder.var(strs[i]);
+        }
+    }
+
     @Override
     public double evaluate(LExecutor exec, double val) {
-        double out = 0;
-        for(int i=0; i<coefficents.length; i++){
-
+        double out = exec.num(coefficents[0]), xn = val;
+        for(int i=1; i<coefficents.length; i++){
+            out += exec.num(coefficents[i]) * xn;
+            xn *= val;
         }
-        return 0;
+        return out;
     }
 }

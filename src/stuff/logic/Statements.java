@@ -14,7 +14,7 @@ import stuff.util.Function;
 //import stuff.logic.AFunc.TwoType;
 
 public class Statements {
-    public static class ComplexOperationStatement extends ShortStatement{
+    public static class ComplexOperationStatement extends ExtendStatement{
         public CFunc Op = CFunc.New;
         public String result = "result", r = "r", i = "i";
         
@@ -105,7 +105,7 @@ public class Statements {
         }
     }
     
-    /*public static class ArrayOperationStatement extends ShortStatement{
+    /*public static class ArrayOperationStatement extends ExtendStatement{
         public AFunc OpA = AFunc.New;
         public TwoType TT = TwoType.number;
         public String result = "result", a = "a", b = "b", c = "c", d = "d", e = "e";
@@ -338,7 +338,7 @@ public class Statements {
         }
     }*/
 
-    public static class FunctionStatement extends ShortStatement{
+    public static class FunctionStatement extends ExtendStatement{
         public String output = "f", input = "x", a = "a", b = "b", recur_string = "0";
         public boolean recur = false;
         public FunctionEnum op = FunctionEnum.add;
@@ -485,7 +485,7 @@ public class Statements {
         }
     }
 
-    public static class FunctionOperationStatement extends ShortStatement{
+    public static class FunctionOperationStatement extends ExtendStatement{
         public String result = "result", F = "f", x = "x";
 
         public FunctionOperationStatement(String result, String F, String x){
@@ -533,7 +533,29 @@ public class Statements {
         public LCategory category() {
             return LCategory.operation;
         }
-        
+    }
+
+    public static class PolynomialStatement extends ExtendStatement{
+        public String functionName, degree;
+        public boolean reversed;
+        public String[] vars = new String[14]; //The maximum degree is 14, but mostly no one will ever use it anyway.
+
+        public PolynomialStatement(){}
+
+        @Override
+        public void build(Table table) {
+            rebuild(table);
+        }
+
+        void rebuild(Table table){
+
+        }
+
+        @Override
+        public LInstruction build(LAssembler builder) {
+            throw new UnsupportedOperationException("Unimplemented method 'build'");
+        }
+
     }
     
     public static void load(){
