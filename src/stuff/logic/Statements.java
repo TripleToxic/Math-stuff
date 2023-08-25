@@ -13,7 +13,10 @@ import stuff.util.Function;
 
 //import stuff.logic.AFunc.TwoType;
 
-public class Statements {
+public class Statements{
+    public static Color functionGreen = Color.valueOf("1fa32c");
+    public static final LCategory function = new LCategory("function", functionGreen);
+
     public static class ComplexOperationStatement extends ExtendStatement{
         public CFunc Op = CFunc.New;
         public String result = "result", r = "r", i = "i";
@@ -481,7 +484,48 @@ public class Statements {
 
         @Override
         public LCategory category() {
-            return LCategory.operation;
+            return function;
+        }
+    }
+
+    public static class PolynomialStatement extends ExtendStatement{
+        public String functionName;
+        public String[] coefficents;
+        public boolean reversed = false;
+        public byte degree = 2;
+        static byte starter_byte = 0x61;
+
+        public PolynomialStatement(String[] names){
+            coefficents = new String[names.length - 2];
+            System.arraycopy(names, 2, coefficents, 0, names.length - 2);
+        }
+
+        public PolynomialStatement(){
+            coefficents = new String[degree + 1];
+            byte[] bytes = {starter_byte};
+            for(int i=0; i<=degree; i++){
+                coefficents[i] = new String(bytes);
+                bytes[0] += 1;
+            }
+        }
+
+        @Override
+        public void build(Table table) {
+            rebuild(table);
+        }
+
+        void rebuild(Table table){
+
+        }
+
+        @Override
+        public LInstruction build(LAssembler builder) {
+            return null;
+        }
+
+        @Override
+        public LCategory category(){
+            return function;
         }
     }
 
@@ -531,31 +575,8 @@ public class Statements {
 
         @Override
         public LCategory category() {
-            return LCategory.operation;
+            return function;
         }
-    }
-
-    public static class PolynomialStatement extends ExtendStatement{
-        public String functionName, degree;
-        public boolean reversed;
-        public String[] vars = new String[14]; //The maximum degree is 14, but mostly no one will ever use it anyway.
-
-        public PolynomialStatement(){}
-
-        @Override
-        public void build(Table table) {
-            rebuild(table);
-        }
-
-        void rebuild(Table table){
-
-        }
-
-        @Override
-        public LInstruction build(LAssembler builder) {
-            throw new UnsupportedOperationException("Unimplemented method 'build'");
-        }
-
     }
     
     public static void load(){
@@ -563,6 +584,7 @@ public class Statements {
         //registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
         registerStatement("fn", args -> new FunctionStatement(args), FunctionStatement::new);
         registerStatement("fnop", args -> new FunctionOperationStatement(args[1], args[2], args[3]), FunctionOperationStatement::new);
+        registerStatement("poly", args -> new PolynomialStatement(args), PolynomialStatement::new);
     }
 
     public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){
