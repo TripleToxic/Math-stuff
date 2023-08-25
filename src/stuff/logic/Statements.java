@@ -1,7 +1,10 @@
 package stuff.logic;
 
+import java.util.Arrays;
+
 import arc.func.*;
 import arc.graphics.Color;
+import arc.scene.style.TextureRegionDrawable;
 import arc.scene.ui.layout.*;
 import mindustry.Vars;
 import mindustry.gen.*;
@@ -10,13 +13,15 @@ import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
 import stuff.logic.TheInstruction.*;
 import stuff.util.Function;
+import stuff.util.Polynomial;
 
 //import stuff.logic.AFunc.TwoType;
 
 public class Statements{
     public static Color functionGreen = Color.valueOf("1fa32c");
-    public static final LCategory function = new LCategory("function", functionGreen);
-
+    public static TextureRegionDrawable f = Fonts.getGlyph(Fonts.def, 'f');
+    public static final LCategory function = new LCategory("function", functionGreen, f);
+    
     public static class ComplexOperationStatement extends ExtendStatement{
         public CFunc Op = CFunc.New;
         public String result = "result", r = "r", i = "i";
@@ -489,24 +494,31 @@ public class Statements{
     }
 
     public static class PolynomialStatement extends ExtendStatement{
-        public String functionName;
-        public String[] coefficents;
-        public boolean reversed = false;
-        public byte degree = 2;
         static byte starter_byte = 0x61;
 
+        public String functionName = "f";
+        public String[] coefficents = init(2);
+        public boolean reversed = false;
+
         public PolynomialStatement(String[] names){
-            coefficents = new String[names.length - 2];
-            System.arraycopy(names, 2, coefficents, 0, names.length - 2);
+            functionName = names[1];
+
+            reversed = names[2].equals("true") ? true : false;
+
+            coefficents = new String[names.length - 3];
+            System.arraycopy(names, 3, coefficents, 0, names.length - 3);
         }
 
-        public PolynomialStatement(){
-            coefficents = new String[degree + 1];
+        public PolynomialStatement(){}
+
+        static String[] init(int degree){
+            String[] coefficents = new String[degree + 1];
             byte[] bytes = {starter_byte};
             for(int i=0; i<=degree; i++){
                 coefficents[i] = new String(bytes);
                 bytes[0] += 1;
             }
+            return coefficents;
         }
 
         @Override
@@ -515,17 +527,61 @@ public class Statements{
         }
 
         void rebuild(Table table){
+            table.clearChildren();
 
+            field3(table, functionName, s -> functionName = s);
+            table.add("(x) = ");
+            int l = coefficents.length;
+            int[] ib = {0};
+            if(reversed){
+                for(int i=l-1; i>0; i--){
+                    ib[0] = l-i-1;
+                    field2(table, coefficents[ib[0]], s -> coefficents[ib[0]] = s);
+                    table.add("x");
+                    table.add(i + "", 0.25f);
+                    table.add("+");
+                    row(table);
+                }
+                field2(table, coefficents[0], s -> coefficents[0] = s);
+            }else{
+                field2(table, coefficents[0], s -> coefficents[0] = s);
+                for(int i=1; i<l; i++){
+                    ib[0] = i;
+                    field2(table, coefficents[i], s -> coefficents[ib[0]] = s);
+                    table.add("x");
+                    table.add(i + "", 0.25f);
+                    table.add("+");
+                    row(table);
+                }
+            }
+            table.row();
+            Check(table, table);
+        }
+
+        void Check(Table table, Table parent){
+            table.check("reverse", reversed, b -> {
+                reversed = b;
+            }).size(64f, 40f).pad(2f).color(table.color);
         }
 
         @Override
         public LInstruction build(LAssembler builder) {
+            builder.putConst(functionName, new Polynomial(coefficents, builder));
             return null;
         }
 
         @Override
         public LCategory category(){
             return function;
+        }
+
+        @Override
+        public void write(StringBuilder builder) {
+            builder
+            .append("poly ")
+            .append(functionName)
+            .append(reversed)
+            .append(Arrays.toString(coefficents));
         }
     }
 
