@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import arc.func.*;
 import arc.graphics.Color;
+import arc.math.Mathf;
 import arc.scene.ui.layout.*;
 import mindustry.Vars;
 import mindustry.gen.*;
@@ -15,6 +16,7 @@ import stuff.util.Function;
 import stuff.util.Polynomial;
 
 //import stuff.logic.AFunc.TwoType;
+import static stuff.util.AdditionalFunction.*;
 
 public class Statements{
     public static Color functionGreen = Color.valueOf("1fa32c");
@@ -44,7 +46,10 @@ public class Statements{
             if(Op == CFunc.get){
                 Button(table, table);
                 table.add(" from: ");
-                field(table, result, str -> result = str);
+                field(table, result, str -> {
+                    result = str;
+                    rebuild(table);
+                });
                 row(table);
                 field(table, r, str -> r = str);
                 table.add(new StringBuffer(" = ").append(result).append(".real")).color(Color.green);
@@ -493,9 +498,9 @@ public class Statements{
 
     public static class PolynomialStatement extends ExtendStatement{
         static byte starter_byte = 0x61;
-        public int degree = 2;
+        public transient int degree = 2;
         public String functionName = "f";
-        public String[] coefficents = init(degree);
+        public String[] coefficents = init(12);
         public boolean reversed = false;
 
         public PolynomialStatement(String[] names){
@@ -503,8 +508,10 @@ public class Statements{
 
             reversed = names[2].equals("true") ? true : false;
 
-            coefficents = new String[names.length - 3];
-            System.arraycopy(names, 3, coefficents, 0, names.length - 3);
+            if(names.length - 3 != 0){
+                degree = names.length - 4;
+                System.arraycopy(names, 3, coefficents, 0, names.length - 3);
+            }
         }
 
         public PolynomialStatement(){}
@@ -531,15 +538,13 @@ public class Statements{
 
             field3(table, functionName, s -> functionName = s);
             table.add("(x) = ");
-            int l = coefficents.length;
+            int l = degree + 1;
             int[] ib = {0};
             if(reversed){
                 for(int i=l-1; i>0; i--){
                     ib[0] = l-i-1;
                     field2(table, coefficents[ib[0]], s -> coefficents[ib[0]] = s);
-                    table.add("x");
-                    table.add(i + "");
-                    table.add(" + ");
+                    table.add("x".concat(i + " + "));
                     row(table);
                 }
                 field2(table, coefficents[0], s -> coefficents[0] = s);
@@ -549,12 +554,15 @@ public class Statements{
                 for(int i=1; i<l; i++){
                     ib[0] = i;
                     field2(table, coefficents[i], s -> coefficents[ib[0]] = s);
-                    table.add("x");
-                    table.add(i + "", 0.25f);
-                    table.add(" + ");
+                    table.add("x".concat(i + " + "));
                     row(table);
                 }
             }
+            table.row();
+            field2(table, degree, str -> {
+                degree = Mathf.clamp(parseInt(str), 0, 13);
+                rebuild(table);
+            });
             table.row();
             Check(table, table);
         }
@@ -571,7 +579,7 @@ public class Statements{
 
         @Override
         public LInstruction build(LAssembler builder) {
-            builder.putConst(functionName, new Polynomial(coefficents, builder));
+            builder.putConst(functionName, new Polynomial(coefficents, degree, builder));
             return null;
         }
 
