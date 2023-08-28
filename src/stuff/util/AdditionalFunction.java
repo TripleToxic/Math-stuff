@@ -88,4 +88,12 @@ public class AdditionalFunction{
             return 0;
         }
     }
+
+    static String toString(Object[] o, int length){
+        if(o == null || length < 1 || o.length == 0) return "";
+
+        StringBuffer s = new StringBuffer(o[0].toString());
+
+        return s.toString();
+    }
 }

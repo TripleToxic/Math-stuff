@@ -47,8 +47,10 @@ public class Statements{
                 Button(table, table);
                 table.add(" from: ");
                 field(table, result, str -> {
-                    result = str;
-                    rebuild(table);
+                    if(!str.equals(result)){
+                        result = str;
+                        rebuild(table);
+                    }
                 });
                 row(table);
                 field(table, r, str -> r = str);
@@ -560,8 +562,11 @@ public class Statements{
             }
             table.row();
             field2(table, degree, str -> {
-                degree = Mathf.clamp(parseInt(str), 0, 13);
-                rebuild(table);
+                int a = Mathf.clamp(parseInt(str), 0, 13);
+                if(a != degree){
+                    degree = a;
+                    rebuild(table);
+                }
             });
             table.row();
             Check(table, table);
@@ -593,7 +598,9 @@ public class Statements{
             builder
             .append("poly ")
             .append(functionName)
+            .append(" ")
             .append(reversed)
+            .append(" ")
             .append(Arrays.toString(coefficents));
         }
     }
