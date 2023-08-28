@@ -20,7 +20,7 @@ import static stuff.util.AdditionalFunction.*;
 
 public class Statements{
     public static Color functionGreen = Color.valueOf("1fa32c");
-    public static final LCategory function = new LCategory("function", functionGreen, Icon.settings);
+    public static final LCategory function = new LCategory("function", functionGreen);
     
     public static class ComplexOperationStatement extends ExtendStatement{
         public CFunc Op = CFunc.New;
