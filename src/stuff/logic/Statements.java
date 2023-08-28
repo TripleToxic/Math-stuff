@@ -1,7 +1,5 @@
 package stuff.logic;
 
-import java.util.Arrays;
-
 import arc.func.*;
 import arc.graphics.Color;
 import arc.math.Mathf;
@@ -20,7 +18,7 @@ import static stuff.util.AdditionalFunction.*;
 
 public class Statements{
     public static Color functionGreen = Color.valueOf("1fa32c");
-    public static final LCategory function = new LCategory("function", functionGreen);
+    public static final LCategory function = new LCategory("function", functionGreen, Icon.settings);
     
     public static class ComplexOperationStatement extends ExtendStatement{
         public CFunc Op = CFunc.New;
@@ -601,7 +599,7 @@ public class Statements{
             .append(" ")
             .append(reversed)
             .append(" ")
-            .append(Arrays.toString(coefficents));
+            .append(ToString(coefficents, degree + 1));
         }
     }
 

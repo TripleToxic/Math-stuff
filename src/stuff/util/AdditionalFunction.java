@@ -89,10 +89,13 @@ public class AdditionalFunction{
         }
     }
 
-    static String toString(Object[] o, int length){
+    public static String ToString(Object[] o, int length){
         if(o == null || length < 1 || o.length == 0) return "";
 
         StringBuffer s = new StringBuffer(o[0].toString());
+        for(int i=1; i<length; i++){
+            s.append(" ").append(o[i]);
+        }
 
         return s.toString();
     }
