@@ -11,7 +11,7 @@ author: "Triple-Toxic"
 repo: "TripleToxic/Math-stuff"
 
 #the fully qualified main class of the mod
-main: "stuff.Run"
+main: "stuff.Loader"
 
 #the mod subtitle as seen in the mod dialog
 subtitle: "Math or M(letter next to d that not c)th"
