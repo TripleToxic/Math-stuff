@@ -80,4 +80,23 @@ public class AdditionalFunction{
             return 0;
         }
     }
+
+    public static int parseInt(String s){
+        try{
+            return Integer.parseInt(s);
+        }catch(Exception e){
+            return 0;
+        }
+    }
+
+    public static String ToString(Object[] o, int length){
+        if(o == null || o.length == 0 || length < 1) return "";
+
+        StringBuilder s = new StringBuilder(o[0].toString());
+        for(int i=1; i<length; i++){
+            s.append(" ").append(o[i]);
+        }
+
+        return s.toString();
+    }
 }
