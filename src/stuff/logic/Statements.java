@@ -1,9 +1,8 @@
 package stuff.logic;
 
-import java.util.Arrays;
-
 import arc.func.*;
 import arc.graphics.Color;
+import arc.math.Mathf;
 import arc.scene.ui.layout.*;
 import mindustry.Vars;
 import mindustry.gen.*;
@@ -13,12 +12,13 @@ import mindustry.ui.*;
 import stuff.logic.TheInstruction.*;
 import stuff.util.Function;
 import stuff.util.Polynomial;
-
 //import stuff.logic.AFunc.TwoType;
+
+import static stuff.util.AdditionalFunction.*;
 
 public class Statements{
     public static Color functionGreen = Color.valueOf("1fa32c");
-    public static final LCategory function = new LCategory("function", functionGreen, Icon.settings);
+    public static final LCategory function = new LCategory("function", functionGreen, Icon.settingsSmall);
     
     public static class ComplexOperationStatement extends ExtendStatement{
         public CFunc Op = CFunc.New;
@@ -44,13 +44,16 @@ public class Statements{
             if(Op == CFunc.get){
                 Button(table, table);
                 table.add(" from: ");
-                field(table, result, str -> result = str);
+                field(table, result, str -> {
+                    result = str;
+                    rebuild(table);
+                });
                 row(table);
                 field(table, r, str -> r = str);
-                table.add(new StringBuffer(" = ").append(result).append(".real")).color(Color.green);
+                table.add(new StringBuffer(" = ").append(result).append(".real")).color(Color.red);
                 row(table);
                 field(table, i, str -> i = str);
-                table.add(new StringBuffer(" = ").append(result).append(".imaginary")).color(Color.green);
+                table.add(new StringBuffer(" = ").append(result).append(".imaginary")).color(Color.red);
                 return;
             }
 
@@ -503,6 +506,8 @@ public class Statements{
 
             reversed = names[2].equals("true") ? true : false;
 
+            degree = names.length - 4;
+
             coefficents = new String[names.length - 3];
             System.arraycopy(names, 3, coefficents, 0, names.length - 3);
         }
@@ -531,14 +536,21 @@ public class Statements{
 
             field3(table, functionName, s -> functionName = s);
             table.add("(x) = ");
-            int l = coefficents.length;
+            table.row();
+            table.add("degree = ");
+            field2(table, degree, s -> {
+                degree = Mathf.clamp(parseInt(s), 0, 12);
+                
+                rebuild(table);
+            });
+            int l = degree;
             int[] ib = {0};
             if(reversed){
                 for(int i=l-1; i>0; i--){
                     ib[0] = l-i-1;
                     field2(table, coefficents[ib[0]], s -> coefficents[ib[0]] = s);
                     table.add("x");
-                    table.add(i + "");
+                    table.add(i + "").padTop(2f).fontScale(0.5f);
                     table.add(" + ");
                     row(table);
                 }
@@ -550,7 +562,7 @@ public class Statements{
                     ib[0] = i;
                     field2(table, coefficents[i], s -> coefficents[ib[0]] = s);
                     table.add("x");
-                    table.add(i + "", 0.25f);
+                    table.add(i + "").padTop(2f).fontScale(0.5f);
                     table.add(" + ");
                     row(table);
                 }
@@ -585,8 +597,10 @@ public class Statements{
             builder
             .append("poly ")
             .append(functionName)
+            .append(" ")
             .append(reversed)
-            .append(Arrays.toString(coefficents));
+            .append(" ")
+            .append(ToString(coefficents, degree + 1));
         }
     }
 
