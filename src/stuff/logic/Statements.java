@@ -45,10 +45,10 @@ public class Statements{
                 Button(table, table);
                 table.add(" from: ");
                 field(table, result, str -> {
-                    if(!str.equals(result)){
+                    if(!str.equals(result) && !str.equals("")){
                         result = str;
                         rebuild(table);
-                    }
+                    }else result = str;
                 });
                 row(table);
                 field(table, r, str -> r = str);
@@ -545,7 +545,7 @@ public class Statements{
                     ib[0] = l-i-1;
                     field2(table, coefficents[ib[0]], s -> coefficents[ib[0]] = s);
                     table.add("x");
-                    table.add(i + "");
+                    table.add(i + "").fontScale(0.5f).align(1);
                     table.add(" + ");
                     row(table);
                 }
@@ -557,18 +557,20 @@ public class Statements{
                     ib[0] = i;
                     field2(table, coefficents[i], s -> coefficents[ib[0]] = s);
                     table.add("x");
-                    table.add(i + "", 0.25f);
+                    table.add(i + "").fontScale(0.5f).align(1);
                     table.add(" + ");
                     row(table);
                 }
             }
             table.row();
+            table.add("degree = ");
             field2(table, degree, str -> {
-                int a = Mathf.clamp(parseInt(str), 0, 13);
-                if(a != degree){
+                int a = Mathf.clamp(parseInt(str), 0, 12);
+                if(a != degree && !str.equals("")){
                     degree = a;
                     rebuild(table);
                 }
+                else degree = a;
             });
             table.row();
             Check(table, table);
@@ -602,7 +604,6 @@ public class Statements{
             .append(functionName)
             .append(" ")
             .append(reversed)
-            .append(" ")
             .append(" ")
             .append(ToString(coefficents, degree + 1));
         }
