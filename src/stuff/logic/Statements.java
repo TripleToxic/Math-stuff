@@ -4,7 +4,6 @@ import arc.func.*;
 import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.scene.ui.layout.*;
-import arc.util.Log;
 import mindustry.Vars;
 import mindustry.gen.*;
 import mindustry.logic.*;
@@ -17,11 +16,9 @@ import stuff.util.Polynomial;
 
 import static stuff.util.AdditionalFunction.*;
 
-import java.util.Arrays;
-
 public class Statements{
     public static Color functionGreen = Color.valueOf("1fa32c");
-    public static final LCategory function = new LCategory("function", functionGreen, Icon.settingsSmall);
+    public static final LCategory categoryFunction = new LCategory("funcion", functionGreen, Icon.settingsSmall);
     
     public static class ComplexOperationStatement extends ExtendStatement{
         public CFunc Op = CFunc.New;
@@ -495,7 +492,7 @@ public class Statements{
 
         @Override
         public LCategory category() {
-            return function;
+            return categoryFunction;
         }
     }
 
@@ -526,7 +523,6 @@ public class Statements{
                 coefficents[i] = new String(bytes);
                 bytes[0] += 1;
             }
-            Log.info(Arrays.toString(coefficents));
             return coefficents;
         }
 
@@ -559,7 +555,7 @@ public class Statements{
                     row(table);
                     field2(table, coefficents[ib[0]], s -> coefficents[ib[0]] = s);
                     table.add("x");
-                    table.add(i + "").fontScale(0.5f).marginTop(1f);
+                    table.add(i + "").fontScale(0.5f).padTop(1.5f);
                     table.add(" + ");
                 }
                 if(degree > 0){
@@ -581,7 +577,7 @@ public class Statements{
                     table.add(" + ");
                     field2(table, coefficents[i], s -> coefficents[ib[0]] = s);
                     table.add("x");
-                    table.add(i + "").fontScale(0.5f).marginTop(1f);
+                    table.add(i + "").fontScale(0.5f).padTop(1.5f);
                     row(table);
                 }
             }
@@ -608,7 +604,7 @@ public class Statements{
 
         @Override
         public LCategory category(){
-            return function;
+            return categoryFunction;
         }
 
         @Override
@@ -669,7 +665,7 @@ public class Statements{
 
         @Override
         public LCategory category() {
-            return function;
+            return categoryFunction;
         }
     }
     
