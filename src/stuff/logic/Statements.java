@@ -45,8 +45,10 @@ public class Statements{
                 Button(table, table);
                 table.add(" from: ");
                 field(table, result, str -> {
-                    result = str;
-                    rebuild(table);
+                    if(!str.equals(result)){
+                        result = str;
+                        rebuild(table);
+                    }
                 });
                 row(table);
                 field(table, r, str -> r = str);
@@ -496,9 +498,9 @@ public class Statements{
 
     public static class PolynomialStatement extends ExtendStatement{
         static byte starter_byte = 0x61;
-        public int degree = 2;
+        public transient int degree = 2;
         public String functionName = "f";
-        public String[] coefficents = init(degree);
+        public String[] coefficents = init(12);
         public boolean reversed = false;
 
         public PolynomialStatement(String[] names){
@@ -506,10 +508,10 @@ public class Statements{
 
             reversed = names[2].equals("true") ? true : false;
 
-            degree = names.length - 4;
-
-            coefficents = new String[names.length - 3];
-            System.arraycopy(names, 3, coefficents, 0, names.length - 3);
+            if(names.length - 3 != 0){
+                degree = names.length - 4;
+                System.arraycopy(names, 3, coefficents, 0, names.length - 3);
+            }
         }
 
         public PolynomialStatement(){}
@@ -536,13 +538,6 @@ public class Statements{
 
             field3(table, functionName, s -> functionName = s);
             table.add("(x) = ");
-            table.row();
-            table.add("degree = ");
-            field2(table, degree, s -> {
-                degree = Mathf.clamp(parseInt(s), 0, 12);
-                
-                rebuild(table);
-            });
             int l = degree;
             int[] ib = {0};
             if(reversed){
@@ -550,7 +545,7 @@ public class Statements{
                     ib[0] = l-i-1;
                     field2(table, coefficents[ib[0]], s -> coefficents[ib[0]] = s);
                     table.add("x");
-                    table.add(i + "").padTop(2f).fontScale(0.5f);
+                    table.add(i + "");
                     table.add(" + ");
                     row(table);
                 }
@@ -562,11 +557,19 @@ public class Statements{
                     ib[0] = i;
                     field2(table, coefficents[i], s -> coefficents[ib[0]] = s);
                     table.add("x");
-                    table.add(i + "").padTop(2f).fontScale(0.5f);
+                    table.add(i + "", 0.25f);
                     table.add(" + ");
                     row(table);
                 }
             }
+            table.row();
+            field2(table, degree, str -> {
+                int a = Mathf.clamp(parseInt(str), 0, 13);
+                if(a != degree){
+                    degree = a;
+                    rebuild(table);
+                }
+            });
             table.row();
             Check(table, table);
         }
@@ -583,7 +586,7 @@ public class Statements{
 
         @Override
         public LInstruction build(LAssembler builder) {
-            builder.putConst(functionName, new Polynomial(coefficents, builder));
+            builder.putConst(functionName, new Polynomial(coefficents, degree, builder));
             return null;
         }
 
@@ -599,6 +602,7 @@ public class Statements{
             .append(functionName)
             .append(" ")
             .append(reversed)
+            .append(" ")
             .append(" ")
             .append(ToString(coefficents, degree + 1));
         }

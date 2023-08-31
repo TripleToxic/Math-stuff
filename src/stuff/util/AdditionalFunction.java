@@ -90,9 +90,9 @@ public class AdditionalFunction{
     }
 
     public static String ToString(Object[] o, int length){
-        if(o == null || o.length == 0 || length < 1) return "";
+        if(o == null || length < 1 || o.length == 0) return "";
 
-        StringBuilder s = new StringBuilder(o[0].toString());
+        StringBuffer s = new StringBuffer(o[0].toString());
         for(int i=1; i<length; i++){
             s.append(" ").append(o[i]);
         }
