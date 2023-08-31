@@ -4,6 +4,7 @@ import arc.func.*;
 import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.scene.ui.layout.*;
+import arc.util.Log;
 import mindustry.Vars;
 import mindustry.gen.*;
 import mindustry.logic.*;
@@ -15,6 +16,8 @@ import stuff.util.Polynomial;
 //import stuff.logic.AFunc.TwoType;
 
 import static stuff.util.AdditionalFunction.*;
+
+import java.util.Arrays;
 
 public class Statements{
     public static Color functionGreen = Color.valueOf("1fa32c");
@@ -498,7 +501,7 @@ public class Statements{
 
     public static class PolynomialStatement extends ExtendStatement{
         static byte starter_byte = 0x61;
-        public transient int degree = 2;
+        public int degree = 2;
         public String functionName = "f";
         public String[] coefficents = init(12);
         public boolean reversed = false;
@@ -508,9 +511,9 @@ public class Statements{
 
             reversed = names[2].equals("true") ? true : false;
 
-            if(names.length - 3 != 0){
+            if(names.length - 3 > 0){
                 degree = names.length - 4;
-                System.arraycopy(names, 3, coefficents, 0, names.length - 3);
+                System.arraycopy(names, 3, coefficents, 0, degree - 1);
             }
         }
 
@@ -523,6 +526,7 @@ public class Statements{
                 coefficents[i] = new String(bytes);
                 bytes[0] += 1;
             }
+            Log.info(Arrays.toString(coefficents));
             return coefficents;
         }
 
@@ -534,35 +538,6 @@ public class Statements{
         void rebuild(Table table){
             table.clearChildren();
 
-            table.row();
-
-            field3(table, functionName, s -> functionName = s);
-            table.add("(x) = ");
-            int l = degree;
-            int[] ib = {0};
-            if(reversed){
-                for(int i=l-1; i>0; i--){
-                    ib[0] = l-i-1;
-                    field2(table, coefficents[ib[0]], s -> coefficents[ib[0]] = s);
-                    table.add("x");
-                    table.add(i + "").fontScale(0.5f).align(1);
-                    table.add(" + ");
-                    row(table);
-                }
-                field2(table, coefficents[0], s -> coefficents[0] = s);
-            }else{
-                field2(table, coefficents[0], s -> coefficents[0] = s);
-                table.add(" + ");
-                for(int i=1; i<l; i++){
-                    ib[0] = i;
-                    field2(table, coefficents[i], s -> coefficents[ib[0]] = s);
-                    table.add("x");
-                    table.add(i + "").fontScale(0.5f).align(1);
-                    table.add(" + ");
-                    row(table);
-                }
-            }
-            table.row();
             table.add("degree = ");
             field2(table, degree, str -> {
                 int a = Mathf.clamp(parseInt(str), 0, 12);
@@ -573,10 +548,49 @@ public class Statements{
                 else degree = a;
             });
             table.row();
-            Check(table, table);
+
+            field3(table, functionName, s -> functionName = s);
+            table.add("(x) = ");
+            int[] ib = {0};
+            
+            if(reversed){
+                for(int i=degree; i>1; i--){
+                    ib[0] = i;
+                    row(table);
+                    field2(table, coefficents[ib[0]], s -> coefficents[ib[0]] = s);
+                    table.add("x");
+                    table.add(i + "").fontScale(0.5f).marginTop(1f);
+                    table.add(" + ");
+                }
+                if(degree > 0){
+                    field2(table, coefficents[1], s -> coefficents[1] = s);
+                    table.add("x");
+                    table.add(" + ");
+                }
+                field2(table, coefficents[0], s -> coefficents[0] = s);
+            }else{
+                field2(table, coefficents[0], s -> coefficents[0] = s);
+                table.add(" + ");
+                if(degree > 0){
+                    field2(table, coefficents[1], s -> coefficents[1] = s);
+                    table.add("x");
+                    table.add(" + ");
+                }
+                for(int i=2; i<=degree; i++){
+                    ib[0] = i;
+                    table.add(" + ");
+                    field2(table, coefficents[i], s -> coefficents[ib[0]] = s);
+                    table.add("x");
+                    table.add(i + "").fontScale(0.5f).marginTop(1f);
+                    row(table);
+                }
+            }
+
+            table.row();
+            Button(table, table);
         }
 
-        void Check(Table table, Table parent){
+        void Button(Table table, Table parent){
             table.button(b -> {
                 b.label(() -> reversed + "");
                 b.clicked(() -> {
