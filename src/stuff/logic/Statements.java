@@ -510,7 +510,7 @@ public class Statements{
 
             if(names.length - 3 > 0){
                 degree = names.length - 4;
-                System.arraycopy(names, 3, coefficents, 0, degree - 1);
+                System.arraycopy(names, 3, coefficents, 0, degree + 1);
             }
         }
 
