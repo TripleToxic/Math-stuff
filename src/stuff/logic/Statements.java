@@ -465,7 +465,7 @@ public class Statements{
                     recur = !recur;
                     build(parent);
                 });
-            }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
+            }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color).tooltip("enable or disable a starting number if any part of a function call itself");
         }
 
         @Override
@@ -491,6 +491,7 @@ public class Statements{
             .append(recur)
             .append(" ")
             .append(recur_string);
+            Log.info("y\n");
         }
 
         @Override
@@ -538,6 +539,7 @@ public class Statements{
             table.clearChildren();
 
             Log.info(Arrays.toString(coefficents));
+            Log.info(degree);
             table.add("degree = ");
             field2(table, degree, str -> {
                 int a = Mathf.clamp(parseInt(str), 0, 12);
@@ -570,11 +572,10 @@ public class Statements{
                 field2(table, coefficents[0], s -> coefficents[0] = s);
             }else{
                 field2(table, coefficents[0], s -> coefficents[0] = s);
-                table.add(" + ");
                 if(degree > 0){
+                    table.add(" + ");
                     field2(table, coefficents[1], s -> coefficents[1] = s);
                     table.add("x");
-                    table.add(" + ");
                 }
                 for(int i=2; i<=degree; i++){
                     ib[0] = i;
