@@ -7,6 +7,7 @@ import arc.scene.ui.layout.*;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.gen.*;
+import mindustry.graphics.Pal;
 import mindustry.logic.*;
 import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
@@ -21,7 +22,7 @@ import java.util.Arrays;
 
 public class Statements{
     public static Color functionGreen = Color.valueOf("1fa32c");
-    public static final LCategory categoryFunction = new LCategory("funcion", functionGreen, Icon.settingsSmall);
+    public static final LCategory categoryFunction = new LCategory("funcion", Pal.heal, Icon.settingsSmall);
     
     public static class ComplexOperationStatement extends ExtendStatement{
         public CFunc Op = CFunc.New;
@@ -442,12 +443,6 @@ public class Statements{
             }
         }
 
-        void repeat(int n, Table table){
-            for(int i=0; i<n; i++){
-                table.add();
-            }
-        }
-
         void Button(Table table, Table parent){
             table.button(b -> {
                 b.label(() -> op.symbol);
@@ -500,11 +495,17 @@ public class Statements{
         }
     }
 
+    static void repeat(int n, Table table){
+        for(int i=0; i<n; i++){
+            table.add();
+        }
+    }
+
     public static class PolynomialStatement extends ExtendStatement{
         static byte starter_byte = 0x61;
         public int degree = 2;
         public String functionName = "f";
-        public String[] coefficents = init(12);
+        public String[] coefficents = init(11);
         public boolean reversed = false;
 
         public PolynomialStatement(String[] names){
@@ -512,7 +513,7 @@ public class Statements{
 
             reversed = names[2].equals("true") ? true : false;
 
-            degree = Mathf.clamp(parseInt(names[3]), 0, 12);
+            degree = Mathf.clamp(parseInt(names[3]), 0, 11);
 
             System.arraycopy(names, 4, coefficents, 0, degree + 1);
         }
@@ -560,7 +561,7 @@ public class Statements{
                     row(table);
                     field2(table, coefficents[ib[0]], s -> coefficents[ib[0]] = s);
                     table.add("x");
-                    table.add(i + "").fontScale(0.5f).padTop(1.5f);
+                    table.add(i + "").fontScale(0.5f).padTop(1.8f);
                     table.add(" + ");
                 }
                 if(degree > 0){
@@ -581,7 +582,7 @@ public class Statements{
                     table.add(" + ");
                     field2(table, coefficents[i], s -> coefficents[ib[0]] = s);
                     table.add("x");
-                    table.add(i + "").fontScale(0.5f).padTop(1.5f);
+                    table.add(i + "").fontScale(0.5f).padTop(1.8f);
                     row(table);
                 }
             }
