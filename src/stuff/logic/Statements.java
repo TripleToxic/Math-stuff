@@ -4,6 +4,7 @@ import arc.func.*;
 import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.scene.ui.layout.*;
+import arc.util.Log;
 import mindustry.Vars;
 import mindustry.gen.*;
 import mindustry.logic.*;
@@ -15,6 +16,8 @@ import stuff.util.Polynomial;
 //import stuff.logic.AFunc.TwoType;
 
 import static stuff.util.AdditionalFunction.*;
+
+import java.util.Arrays;
 
 public class Statements{
     public static Color functionGreen = Color.valueOf("1fa32c");
@@ -534,6 +537,7 @@ public class Statements{
         void rebuild(Table table){
             table.clearChildren();
 
+            Log.info(Arrays.toString(coefficents));
             table.add("degree = ");
             field2(table, degree, str -> {
                 int a = Mathf.clamp(parseInt(str), 0, 12);
