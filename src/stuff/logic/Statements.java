@@ -512,10 +512,9 @@ public class Statements{
 
             reversed = names[2].equals("true") ? true : false;
 
-            if(names.length - 3 > 0){
-                degree = names.length - 4;
-                System.arraycopy(names, 3, coefficents, 0, degree + 1);
-            }
+            degree = Mathf.clamp(parseInt(names[3]), 0, 12);
+
+            System.arraycopy(names, 4, coefficents, 0, degree + 1);
         }
 
         public PolynomialStatement(){}
@@ -619,6 +618,8 @@ public class Statements{
             .append(functionName)
             .append(" ")
             .append(reversed)
+            .append(" ")
+            .append(degree)
             .append(" ")
             .append(ToString(coefficents, degree + 1));
         }
