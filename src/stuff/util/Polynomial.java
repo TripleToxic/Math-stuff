@@ -8,7 +8,7 @@ public class Polynomial implements FunctionEval{
     int[] coefficents;
 
     public Polynomial(String[] strs, int degree, LAssembler builder){
-        coefficents = new int[strs.length];
+        coefficents = new int[degree + 1];
         for(int i=0; i<degree + 1; i++){
             coefficents[i] = builder.var(strs[i]);
         }

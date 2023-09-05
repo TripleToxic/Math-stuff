@@ -516,6 +516,7 @@ public class Statements{
             degree = Mathf.clamp(parseInt(names[3]), 0, 11);
 
             System.arraycopy(names, 4, coefficents, 0, degree + 1);
+            Log.info(coefficents + "\n");
         }
 
         public PolynomialStatement(){}
@@ -542,7 +543,7 @@ public class Statements{
             Log.info(degree);
             table.add("degree = ");
             field2(table, degree, str -> {
-                int a = Mathf.clamp(parseInt(str), 0, 12);
+                int a = Mathf.clamp(parseInt(str), 0, 11);
                 if(a != degree && !str.equals("")){
                     degree = a;
                     rebuild(table);
@@ -603,6 +604,7 @@ public class Statements{
 
         @Override
         public LInstruction build(LAssembler builder) {
+            Log.info(Arrays.toString(coefficents));
             builder.putConst(functionName, new Polynomial(coefficents, degree, builder));
             return null;
         }
