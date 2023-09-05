@@ -49,7 +49,7 @@ public class Statements{
                 Button(table, table);
                 table.add(" from: ");
                 field(table, result, str -> {
-                    if(!str.equals(result) && !str.equals("")){
+                    if(!str.equals("")){
                         result = str;
                         rebuild(table);
                     }else result = str;
@@ -119,7 +119,7 @@ public class Statements{
                 ;
         }
     }
-    
+
     /*public static class ArrayOperationStatement extends ExtendStatement{
         public AFunc OpA = AFunc.New;
         public TwoType TT = TwoType.number;
@@ -486,7 +486,6 @@ public class Statements{
             .append(recur)
             .append(" ")
             .append(recur_string);
-            Log.info("y\n");
         }
 
         @Override
@@ -544,7 +543,7 @@ public class Statements{
             table.add("degree = ");
             field2(table, degree, str -> {
                 int a = Mathf.clamp(parseInt(str), 0, 11);
-                if(a != degree && !str.equals("")){
+                if(!str.equals("")){
                     degree = a;
                     rebuild(table);
                 }
@@ -562,7 +561,7 @@ public class Statements{
                     row(table);
                     field2(table, coefficents[ib[0]], s -> coefficents[ib[0]] = s);
                     table.add("x");
-                    table.add(i + "").fontScale(0.5f).padTop(1.8f);
+                    table.add(i + "").fontScale(0.5f).padTop(2f);
                     table.add(" + ");
                 }
                 if(degree > 0){
@@ -583,7 +582,7 @@ public class Statements{
                     table.add(" + ");
                     field2(table, coefficents[i], s -> coefficents[ib[0]] = s);
                     table.add("x");
-                    table.add(i + "").fontScale(0.5f).padTop(1.8f);
+                    table.add(i + "").fontScale(0.5f).padTop(2f);
                     row(table);
                 }
             }
@@ -682,8 +681,8 @@ public class Statements{
         registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4]), ComplexOperationStatement::new);
         //registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
         registerStatement("fn", args -> new FunctionStatement(args), FunctionStatement::new);
-        registerStatement("fnop", args -> new FunctionOperationStatement(args[1], args[2], args[3]), FunctionOperationStatement::new);
         registerStatement("poly", args -> new PolynomialStatement(args), PolynomialStatement::new);
+        registerStatement("fnop", args -> new FunctionOperationStatement(args[1], args[2], args[3]), FunctionOperationStatement::new);
     }
 
     public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){
