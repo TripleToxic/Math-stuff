@@ -83,7 +83,7 @@ public class Complex{
     }
 
     public Complex mul(double x){
-        return new Complex(r * x, 
+        return new Complex(r * x,
                            i * x);
     }
 
@@ -99,7 +99,7 @@ public class Complex{
     }
     
     public Complex div(Complex c){
-        double div = 1 / c.length();
+        double div = 1 / (c.r*c.r + c.i*c.i);
 
         return new Complex((r * c.r + i * c.i) * div, 
                            (i * c.r - r * c.i) * div);
@@ -154,22 +154,26 @@ public class Complex{
      * 
      * @return The square root of a complex number with special cases
      */
+
     public Complex sqrt(){
         if(i == 0) {
-            if(r >= 0) return new Complex(Math.sqrt(r), 0d);
-            return new Complex(0d, Math.sqrt(r));
-        }
-
-        if(r == 0){
+            if(r >= 0) r = Math.sqrt(r);
+            else i = Math.sqrt(r);
+        }else if(r == 0){
             double var1 = 0.5d * Math.sqrt(2d * Math.abs(i));
 
-            if(i >= 0) return new Complex(var1, var1);
-            return new Complex(-var1, var1);
+            if(i >= 0){
+                r = i = var1;
+            }else{
+                r = -var1;
+                i = var1;
+            }
+        }else{
+            double var1 = Math.sqrt(0.5d * (length() - r));
+            r = 0.5d * i/var1;
+            i = var1;
         }
-
-        double var1 = Math.sqrt(0.5d * (length() - r));
-
-        return new Complex(0.5d * i/var1, var1);
+        return this;
     }
 
     /**
@@ -177,13 +181,20 @@ public class Complex{
      * @return The natural log of a complex number
      */
     public Complex log(){
-        return new Complex(Math.log(length()), 
-                           Angle());
+        double a = Math.log(length()),
+               b = Angle();
+        r = a;
+        i = b;
+        return this;
     }
 
     public Complex sin(){
-        return new Complex(Math.sin(r) * Math.cosh(i), 
-                           Math.cos(r) * Math.sinh(i));
+        double a = Math.sin(r) * Math.cosh(i), 
+               b = Math.cos(r) * Math.sinh(i);
+        r = a;
+        i = b;
+        return this;
+        
     }
 
     public Complex cos(){
