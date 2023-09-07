@@ -8,6 +8,7 @@ public class Complex{
                                 imaginary = new Complex(0, 1);
 
     public double r = 0, i = 0;
+    public boolean checked = false;
     
     public Complex(){}
 
@@ -124,13 +125,19 @@ public class Complex{
     }
 
     public Complex complexToPolar(){
-        return new Complex(length(), 
-                           Angle());
+        double a = length(),
+               b = Angle();
+        r = a;
+        i = b;
+        return this;
     }
 
     public Complex polarToComplex(){
-        return new Complex(Math.cos(Angle()), 
-                           Math.sin(Angle())).mul(length());
+        double a = Angle(),
+               b = length();
+        r = Math.cos(a);
+        i = Math.sin(b);
+        return this.mul(b);
     }
 
     public Complex pow(Complex c){

@@ -27,7 +27,6 @@ public class TheInstruction{
         public void run(LExecutor exec){
             if(Op == CFunc.New) {exec.setobj(result, new Complex(exec.num(r), exec.num(i)).toString()); return;}
             
-
             if(Op == CFunc.get){
                 if(exec.obj(result) instanceof String pRe){
                     Complex Re = new Complex(pRe);
