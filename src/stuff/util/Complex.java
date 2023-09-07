@@ -1,7 +1,7 @@
 package stuff.util;
 
 /** 
- * Operations with complex number, returning new complex number for chaining
+ * Operations with complex number, returning a Complex type for chaining
 */
 public class Complex{
     public static final Complex real = new Complex(1, 0),
@@ -44,23 +44,27 @@ public class Complex{
     }
 
     public Complex add(Complex c){
-        return new Complex(r + c.r, 
-                           i + c.i);
+        r += c.r;
+        i += c.i;
+        return this;
     }
 
     public Complex add(double x, double y){
-        return new Complex(r + x, 
-                           i + y);
+        r += x;
+        i += y;
+        return this;
     }
 
     public Complex sub(Complex c){
-        return new Complex(r - c.r, 
-                           i - c.i);
+        r -= c.r;
+        i -= c.i;
+        return this;
     }
 
     public Complex sub(double x, double y){
-        return new Complex(r - x, 
-                           i - y);
+        r -= x;
+        i -= y;
+        return this;
     }
 
     /**
@@ -69,9 +73,10 @@ public class Complex{
      * @param n2 determine if the imaginary part can be negative
      * @return a complex number that has one or all component(s) become negative
      */
-    public Complex neg(boolean n1, boolean n2){
-        return new Complex(n1 ? -r : r, 
-                           n2 ? -i : i);
+    public Complex negate(boolean n1, boolean n2){
+        r = n1 ? -r : r;
+        i = n2 ? -i : i;
+        return this;
     }
 
     /**
@@ -79,7 +84,10 @@ public class Complex{
      * @return A new complex number with its components got switch
      */
     public Complex trade(){
-        return new Complex(i, r);
+        double a = r;
+        r = i;
+        i = a;
+        return this;
     }
 
     public Complex mul(double x){
@@ -98,9 +106,7 @@ public class Complex{
     }
 
     public Complex div(double x){
-        double x1 = 1/x;
-
-       return this.mul(x1);
+       return this.mul(1/x);
     }
 
     public Complex div(Complex c){
@@ -225,15 +231,15 @@ public class Complex{
     }
 
     public Complex asin(){
-        return real.sub(square()).sqrt().add(-i, r).log().trade().neg(false, true);
+        return real.sub(square()).sqrt().add(-i, r).log().trade().negate(false, true);
     }
 
     public Complex acos(){
-        return square().sub(real).sqrt().add(r, i).log().trade().neg(false, true);
+        return square().sub(real).sqrt().add(r, i).log().trade().negate(false, true);
     }
 
     public Complex atan(){
-        return this.add(imaginary).div(imaginary.sub(this)).log().trade().neg(true, false).div(2d);
+        return this.add(imaginary).div(imaginary.sub(this)).log().trade().negate(true, false).div(2d);
     }
 
     @Override
