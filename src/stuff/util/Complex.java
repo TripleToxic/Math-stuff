@@ -29,7 +29,7 @@ public class Complex{
         }catch(Exception e){}
     }
 
-    private Complex set(Complex c){
+    public Complex set(Complex c){
         r = c.r;
         i = c.i;
         return this;
@@ -83,26 +83,34 @@ public class Complex{
     }
 
     public Complex mul(double x){
-        return new Complex(r * x,
-                           i * x);
+        r *= x;
+        i *= x;
+        return this;
     }
 
     public Complex mul(Complex c){
-        return new Complex(r * c.r - i * c.i, 
-                           i * c.r + r * c.i);
+        double a = r * c.r - i * c.i,
+               b = i * c.r + r * c.i;
+
+        r = a;
+        i = b;
+        return this;
     }
 
     public Complex div(double x){
         double x1 = 1/x;
 
-        return new Complex(r * x1, i * x1);
+       return this.mul(x1);
     }
-    
-    public Complex div(Complex c){
-        double div = 1 / (c.r*c.r + c.i*c.i);
 
-        return new Complex((r * c.r + i * c.i) * div, 
-                           (i * c.r - r * c.i) * div);
+    public Complex div(Complex c){
+        double div = 1 / (c.r*c.r + c.i*c.i),
+                 a = (r * c.r + i * c.i) * div,
+                 b = (i * c.r - r * c.i) * div;
+
+        r = a;
+        i = b;
+        return this;
     }
 
     public Complex square(){
@@ -136,7 +144,7 @@ public class Complex{
             }
         }
 
-        if(c.r == 0) return new Complex(1d, 0d);
+        if(c.r == 0) return real;
         if(c.r == 1) return this;
         if(c.r == 2) return square();
 
@@ -146,8 +154,9 @@ public class Complex{
         var3 *= var5;
         var4 += var6;
 
-        return new Complex(var3 * Math.cos(var4), 
-                           var3 * Math.sin(var4));
+        r = var3 * Math.cos(var4);
+        i = var3 * Math.sin(var4);
+        return this;
     }
 
     /**
@@ -198,8 +207,11 @@ public class Complex{
     }
 
     public Complex cos(){
-        return new Complex(Math.cos(r) * Math.cosh(i), 
-                          -Math.sin(r) * Math.sinh(i));
+        double a = Math.cos(r) * Math.cosh(i),
+               b = -Math.sin(r) * Math.sinh(i);
+        r = a;
+        i = b;
+        return this;
     }
 
     public Complex tan(){
@@ -207,7 +219,9 @@ public class Complex{
                var2 = 2 * i,
 
                var3 = Math.cos(var1) + Math.cosh(var2);
-        return new Complex(Math.sin(var1), Math.sinh(var2)).div(var3);
+        r = Math.sin(var1);
+        i = Math.sinh(var2);
+        return this.div(var3);
     }
 
     public Complex asin(){
