@@ -15,8 +15,8 @@ public enum FunctionEnum {
     mod("%", (a, b) -> a % b),
     pow("^", (a, b) -> pow(a, b)),
 
-    equal("==", (a, b) -> abs(a - b) < 0.000001 ? 1 : 0),
-    notEqual("not", (a, b) -> abs(a - b) < 0.000001 ? 0 : 1),
+    equal("==", (a, b) -> abs(a - b) < 0.0000000001 ? 1 : 0),
+    notEqual("not", (a, b) -> abs(a - b) < 0.0000000001 ? 0 : 1),
     land("and", (a, b) -> a != 0 && b != 0 ? 1 : 0),
     lessThan("<", (a, b) -> a < b ? 1 : 0),
     lessThanEq("<=", (a, b) -> a <= b ? 1 : 0),

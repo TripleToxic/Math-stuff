@@ -12,7 +12,7 @@ public class Function implements FunctionEval{
     int id1, id2, id3, ptr1, ptr2;
     FunctionEnum op;
     boolean recur, unchecked = true;
-    Function f1, f2;
+    Function f1, f2, derivative;
     double recurBuffer;
 
     static int length = 5;
