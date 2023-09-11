@@ -10,6 +10,12 @@ import stuff.util.FunctionEval;
 import static mindustry.logic.LExecutor.*;
 
 public class TheInstruction{
+    public static void setcomplex(LExecutor exec, int index, Complex c){
+        exec.setconst(index, c);
+        exec.setnum(index + 1, c.r);
+        exec.setnum(index + 2, c.i);
+    }
+
     public static class ComplexOperationI implements LInstruction{
         public CFunc Op = CFunc.New;
         public int r, i, result;
