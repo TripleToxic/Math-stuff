@@ -16,6 +16,11 @@ public class TheInstruction{
         exec.setnum(index + 2, c.i);
     }
 
+    public static Complex complex(LExecutor exec, int index){
+        Object o = exec.obj(index);
+        return o instanceof Complex c ? c : null;
+    }
+
     public static class ComplexOperationI implements LInstruction{
         public CFunc Op = CFunc.New;
         public int r, i, result;
@@ -31,6 +36,7 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
+            
             if(Op == CFunc.New) {exec.setobj(result, new Complex(exec.num(r), exec.num(i)).toString()); return;}
             
             if(Op == CFunc.get){

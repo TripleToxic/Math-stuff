@@ -8,7 +8,7 @@ public class Complex{
                                 imaginary = new Complex(0, 1);
 
     public double r = 0, i = 0;
-    public boolean checked = false;
+    public boolean unchecked = true;
     
     public Complex(){}
 

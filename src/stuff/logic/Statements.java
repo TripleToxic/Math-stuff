@@ -9,9 +9,11 @@ import mindustry.Vars;
 import mindustry.gen.*;
 import mindustry.graphics.Pal;
 import mindustry.logic.*;
+import mindustry.logic.LAssembler.BVar;
 import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
 import stuff.logic.TheInstruction.*;
+import stuff.util.Complex;
 import stuff.util.Function;
 import stuff.util.Polynomial;
 //import stuff.logic.AFunc.TwoType;
@@ -97,8 +99,27 @@ public class Statements{
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
 
-        public LInstruction build(LAssembler builder){
-            return new ComplexOperationI(Op, builder.var(r), builder.var(i), builder.var(result));
+        public LInstruction build(LAssembler builder){          
+            return new ComplexOperationI(Op, putComplConst(builder, r), putComplConst(builder, i), putComplConst(builder, result));
+        }
+
+        static int putComplConst(LAssembler builder, String name){
+            if(name.startsWith("0b") || name.startsWith("0x")){
+                if(name.length() > 2)
+                    name = name.substring(2);
+                else
+                    name = "default";
+            }
+            if(name.startsWith("%")){
+                if(name.length() > 1)
+                    name = name.substring(1);
+                else
+                    name = "default";
+            }
+            BVar var = builder.putConst(name, new Complex());
+            builder.var(name.concat(".re"));
+            builder.var(name.concat(name.concat(".im")));
+            return var.id;
         }
 
         @Override
