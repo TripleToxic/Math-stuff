@@ -1,6 +1,5 @@
 package stuff.logic;
 
-import stuff.util.AdditionalFunction;
 import stuff.util.*;
 
 public enum CFunc{
@@ -19,16 +18,14 @@ public enum CFunc{
     acosC("acos", Complex::acos),
     atanC("atan", Complex::atan),
     cartesian("complex", Complex::polarToComplex),
-    polar("polar", Complex::complexToPolar),
-    factorial("!", AdditionalFunction::Factorial)
+    polar("polar", Complex::complexToPolar)
     ;
 
     public static final CFunc[] all = values();
 
     public final String symbol;
-    public Lambda1 RealFunction = null;
-    public Lambda2 Unary = null;
-    public Lambda3 Binary = null;
+    public Lambda1 Unary = null;
+    public Lambda2 Binary = null;
     public boolean unary = false, 
                    binary = false, 
                    real = false;
@@ -37,17 +34,11 @@ public enum CFunc{
 
     CFunc(String symbol, Lambda1 f){
         this.symbol = symbol;
-        this.RealFunction = f;
-        this.real = true;
-    }
-
-    CFunc(String symbol, Lambda2 f){
-        this.symbol = symbol;
         this.Unary = f;
         this.unary = true;
     }
 
-    CFunc(String symbol, Lambda3 f){
+    CFunc(String symbol, Lambda2 f){
         this.symbol = symbol;
         this.Binary = f;
         this.binary = true;
@@ -59,14 +50,10 @@ public enum CFunc{
     }
 
     interface Lambda1{
-        double get(double r);
-    }
-
-    interface Lambda2{
         Complex get(Complex c);
     }
     
-    interface Lambda3{
+    interface Lambda2{
         Complex get(Complex c1, Complex c2);
     }
 }

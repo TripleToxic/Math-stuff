@@ -61,6 +61,8 @@ public enum FunctionEnum {
     asinh("asinh", a -> asinh(a)),
     acosh("acosh", a -> acosh(a)),
     atanh("atanh", a -> atanh(a)),
+
+    factorial("!", a -> Factorial(a)),
     ;
 
     static long d(double x){

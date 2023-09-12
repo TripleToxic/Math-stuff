@@ -5,6 +5,7 @@ import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.scene.ui.layout.*;
 import arc.util.Log;
+import arc.util.Strings;
 import mindustry.Vars;
 import mindustry.gen.*;
 import mindustry.graphics.Pal;
@@ -103,23 +104,45 @@ public class Statements{
             return new ComplexOperationI(Op, putComplConst(builder, r), putComplConst(builder, i), putComplConst(builder, result));
         }
 
-        static int putComplConst(LAssembler builder, String name){
-            if(name.startsWith("0b") || name.startsWith("0x")){
-                if(name.length() > 2)
-                    name = name.substring(2);
-                else
-                    name = "default";
+        int putComplConst(LAssembler builder, String name){
+            double check = parseDouble(name);
+            if(check == invalidNum){
+                //if(Op == CFunc.New || Op == CFunc.get){
+
+                //}else{
+                    BVar var = builder.putConst(name, new Complex());
+                    builder.var(name.concat(".re"));
+                    builder.var(name.concat(name.concat(".im")));
+                    return var.id;
+                //}
+            }else{
+                return builder.putConst("___" + check, check).id;
             }
-            if(name.startsWith("%")){
-                if(name.length() > 1)
-                    name = name.substring(1);
-                else
-                    name = "default";
-            }
-            BVar var = builder.putConst(name, new Complex());
-            builder.var(name.concat(".re"));
-            builder.var(name.concat(name.concat(".im")));
-            return var.id;
+        }
+
+        /** 
+         * Reimplement everything because they are inacessible.
+         * @see mindustry.logic.LAssembler
+        */
+
+        static final int invalidNum = Integer.MIN_VALUE;
+
+        double parseDouble(String symbol){
+            if(symbol.startsWith("0b")) return Strings.parseLong(symbol, 2, 2, symbol.length(), invalidNum);
+            if(symbol.startsWith("0x")) return Strings.parseLong(symbol, 16, 2, symbol.length(), invalidNum);
+            if(symbol.startsWith("%") && (symbol.length() == 7 || symbol.length() == 9)) return parseColor(symbol);
+
+            return Strings.parseDouble(symbol, invalidNum);
+        }
+
+        double parseColor(String symbol){
+            int
+            r = Strings.parseInt(symbol, 16, 0, 1, 3),
+            g = Strings.parseInt(symbol, 16, 0, 3, 5),
+            b = Strings.parseInt(symbol, 16, 0, 5, 7),
+            a = symbol.length() == 9 ? Strings.parseInt(symbol, 16, 0, 7, 9) : 255;
+
+            return Color.toDoubleBits(r, g, b, a);
         }
 
         @Override

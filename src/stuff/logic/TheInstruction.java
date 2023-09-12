@@ -1,6 +1,7 @@
 package stuff.logic;
 
 import mindustry.logic.LExecutor;
+import mindustry.logic.LExecutor.LInstruction;
 //import stuff.util.Array;
 import stuff.util.Complex;
 import stuff.util.FunctionEval;
@@ -11,14 +12,15 @@ import static mindustry.logic.LExecutor.*;
 
 public class TheInstruction{
     public static void setcomplex(LExecutor exec, int index, Complex c){
+        if(complex(exec, index) == null) return;
         exec.setconst(index, c);
         exec.setnum(index + 1, c.r);
         exec.setnum(index + 2, c.i);
     }
 
     public static Complex complex(LExecutor exec, int index){
-        Object o = exec.obj(index);
-        return o instanceof Complex c ? c : null;
+        Var v = exec.var(index);
+        return v.isobj && v.objval instanceof Complex complex ? complex : null;
     }
 
     public static class ComplexOperationI implements LInstruction{
@@ -36,7 +38,6 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            
             if(Op == CFunc.New) {exec.setobj(result, new Complex(exec.num(r), exec.num(i)).toString()); return;}
             
             if(Op == CFunc.get){
@@ -50,8 +51,6 @@ public class TheInstruction{
                 }
                 return;
             }
-
-            if(Op.real) {exec.setnum(result, Op.RealFunction.get(exec.num(r))); return;}
             
             if(!(exec.obj(r) instanceof String pR)){exec.setobj(result, null); return;}
 
