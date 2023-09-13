@@ -44,6 +44,7 @@ public class TheInstruction{
         @Override
         public void run(LExecutor exec){
             Complex c1 = complex(exec, result);
+            if(c1 == null) return;
 
             if(Op == CFunc.New){
                 c1.set(exec.num(r), exec.num(i));
@@ -57,10 +58,14 @@ public class TheInstruction{
             }
             
             Complex c2 = complex(exec, r);
+            if(c2 == null) c1.Default();
+
             if(Op.unary){
                 c1.set(Op.Unary.get(c2));
             }else{
                 Complex c3 = complex(exec, i);
+                if(c3 == null) return;
+
                 c1.set(Op.Binary.get(c2, c3));
             }
             setcomplex(exec, result, c1);

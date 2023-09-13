@@ -41,6 +41,10 @@ public class Complex{
         return this;
     }
 
+    public Complex Default(){
+        return set(0, 0);
+    }
+
     public double length(){
         return Math.hypot(r, i);
     }
