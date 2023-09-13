@@ -28,7 +28,7 @@ public class Statements{
     public static final LCategory categoryFunction = new LCategory("funcion", Pal.heal, Icon.settingsSmall);
     
     public static class ComplexOperationStatement extends ExtendStatement{
-        public CFunc Op = CFunc.New;
+        public CFunc Op = CFunc.set;
         public String result = "result", r = "r", i = "i";
         
         public ComplexOperationStatement(String Op, String r, String i, String result){
@@ -69,7 +69,7 @@ public class Statements{
             field(table, result, str -> result = str);
             table.add(" = ");
 
-            if(Op == CFunc.New){
+            if(Op == CFunc.set){
                 Button(table, table);
                 field(table, r, str -> r = str);
                 table.add(" + ");
@@ -102,7 +102,7 @@ public class Statements{
 
         public LInstruction build(LAssembler builder){
             int R, I;
-            if(Op == CFunc.New || Op == CFunc.get){
+            if(Op == CFunc.set || Op == CFunc.get){
                 R = builder.var(r);
                 I = builder.var(i);
             }else{

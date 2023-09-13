@@ -29,7 +29,7 @@ public class TheInstruction{
     }
 
     public static class ComplexOperationI implements LInstruction{
-        public CFunc Op = CFunc.New;
+        public CFunc Op = CFunc.set;
         public int r, i, result;
 
         public ComplexOperationI(CFunc Op, int r, int i, int result){
@@ -46,7 +46,7 @@ public class TheInstruction{
             Complex c1 = complex(exec, result);
             if(c1 == null) return;
 
-            if(Op == CFunc.New){
+            if(Op == CFunc.set){
                 c1.set(exec.num(r), exec.num(i));
                 return;
             }

@@ -3,8 +3,8 @@ package stuff.logic;
 import stuff.util.*;
 
 public enum CFunc{
-    New("new"),
-    get("extract"),
+    set("set"),
+    get("get"),
     addC("+", (Complex c1,  Complex c2) -> c1.add(c2)),
     subC("-", (Complex c1, Complex c2) -> c1.sub(c2)),
     mulC("*", (Complex c1, Complex c2) -> c1.mul(c2)),
