@@ -13,14 +13,19 @@ import static mindustry.logic.LExecutor.*;
 public class TheInstruction{
     public static void setcomplex(LExecutor exec, int index, Complex c){
         if(complex(exec, index) == null) return;
-        exec.setconst(index, c);
         exec.setnum(index + 1, c.r);
         exec.setnum(index + 2, c.i);
     }
 
     public static Complex complex(LExecutor exec, int index){
         Var v = exec.var(index);
-        return v.isobj && v.objval instanceof Complex complex ? complex : null;
+        Complex c = v.isobj && v.objval instanceof Complex complex ? complex : null;
+        if(c.unchecked && c != null){
+            c.r = exec.num(index + 1);
+            c.i = exec.num(index + 2);
+            c.unchecked = false;
+        }
+        return c;
     }
 
     public static class ComplexOperationI implements LInstruction{
@@ -38,29 +43,27 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            if(Op == CFunc.New) {exec.setobj(result, new Complex(exec.num(r), exec.num(i)).toString()); return;}
-            
-            if(Op == CFunc.get){
-                if(exec.obj(result) instanceof String pRe){
-                    Complex Re = new Complex(pRe);
-                    exec.setnum(r, Re.r);
-                    exec.setnum(i, Re.i);
-                }else{
-                    exec.setnum(r, 0d);
-                    exec.setnum(i, 0d);
-                }
+            Complex c1 = complex(exec, result);
+
+            if(Op == CFunc.New){
+                c1.set(exec.num(r), exec.num(i));
                 return;
             }
             
-            if(!(exec.obj(r) instanceof String pR)){exec.setobj(result, null); return;}
-
-            Complex R = new Complex(pR);
-            if(Op.unary){exec.setobj(result, Op.Unary.get(R).toString()); return;}
-
-            if(!(exec.obj(i) instanceof String pI)){exec.setobj(result, null); return;}
-
-            Complex I = new Complex(pI);
-            exec.setobj(result, Op.Binary.get(R, I).toString());
+            if(Op == CFunc.get){
+                exec.setnum(r, c1.r);
+                exec.setnum(i, c1.i);
+                return;
+            }
+            
+            Complex c2 = complex(exec, r);
+            if(Op.unary){
+                c1.set(Op.Unary.get(c2));
+            }else{
+                Complex c3 = complex(exec, i);
+                c1.set(Op.Binary.get(c2, c3));
+            }
+            setcomplex(exec, result, c1);
         }
     }
 

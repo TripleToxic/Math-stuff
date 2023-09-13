@@ -100,21 +100,25 @@ public class Statements{
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
 
-        public LInstruction build(LAssembler builder){          
-            return new ComplexOperationI(Op, putComplConst(builder, r), putComplConst(builder, i), putComplConst(builder, result));
+        public LInstruction build(LAssembler builder){
+            int R, I;
+            if(Op == CFunc.New || Op == CFunc.get){
+                R = builder.var(r);
+                I = builder.var(i);
+            }else{
+                R = putComplConst(builder, r);
+                I = putComplConst(builder, i);
+            }
+            return new ComplexOperationI(Op, R, I, putComplConst(builder, result));
         }
 
-        int putComplConst(LAssembler builder, String name){
+        public static int putComplConst(LAssembler builder, String name){
             double check = parseDouble(name);
             if(check == invalidNum){
-                //if(Op == CFunc.New || Op == CFunc.get){
-
-                //}else{
-                    BVar var = builder.putConst(name, new Complex());
-                    builder.var(name.concat(".re"));
-                    builder.var(name.concat(name.concat(".im")));
-                    return var.id;
-                //}
+                BVar var = builder.putConst(name, new Complex());
+                builder.var(name.concat(".re"));
+                builder.var(name.concat(name.concat(".im")));
+                return var.id;
             }else{
                 return builder.putConst("___" + check, check).id;
             }
@@ -127,7 +131,7 @@ public class Statements{
 
         static final int invalidNum = Integer.MIN_VALUE;
 
-        double parseDouble(String symbol){
+        static double parseDouble(String symbol){
             if(symbol.startsWith("0b")) return Strings.parseLong(symbol, 2, 2, symbol.length(), invalidNum);
             if(symbol.startsWith("0x")) return Strings.parseLong(symbol, 16, 2, symbol.length(), invalidNum);
             if(symbol.startsWith("%") && (symbol.length() == 7 || symbol.length() == 9)) return parseColor(symbol);
@@ -135,7 +139,7 @@ public class Statements{
             return Strings.parseDouble(symbol, invalidNum);
         }
 
-        double parseColor(String symbol){
+        static double parseColor(String symbol){
             int
             r = Strings.parseInt(symbol, 16, 0, 1, 3),
             g = Strings.parseInt(symbol, 16, 0, 3, 5),

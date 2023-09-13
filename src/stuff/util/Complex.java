@@ -13,8 +13,7 @@ public class Complex{
     public Complex(){}
 
     public Complex(double x, double y){
-        r = x;
-        i = y;
+        set(x, y);
     }
 
     public Complex(Complex c){
@@ -33,6 +32,12 @@ public class Complex{
     public Complex set(Complex c){
         r = c.r;
         i = c.i;
+        return this;
+    }
+
+    public Complex set(double x, double y){
+        r = x;
+        i = y;
         return this;
     }
 
