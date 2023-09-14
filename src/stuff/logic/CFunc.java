@@ -9,7 +9,7 @@ public enum CFunc{
     subC("-", (Complex c1, Complex c2) -> c1.sub(c2)),
     mulC("*", (Complex c1, Complex c2) -> c1.mul(c2)),
     divC("/", (Complex c1, Complex c2) -> c1.div(c2)), 
-    powC("^", (Complex c1, Complex c2) -> c1.pow(c2)), 
+    powC("^", (Complex c1, Complex c2) -> c1.pow(c2)),
     logC("ln", Complex::log),
     sinC("sin", Complex::sin),
     cosC("cos", Complex::cos),

@@ -48,6 +48,7 @@ public class TheInstruction{
 
             if(Op == CFunc.set){
                 c1.set(exec.num(r), exec.num(i));
+                setcomplex(exec, result, c1);
                 return;
             }
             
@@ -57,24 +58,21 @@ public class TheInstruction{
                 return;
             }
             
-            Complex c2 = complex(exec, r);
-            if(c2 == null){
-                setcomplex(exec, result, c1.Default());
-                return;
-            }
-
             if(Op.unary){
-                c1.set(Op.Unary.get(c2));
+                Op.Unary.get(c1);
             }else{
+                Complex c2 = complex(exec, r);
                 Complex c3 = complex(exec, i);
-                if(c3 == null){
+                if(c2 == null || c3 == null){
                     setcomplex(exec, result, c1.Default());
                     return;
                 }
 
+                Complex c2s = new Complex(c2);
                 c1.set(Op.Binary.get(c2, c3));
+                setcomplex(exec, result, c1);
+                c2 = c2s;
             }
-            setcomplex(exec, result, c1);
         }
     }
 

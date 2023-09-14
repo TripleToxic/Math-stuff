@@ -117,7 +117,7 @@ public class Statements{
             if(check == invalidNum){
                 BVar var = builder.putConst(name, new Complex());
                 builder.var(name.concat(".re"));
-                builder.var(name.concat(name.concat(".im")));
+                builder.var(name.concat(".im"));
                 return var.id;
             }else{
                 return builder.putConst("___" + check, check).id;
