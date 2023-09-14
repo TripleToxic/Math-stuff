@@ -59,8 +59,7 @@ public class TheInstruction{
             
             Complex c2 = complex(exec, r);
             if(c2 == null){
-                c1.Default();
-                setcomplex(exec, result, c1);
+                setcomplex(exec, result, c1.Default());
                 return;
             }
 
@@ -69,8 +68,7 @@ public class TheInstruction{
             }else{
                 Complex c3 = complex(exec, i);
                 if(c3 == null){
-                    c1.Default();
-                    setcomplex(exec, result, c1);
+                    setcomplex(exec, result, c1.Default());
                     return;
                 }
 
