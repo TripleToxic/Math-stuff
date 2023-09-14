@@ -20,15 +20,6 @@ public class Complex{
         set(c);
     }
 
-    // unboxing a String
-    public Complex(String arr){
-        try{
-            int a = arr.indexOf(" ");
-            r = Double.parseDouble(arr.substring(0, a));
-            i = Double.parseDouble(arr.substring(a + 2, arr.length() - 1));
-        }catch(Exception e){}
-    }
-
     public Complex set(Complex c){
         r = c.r;
         i = c.i;
@@ -46,6 +37,8 @@ public class Complex{
     }
 
     public double length(){
+        if(r == 0) return Math.abs(i);
+        if(i == 0) return Math.abs(r);
         return Math.hypot(r, i);
     }
 
@@ -78,7 +71,6 @@ public class Complex{
     }
 
     /**
-     * 
      * @param n1 determine if the real part can be negative
      * @param n2 determine if the imaginary part can be negative
      * @return a complex number that has one or all component(s) become negative
@@ -90,8 +82,7 @@ public class Complex{
     }
 
     /**
-     * 
-     * @return A new complex number with its components got switch
+     * @return A complex number with its components swapped
      */
     public Complex trade(){
         double a = r;
@@ -130,7 +121,11 @@ public class Complex{
     }
 
     public Complex square(){
-        return mul(this);
+        double a = r*r + i*i,
+               b = 2d*r*i;
+        r = a;
+        i = b;
+        return this;
     }
 
     public Complex complexToPolar(){
@@ -208,42 +203,68 @@ public class Complex{
     }
 
     /**
-     * 
      * @return The natural log of a complex number
      */
     public Complex log(){
-        double a = Math.log(length()),
-               b = Angle();
-        r = a;
-        i = b;
+        if(i == 0){
+            r = Math.log(r);
+        }else if(r == 0){
+            r = Math.log(i);
+            i = 0.5 * Math.PI;
+        }else{
+            double a = Math.log(length()),
+                b = Angle();
+            r = a;
+            i = b;
+        }
         return this;
     }
 
     public Complex sin(){
-        double a = Math.sin(r) * Math.cosh(i), 
-               b = Math.cos(r) * Math.sinh(i);
-        r = a;
-        i = b;
+        if(i == 0){
+            r = Math.sin(r);
+        }else if(r == 0){
+            i = Math.sinh(i);
+        }else{
+            double a = Math.sin(r) * Math.cosh(i), 
+                b = Math.cos(r) * Math.sinh(i);
+            r = a;
+            i = b;
+        }
         return this;
         
     }
 
     public Complex cos(){
-        double a = Math.cos(r) * Math.cosh(i),
-               b = -Math.sin(r) * Math.sinh(i);
-        r = a;
-        i = b;
+        if(i == 0){
+            r = Math.cos(r);
+        }else if(r == 0){
+            r = Math.cosh(i);
+            i = 0;
+        }else{
+            double a = Math.cos(r) * Math.cosh(i),
+                b = -Math.sin(r) * Math.sinh(i);
+            r = a;
+            i = b;
+        }
         return this;
     }
 
     public Complex tan(){
-        double var1 = 2 * r,
-               var2 = 2 * i,
+        if(i == 0){
+            r = Math.tan(r);
+        }else if(r == 0){
+            i = Math.tanh(i);
+        }else{
+            double var1 = 2 * r,
+                var2 = 2 * i,
 
-               var3 = Math.cos(var1) + Math.cosh(var2);
-        r = Math.sin(var1);
-        i = Math.sinh(var2);
-        return this.div(var3);
+                var3 = Math.cos(var1) + Math.cosh(var2);
+            r = Math.sin(var1);
+            i = Math.sinh(var2);
+            this.div(var3);
+        }
+        return this;
     }
 
     public Complex asin(){
@@ -256,10 +277,5 @@ public class Complex{
 
     public Complex atan(){
         return this.add(imaginary).div(imaginary.sub(this)).log().trade().negate(true, false).div(2d);
-    }
-
-    @Override
-    public String toString() {
-        return new StringBuffer().append(r).append(" + ").append(i).append("i").toString();
     }
 }

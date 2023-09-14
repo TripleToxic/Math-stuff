@@ -15,8 +15,8 @@ public enum FunctionEnum {
     mod("%", (a, b) -> a % b),
     pow("^", (a, b) -> pow(a, b)),
 
-    equal("==", (a, b) -> abs(a - b) < 0.0000000001 ? 1 : 0),
-    notEqual("not", (a, b) -> abs(a - b) < 0.0000000001 ? 0 : 1),
+    equal("==", (a, b) -> abs(a - b) < 0.0000000000001 ? 1 : 0),
+    notEqual("not", (a, b) -> abs(a - b) < 0.0000000000001 ? 0 : 1),
     land("and", (a, b) -> a != 0 && b != 0 ? 1 : 0),
     lessThan("<", (a, b) -> a < b ? 1 : 0),
     lessThanEq("<=", (a, b) -> a <= b ? 1 : 0),
@@ -26,10 +26,10 @@ public enum FunctionEnum {
     shl("<<", (a, b) -> (long)a << (long)b),
     shr(">>", (a, b) -> (long)a >> (long)b),
 
-    and("b-and", (a, b) -> l(d(a) & d(b))),
-    or("or", (a, b) -> l(d(a) | d(b))),
-    xor("xor", (a, b) -> l(d(a) ^ d(b))),
-    not("flip", a -> l(~d(a))),
+    and("b-and", (a, b) -> d(l(a) & l(b))),
+    or("or", (a, b) -> d(l(a) | l(b))),
+    xor("xor", (a, b) -> d(l(a) ^ l(b))),
+    not("flip", a -> d(~l(a))),
 
     max("max", Math::max),
     min("min", Math::min),
@@ -65,11 +65,11 @@ public enum FunctionEnum {
     factorial("!", a -> Factorial(a)),
     ;
 
-    static long d(double x){
+    static long l(double x){
         return Double.doubleToRawLongBits(x);
     }
 
-    static double l(long x){
+    static double d(long x){
         return Double.longBitsToDouble(x);
     }
 
