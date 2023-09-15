@@ -71,9 +71,9 @@ public class Statements{
 
             if(Op == CFunc.set){
                 Button(table, table);
-                field(table, r, str -> r = str);
+                field3(table, r, str -> r = str);
                 table.add(" + ");
-                field(table, i, str -> i = str);
+                field3(table, i, str -> i = str);
                 table.add("i");
                 return;
             }

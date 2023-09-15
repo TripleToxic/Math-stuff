@@ -12,7 +12,6 @@ import static mindustry.logic.LExecutor.*;
 
 public class TheInstruction{
     public static void setcomplex(LExecutor exec, int index, Complex c){
-        if(complex(exec, index) == null) return;
         exec.setnum(index + 1, c.r);
         exec.setnum(index + 2, c.i);
     }
@@ -43,13 +42,11 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            
             Complex c1 = complex(exec, result);
             if(c1 == null) return;
 
             if(Op == CFunc.set){
-                c1.set(exec.num(r), exec.num(i));
-                setcomplex(exec, result, c1);
+                setcomplex(exec, result, c1.set(exec.num(r), exec.num(i)));
                 return;
             }
             
