@@ -16,10 +16,9 @@ public class Polynomial implements FunctionEval{
 
     @Override
     public double evaluate(LExecutor exec, double val) {
-        double out = exec.num(coefficents[0]), xn = val;
-        for(int i=1; i<coefficents.length; i++){
-            out += exec.num(coefficents[i]) * xn;
-            xn *= val;
+        double out = exec.num(coefficents[coefficents.length]);
+        for(int i=coefficents.length - 2; i>=0; i--){
+            out = exec.num(coefficents[i]) + val*out;
         }
         return out;
     }
