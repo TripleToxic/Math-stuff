@@ -15,7 +15,7 @@ public class Function implements FunctionEval{
     Function f1, f2, derivative;
     double recurBuffer;
 
-    static int length = 5;
+    static final int length = 5;
 
     public Function(String output, String input, FunctionEnum ope, String name1, String name2, boolean recurs, String recur_string, LAssembler builder){
         functionName = output;
