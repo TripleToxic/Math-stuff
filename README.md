@@ -2,3 +2,5 @@
 adding:
 - Complex operation
 - Function operation
+    * Normal Function
+    * Polynomial
