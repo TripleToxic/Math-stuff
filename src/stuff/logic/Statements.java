@@ -676,9 +676,11 @@ public class Statements{
     }
 
     public static class FunctionOperationStatement extends ExtendStatement{
+        public FuncEvalEnum op = FuncEvalEnum.Eval;
         public String result = "result", F = "f", x = "x";
 
-        public FunctionOperationStatement(String result, String F, String x){
+        public FunctionOperationStatement(String op, String result, String F, String x){
+            try{this.op = FuncEvalEnum.valueOf(op);}catch(Exception ignore){}
             this.result = result;
             this.F = F;
             this.x = x;
@@ -687,7 +689,10 @@ public class Statements{
         public FunctionOperationStatement(){}
 
         @Override
-        public void build(Table table) {
+        public void build(Table table){
+            Button(table, table);
+            table.row();
+
             if(Vars.mobile){
                 field3(table, result, str -> result = str);
                 table.add(" = ");
@@ -703,9 +708,19 @@ public class Statements{
             table.add(")");
         }
 
+        void Button(Table table, Table parent){
+            table.button(b -> {
+                b.label(() -> op.name);
+                b.clicked(() -> showSelect(b, FuncEvalEnum.all, op, o -> {
+                    op = o;
+                    build(parent);
+                }));
+            }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
+        }
+
         @Override
         public LInstruction build(LAssembler builder) {
-            return new FunctionOperationI(builder.var(F), builder.var(x), builder.var(result));
+            return new FunctionOperationI(op, builder.var(F), builder.var(x), builder.var(result));
         }
 
         @Override
@@ -730,7 +745,7 @@ public class Statements{
         //registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
         registerStatement("fn", args -> new FunctionStatement(args), FunctionStatement::new);
         registerStatement("poly", args -> new PolynomialStatement(args), PolynomialStatement::new);
-        registerStatement("fnop", args -> new FunctionOperationStatement(args[1], args[2], args[3]), FunctionOperationStatement::new);
+        registerStatement("fnop", args -> new FunctionOperationStatement(args[1], args[2], args[3], args[4]), FunctionOperationStatement::new);
     }
 
     public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){
