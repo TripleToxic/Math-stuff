@@ -2,13 +2,13 @@ package stuff.logic;
 
 import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.LInstruction;
+import mindustry.logic.LExecutor.Var;
 //import stuff.util.Array;
 import stuff.util.Complex;
 import stuff.util.FunctionEval;
 
 //import static stuff.util.Array.*;
 //import static stuff.logic.AFunc.TwoType;
-import static mindustry.logic.LExecutor.*;
 
 public class TheInstruction{
     public static void setcomplex(LExecutor exec, int index, Complex c){
@@ -221,6 +221,18 @@ public class TheInstruction{
             }
         }
     }*/
+    static double
+    x1 = 0,
+    x2 = 0.405845151377397167d,
+    x3 = -0.405845151377397167d,
+    x4 = 0.74153118559939444d,
+    x5 = -0.74153118559939444d,
+    x6 = 0.949107912342758525d,
+    x7 = -0.949107912342758525,
+
+    w1 = 0.417959183673469388d,
+    w67 = 0.129484966168869693d;
+
 
     public static class FunctionOperationI implements LInstruction{
         public FuncEvalEnum op = FuncEvalEnum.Eval;
@@ -235,20 +247,24 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec) {
-            exec.setnum(result, 
-                switch(op){
-                    case Eval -> {
-                        yield exec.obj(F) instanceof FunctionEval f ? 
-                        f.evaluate(exec, exec.num(x)) : 0;
-                    }
+            if(exec.obj(F) instanceof FunctionEval f){
+                exec.setnum(result,
+                    switch(op){
+                        case Eval -> {
+                            yield f.evaluate(exec, exec.num(x));
+                        }
 
-                    //Using 5-point formula
-                        case Derivative -> {
-                        double h = 0x1p-14d, h2 = 1/12d;
-                        yield h; // hhhh
+                        //Using 5-point formula
+                            case Integral -> {
+                            
+                            
+                            yield 0d;
+                        }
                     }
-                }
-            );
+                );
+            }else{
+                exec.setnum(result, 0);
+            }
         }
     }
 }

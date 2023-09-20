@@ -2,7 +2,7 @@ package stuff.logic;
 
 public enum FuncEvalEnum {
     Eval("eval"),
-    Derivative("derivative"),
+    Integral("derivative"),
     ;
 
     public static final FuncEvalEnum[] all = FuncEvalEnum.values();
