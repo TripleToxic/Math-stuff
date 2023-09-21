@@ -221,21 +221,6 @@ public class TheInstruction{
             }
         }
     }*/
-    static double
-    x1 = 0,
-    x2 = 0.405845151377397167d,
-    x3 = -0.405845151377397167d,
-    x4 = 0.74153118559939444d,
-    x5 = -0.74153118559939444d,
-    x6 = 0.949107912342758525d,
-    x7 = -0.949107912342758525,
-
-    w1 = 0.417959183673469388d,
-    w23 = 0.38183005050511894d,
-    w45 = 0.279705391489276668d,
-    w67 = 0.129484966168869693d;
-
-
     public static class FunctionOperationI implements LInstruction{
         public int F, x, result;
 
@@ -251,5 +236,44 @@ public class TheInstruction{
                 f.evaluate(exec, exec.num(x)) : 0
             );
         }
+    }
+
+    //Constant for 7-points Gaussian quadrature. x1 = 0
+    static double
+    x2 = 0.405845151377397167d,
+    x3 = -0.405845151377397167d,
+    x4 = 0.74153118559939444d,
+    x5 = -0.74153118559939444d,
+    x6 = 0.949107912342758525d,
+    x7 = -0.949107912342758525,
+
+    w1 = 0.417959183673469388d,
+    w23 = 0.38183005050511894d,
+    w45 = 0.279705391489276668d,
+    w67 = 0.129484966168869693d;
+
+    public static class IntegralI implements LInstruction{
+        public int result, F, a, b;
+
+        public IntegralI(int result, int F, int a, int b){
+            this.result = result;
+            this.F = F;
+            this.a = a;
+            this.b = b;
+        }
+
+        IntegralI(){}
+
+        @Override
+        public void run(LExecutor exec) {
+            if(exec.obj(F) instanceof FunctionEval f){
+                double c1 = 0.5d*(b - a),
+                    c2 = 0.5d*(b + a),
+                
+                f1 = 2;
+                ;
+            }
+        }
+        
     }
 }

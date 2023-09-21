@@ -722,27 +722,56 @@ public class Statements{
     public static class IntegralStatement extends ExtendStatement{
         public String result = "result", F = "f", a = "a", b = "b";
 
+        public IntegralStatement(String result, String F, String a, String b){
+            this.result = result;
+            this.F = F;
+            this.a = a;
+            this.b = b;
+        }
+
+        public IntegralStatement(){}
+
         @Override
         public void build(Table table) {
-            table.add("∫");
-            fieldsmall(table, b, s -> b = s).padBottom(2f);
-            fieldsmall(table, a, s -> a = s).padTop(2f);
+            fieldsmall(table, b, s -> b = s);
+            table.row();
+            table.add("∫").fontScale(3f);
+            field(table, F, s -> F = s);
+            table.add("(x) dx");
+            table.row();
+            fieldsmall(table, a, s -> a = s);
             
             field3(table, F, s -> F = s);
             table.add("(x) dx");
         }
 
-        protected Cell<TextField> fieldsmall(Table table, Object result, Cons<String> setter){
-        return table.field(result.toString(), Styles.nodeField, s -> setter.get(sanitize(s)))
-            .size(30f, 30f).color(table.color).maxTextLength(LAssembler.maxTokenLength).fontScale(0.5f);
-    }
+        Cell<TextField> fieldsmall(Table table, Object result, Cons<String> setter){
+            return table.field(result.toString(), Styles.nodeField, s -> setter.get(sanitize(s)))
+                .size(30f, 30f).color(table.color).maxTextLength(LAssembler.maxTokenLength);
+        }
 
         @Override
         public LInstruction build(LAssembler builder) {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'build'");
+            return null;
         }
         
+        @Override
+        public void write(StringBuilder builder){
+            builder
+            .append("int ")
+            .append(result)
+            .append(" ")
+            .append(F)
+            .append(" ")
+            .append(a)
+            .append(" ")
+            .append(b);
+        }
+
+        @Override
+        public LCategory category(){
+            return categoryFunction;
+        }
     }
     
     public static void load(){
@@ -751,6 +780,7 @@ public class Statements{
         registerStatement("fn", args -> new FunctionStatement(args), FunctionStatement::new);
         registerStatement("poly", args -> new PolynomialStatement(args), PolynomialStatement::new);
         registerStatement("fnop", args -> new FunctionOperationStatement(args[1], args[2], args[3]), FunctionOperationStatement::new);
+        registerStatement("int", args -> new IntegralStatement(args[1], args[2], args[3], args[4]), IntegralStatement::new);
     }
 
     public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){
