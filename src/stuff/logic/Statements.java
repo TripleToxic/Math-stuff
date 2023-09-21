@@ -3,6 +3,7 @@ package stuff.logic;
 import arc.func.*;
 import arc.graphics.Color;
 import arc.math.Mathf;
+import arc.scene.ui.TextField;
 import arc.scene.ui.layout.*;
 import arc.util.Log;
 import arc.util.Strings;
@@ -402,25 +403,24 @@ public class Statements{
     }*/
 
     public static class FunctionStatement extends ExtendStatement{
-        public String output = "f", input = "x", a = "a", b = "b", recur_string = "0";
+        public String output = "f", a = "a", b = "b", recur_string = "0";
         public boolean recur = false;
         public FunctionEnum op = FunctionEnum.add;
 
         public FunctionStatement(String[] names){
             output = names[1];
-            input = names[2];
 
             try{
-                op = FunctionEnum.valueOf(names[3]);
+                op = FunctionEnum.valueOf(names[2]);
             }catch(Exception ignore){}
 
-            a = names[4];
-            b = names[5];
+            a = names[3];
+            b = names[4];
 
-            if(names[6].equals("true")) recur = true;
+            if(names[5].equals("true")) recur = true;
             else recur = false;
 
-            recur_string = names[7];
+            recur_string = names[6];
         }
 
         public FunctionStatement(){}
@@ -436,10 +436,7 @@ public class Statements{
             boolean unary = op.isUnary;
 
             field3(table, output, str -> output = str);
-            table.add("(");
-            field3(table, input, str -> input = str);
-            table.add(")");
-            table.add("=");
+            table.add("(x) =");
             if(unary){
                 Button(table, table);
                 field(table, a, str -> a = str);
@@ -450,12 +447,12 @@ public class Statements{
             }
 
             table.row();
-            repeat(4, table);
+            repeat(1, table);
             table.add("enable: ");
             Button2(table, table);
             if(recur){
                 table.row();
-                repeat(4, table);
+                repeat(1, table);
                 table.add("number: ");
                 field(table, recur_string, str -> recur_string = str);
             }
@@ -466,10 +463,7 @@ public class Statements{
             boolean unary = op.isUnary;
 
             field2(table, output, str -> output = str);
-            table.add("(");
-            field2(table, input, str -> input = str);
-            table.add(")");
-            table.add("=");
+            table.add("(x) =");
             if(unary){
                 Button(table, table);
                 field2(table, a, str -> a = str);
@@ -480,12 +474,12 @@ public class Statements{
             }
 
             table.row();
-            repeat(4, table);
+            repeat(1, table);
             table.add("enable: ");
             Button2(table, table);
             if(recur){
                 table.row();
-                repeat(4, table);
+                repeat(1, table);
                 table.add("number: ");
                 field2(table, recur_string, str -> recur_string = str);
             }
@@ -513,7 +507,7 @@ public class Statements{
 
         @Override
         public LInstruction build(LAssembler builder){
-            builder.putConst(output, new Function(output, input, op, a, b, recur, recur_string, builder));
+            builder.putConst(output, new Function(output, op, a, b, recur, recur_string, builder));
             return null;
         }
         
@@ -522,8 +516,6 @@ public class Statements{
             builder
             .append("fn ")
             .append(output)
-            .append(" ")
-            .append(input)
             .append(" ")
             .append(op.name())
             .append(" ")
@@ -676,11 +668,9 @@ public class Statements{
     }
 
     public static class FunctionOperationStatement extends ExtendStatement{
-        public FuncEvalEnum op = FuncEvalEnum.Eval;
         public String result = "result", F = "f", x = "x";
 
-        public FunctionOperationStatement(String op, String result, String F, String x){
-            try{this.op = FuncEvalEnum.valueOf(op);}catch(Exception ignore){}
+        public FunctionOperationStatement(String result, String F, String x){
             this.result = result;
             this.F = F;
             this.x = x;
@@ -690,7 +680,6 @@ public class Statements{
 
         @Override
         public void build(Table table){
-            Button(table, table);
             table.row();
 
             if(Vars.mobile){
@@ -708,19 +697,9 @@ public class Statements{
             table.add(")");
         }
 
-        void Button(Table table, Table parent){
-            table.button(b -> {
-                b.label(() -> op.name);
-                b.clicked(() -> showSelect(b, FuncEvalEnum.all, op, o -> {
-                    op = o;
-                    build(parent);
-                }));
-            }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
-        }
-
         @Override
         public LInstruction build(LAssembler builder) {
-            return new FunctionOperationI(op, builder.var(F), builder.var(x), builder.var(result));
+            return new FunctionOperationI(builder.var(F), builder.var(x), builder.var(result));
         }
 
         @Override
@@ -739,13 +718,39 @@ public class Statements{
             return categoryFunction;
         }
     }
+
+    public static class IntegralStatement extends ExtendStatement{
+        public String result = "result", F = "f", a = "a", b = "b";
+
+        @Override
+        public void build(Table table) {
+            table.add("∫");
+            fieldsmall(table, b, s -> b = s).padBottom(2f);
+            fieldsmall(table, a, s -> a = s).padTop(2f);
+            
+            field3(table, F, s -> F = s);
+            table.add("(x) dx");
+        }
+
+        protected Cell<TextField> fieldsmall(Table table, Object result, Cons<String> setter){
+        return table.field(result.toString(), Styles.nodeField, s -> setter.get(sanitize(s)))
+            .size(30f, 30f).color(table.color).maxTextLength(LAssembler.maxTokenLength).fontScale(0.5f);
+    }
+
+        @Override
+        public LInstruction build(LAssembler builder) {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'build'");
+        }
+        
+    }
     
     public static void load(){
         registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4]), ComplexOperationStatement::new);
         //registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
         registerStatement("fn", args -> new FunctionStatement(args), FunctionStatement::new);
         registerStatement("poly", args -> new PolynomialStatement(args), PolynomialStatement::new);
-        registerStatement("fnop", args -> new FunctionOperationStatement(args[1], args[2], args[3], args[4]), FunctionOperationStatement::new);
+        registerStatement("fnop", args -> new FunctionOperationStatement(args[1], args[2], args[3]), FunctionOperationStatement::new);
     }
 
     public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){

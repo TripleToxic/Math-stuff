@@ -8,7 +8,7 @@ import stuff.logic.FunctionEnum;
 import static stuff.util.AdditionalFunction.*;
 
 public class Function implements FunctionEval{
-    public String functionName, inputname;
+    public String functionName;
     int id1, id2, id3, ptr1, ptr2;
     FunctionEnum op;
     boolean recur, unchecked = true;
@@ -17,14 +17,13 @@ public class Function implements FunctionEval{
 
     static final int length = 5;
 
-    public Function(String output, String input, FunctionEnum ope, String name1, String name2, boolean recurs, String recur_string, LAssembler builder){
+    public Function(String output, FunctionEnum ope, String name1, String name2, boolean recurs, String recur_string, LAssembler builder){
         functionName = output;
-        inputname = input;
         op = ope;
         recur = recurs;
 
-        if(!name1.equals(inputname)) id1 = builder.var(name1);
-        if(!name2.equals(inputname)) id2 = builder.var(name2);
+        if(!name1.equals("x")) id1 = builder.var(name1);
+        if(!name2.equals("x")) id2 = builder.var(name2);
 
         if(recur){
             BVar v = builder.putVar("recur ".concat(functionName));

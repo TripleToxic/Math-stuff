@@ -237,11 +237,9 @@ public class TheInstruction{
 
 
     public static class FunctionOperationI implements LInstruction{
-        public FuncEvalEnum op = FuncEvalEnum.Eval;
         public int F, x, result;
 
-        public FunctionOperationI(FuncEvalEnum op, int F, int x, int result){
-            this.op = op;
+        public FunctionOperationI(int F, int x, int result){
             this.F = F;
             this.x = x;
             this.result = result;
@@ -249,24 +247,9 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec) {
-            if(exec.obj(F) instanceof FunctionEval f){
-                exec.setnum(result,
-                    switch(op){
-                        case Eval -> {
-                            yield f.evaluate(exec, exec.num(x));
-                        }
-
-                        //Using 5-point formula
-                            case Integral -> {
-                            
-                            
-                            yield 0d;
-                        }
-                    }
-                );
-            }else{
-                exec.setnum(result, 0);
-            }
+            exec.setnum(result, exec.obj(F) instanceof FunctionEval f ?
+                f.evaluate(exec, exec.num(x)) : 0
+            );
         }
     }
 }
