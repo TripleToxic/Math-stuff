@@ -733,18 +733,22 @@ public class Statements{
 
         @Override
         public void build(Table table) {
+            repeat(2, table);
             fieldsmall(table, b, s -> b = s);
             table.row();
+            field3(table, result, s -> result = s);
+            table.add(" = ");
             table.add("∫").fontScale(5f);
             fieldsmall(table, F, s -> F = s);
             table.add("(x) dx");
             table.row();
-            fieldsmall(table, a, s -> a = s);
+            repeat(2, table);
+            fieldsmall(table, a, s -> a = s).padTop(2f);
         }
 
         Cell<TextField> fieldsmall(Table table, Object result, Cons<String> setter){
             return table.field(result.toString(), Styles.nodeField, s -> setter.get(sanitize(s)))
-                .size(30f, 30f).color(table.color).maxTextLength(LAssembler.maxTokenLength);
+                .size(50f, 40f).color(table.color).maxTextLength(LAssembler.maxTokenLength);
         }
 
         @Override
