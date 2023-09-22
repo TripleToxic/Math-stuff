@@ -753,7 +753,7 @@ public class Statements{
 
         @Override
         public LInstruction build(LAssembler builder) {
-            return IntegralI(builder.var(result), builder.var(F), builder.var(a), builder.var(b));
+            return new IntegralI(builder.var(result), builder.var(F), builder.var(a), builder.var(b));
         }
         
         @Override
