@@ -735,14 +735,11 @@ public class Statements{
         public void build(Table table) {
             fieldsmall(table, b, s -> b = s);
             table.row();
-            table.add("∫").fontScale(3f);
-            field(table, F, s -> F = s);
+            table.add("∫").fontScale(5f);
+            fieldsmall(table, F, s -> F = s);
             table.add("(x) dx");
             table.row();
             fieldsmall(table, a, s -> a = s);
-            
-            field3(table, F, s -> F = s);
-            table.add("(x) dx");
         }
 
         Cell<TextField> fieldsmall(Table table, Object result, Cons<String> setter){
