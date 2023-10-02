@@ -238,7 +238,7 @@ public class TheInstruction{
         }
     }
 
-    //Constant for 7-points Gaussian quadrature. x1 = 0
+    //Constants for 7-points Gaussian quadrature. x1 = 0
     static double
     x2 = 0.405845151377397167d,
     x3 = -0.405845151377397167d,
@@ -266,9 +266,11 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec) {
-            if(exec.obj(F) instanceof FunctionEval f){
-                double c1 = 0.5d * (b - a),
-                       c2 = 0.5d * (b + a),
+            double aI = exec.num(a),
+                   bI = exec.num(b);
+            if(exec.obj(F) instanceof FunctionEval f && aI != bI){
+                double c1 = 0.5d * (bI - aI),
+                       c2 = 0.5d * (bI + aI),
 
                 f2 = f.evaluate(exec, c1 * x2 + c2),
                 f3 = f.evaluate(exec, c1 * x3 + c2),
