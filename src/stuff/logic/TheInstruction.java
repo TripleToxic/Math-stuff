@@ -269,27 +269,11 @@ public class TheInstruction{
             double aI = exec.num(a),
                    bI = exec.num(b);
 
-            double c1 = 0.5d * (bI - aI),
-                   c2 = 0.5d * (bI + aI);
-            if(exec.obj(F) instanceof FunctionEval f && aI != bI && Math.abs(bI - c2) <= 5d){
-
-                double f2 = f.evaluate(exec, c1 * x2 + c2),
-                f3 = f.evaluate(exec, c1 * x3 + c2),
-                f4 = f.evaluate(exec, c1 * x4 + c2),
-                f5 = f.evaluate(exec, c1 * x5 + c2),
-                f6 = f.evaluate(exec, c1 * x6 + c2),
-                f7 = f.evaluate(exec, c1 * x7 + c2),
-                
-                f1 = w1 * f.evaluate(exec, c2),
-                f23 = w23 * (f2 + f3),
-                f45 = w45 * (f4 + f5),
-                f67 = w67 * (f6 + f7),
-
-                total = c1 * (f1 + f23 + f45 + f67);
-
-                exec.setnum(result, total);
-            }
-            else exec.setnum(result, 0d);
+            double avg = 0.5d * (bI + aI);                
+            if(exec.obj(F) instanceof FunctionEval f && aI != bI && Math.abs(bI - avg) <= 5d)
+                exec.setnum(result, f.integral(exec, aI, bI));
+            else 
+                exec.setnum(result, 0d);
         }
         
     }

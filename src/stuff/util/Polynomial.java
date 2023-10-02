@@ -22,4 +22,23 @@ public class Polynomial implements FunctionEval{
         }
         return out;
     }
+
+    @Override
+    public double integral(LExecutor exec, double a, double b) {
+        int L = coefficents.length;
+        double total_a = 0, total_b = 0;
+        if(a != 0d){
+            total_a = exec.num(coefficents[L - 1])/(double)L;
+            for(int i=L-2; i>=0; i--){
+                total_a = exec.num(coefficents[i])/(double)(i+1) + a*total_a;
+            }
+        }
+        if(b != 0d){
+            total_b = exec.num(coefficents[L - 1])/(double)L;
+            for(int i=L-2; i>=0; i--){
+                total_b = exec.num(coefficents[i])/(double)(i+1) + b*total_b;
+            }
+        }
+        return total_b - total_a;
+    }
 }
