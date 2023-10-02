@@ -4,10 +4,9 @@ import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
 import mindustry.logic.LAssembler.BVar;
 import stuff.logic.FunctionEnum;
+import java.util.ArrayList;
 
 import static stuff.util.AdditionalFunction.*;
-
-import java.util.ArrayList;
 
 public class Function implements FunctionEval{
     public String functionName;
@@ -40,7 +39,7 @@ public class Function implements FunctionEval{
     public double evaluate(LExecutor exec, double val){
         ArrayList<Function> names = new ArrayList<>();
         double out = evaluate(exec, val, names, 0);
-        for(int i=0; i<length; i++){
+        for(int i=0; i<names.size(); i++){
             if(names.get(i).recur) exec.setnum(names.get(i).id3, recurBuffer);
         }
         return out;
