@@ -277,4 +277,22 @@ public class TheInstruction{
         }
         
     }
+
+    public static class RootFindingI implements LInstruction{
+        public int result, F, maxIter, guess;
+
+        public RootFindingI(int result, int F, int maxIter, int guess){
+            this.result = result;
+            this.F = F;
+            this.maxIter = maxIter;
+            this.guess = guess;
+        }
+
+        RootFindingI(){}
+
+        @Override
+        public void run(LExecutor exec) {
+            
+        }
+    }
 }
