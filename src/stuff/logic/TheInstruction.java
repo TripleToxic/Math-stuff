@@ -268,11 +268,12 @@ public class TheInstruction{
         public void run(LExecutor exec) {
             double aI = exec.num(a),
                    bI = exec.num(b);
-            if(exec.obj(F) instanceof FunctionEval f && aI != bI){
-                double c1 = 0.5d * (bI - aI),
-                       c2 = 0.5d * (bI + aI),
 
-                f2 = f.evaluate(exec, c1 * x2 + c2),
+            double c1 = 0.5d * (bI - aI),
+                   c2 = 0.5d * (bI + aI);
+            if(exec.obj(F) instanceof FunctionEval f && aI != bI && Math.abs(bI - c2) <= 5d){
+
+                double f2 = f.evaluate(exec, c1 * x2 + c2),
                 f3 = f.evaluate(exec, c1 * x3 + c2),
                 f4 = f.evaluate(exec, c1 * x4 + c2),
                 f5 = f.evaluate(exec, c1 * x5 + c2),
