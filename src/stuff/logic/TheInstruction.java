@@ -16,6 +16,10 @@ public class TheInstruction{
         exec.setnum(index + 2, c.i);
     }
 
+    public static boolean invalid(double a){
+        return Double.isNaN(a) || Double.isInfinite(a);
+    }
+
     public static Complex complex(LExecutor exec, int index){
         Var v = exec.var(index);
         Complex c = v.isobj && v.objval instanceof Complex complex ? complex : null;
@@ -281,20 +285,21 @@ public class TheInstruction{
     /**
      * Using a modified secant method where:
      * 
-     * <p><b>1.</b>    r_x = f(x_0) * ( (x_1 - x_0) / ( f(x_1) - f(x_0) ) )
+     * <p><b>1.</b>    root = x_0 - f(x_0) * ( (x_1 - x_0) / ( f(x_1) - f(x_0) ) )
      * 
-     * <p><b>2.</b>    if |x_0 - r_x| > |x_1 - r_x| then x_0 = r_x, otherwise x_1 = r_x
+     * <p><b>2.</b>    if |x_0 - root| > |x_1 - root| then x_0 = r_x, otherwise x_1 = r_x
      * 
-     * <p><b>3.</b>    redo step 1 until the error reach certain threshold or the number of iteration reach {@code maxIter}
+     * <p><b>3.</b>    redo step 1 until the error of {@code root} reach certain threshold or the number of iteration reach {@code maxIter}
      */
     public static class RootFindingI implements LInstruction{
-        public int result, F, maxIter, guess;
+        public int result, F, maxIter, guess_0, guess_1;
 
-        public RootFindingI(int result, int F, int maxIter, int guess){
+        public RootFindingI(int result, int F, int maxIter, int guess_0, int guess_1){
             this.result = result;
             this.F = F;
             this.maxIter = maxIter;
-            this.guess = guess;
+            this.guess_0 = guess_0;
+            this.guess_1 = guess_1;
         }
 
         RootFindingI(){}
@@ -303,12 +308,26 @@ public class TheInstruction{
         public void run(LExecutor exec){
             int max = exec.numi(maxIter);
             if(exec.obj(F) instanceof Function f && max > 0){
-                double x_0 = exec.num(guess);
+                double x_0 = exec.num(guess_0),
+                       x_1 = exec.num(guess_1),
+                       f0, f1, root, buffer;
+
                 for(int i=0; i<max; i++){
-                    
+                    f0 = f.evaluate(exec, x_0);
+                    f1 = f.evaluate(exec, x_1);
+                    buffer = x_1 - x_0; 
+                    root = f0 * buffer/(f1 - f0);
+                    if(invalid(root)){
+                        exec.setnum(result, exec.num(guess_0));
+                        return;
+                    }
+                    if(Math.abs(root) > Math.abs(buffer + root))
+                        x_0 -= root;
+                    else
+                        x_1 = x_0 - root;
                 }
             }
-            else exec.setnum(result, exec.num(guess));
+            else exec.setnum(result, exec.num(guess_0));
         }
     }
 }

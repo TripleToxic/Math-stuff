@@ -774,6 +774,39 @@ public class Statements{
             return categoryFunction;
         }
     }
+
+    public static class RootFindingStatement extends ExtendStatement{
+        public String result = "result", F = "f", maxIter = "3", guess_0 = "-1", guess_1 = "1";
+
+        public RootFindingStatement(String result, String F){
+            
+        }
+
+        @Override
+        public void build(Table table) {
+           
+            
+        }
+
+        @Override
+        public LInstruction build(LAssembler builder) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public LCategory category() {
+            // TODO Auto-generated method stub
+            return super.category();
+        }
+
+        @Override
+        public void write(StringBuilder builder) {
+            // TODO Auto-generated method stub
+            super.write(builder);
+        }
+        
+    }
     
     public static void load(){
         registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4]), ComplexOperationStatement::new);
