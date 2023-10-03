@@ -16,7 +16,7 @@ import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
 import stuff.logic.TheInstruction.*;
 import stuff.util.Complex;
-import stuff.util.Function;
+import stuff.util.NormalFunction;
 import stuff.util.Polynomial;
 //import stuff.logic.AFunc.TwoType;
 
@@ -507,7 +507,7 @@ public class Statements{
 
         @Override
         public LInstruction build(LAssembler builder){
-            builder.putConst(output, new Function(output, op, a, b, recur, recur_string, builder));
+            builder.putConst(output, new NormalFunction(output, op, a, b, recur, recur_string, builder));
             return null;
         }
         

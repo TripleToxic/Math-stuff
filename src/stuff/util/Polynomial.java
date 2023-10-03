@@ -3,7 +3,7 @@ package stuff.util;
 import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
 
-public class Polynomial implements FunctionEval{
+public class Polynomial implements Function{
     String functionName;
     int[] coefficents;
 

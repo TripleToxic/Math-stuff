@@ -5,7 +5,7 @@ import mindustry.logic.LExecutor.LInstruction;
 import mindustry.logic.LExecutor.Var;
 //import stuff.util.Array;
 import stuff.util.Complex;
-import stuff.util.FunctionEval;
+import stuff.util.Function;
 
 //import static stuff.util.Array.*;
 //import static stuff.logic.AFunc.TwoType;
@@ -232,7 +232,7 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec) {
-            exec.setnum(result, exec.obj(F) instanceof FunctionEval f ?
+            exec.setnum(result, exec.obj(F) instanceof Function f ?
                 f.evaluate(exec, exec.num(x)) : 0
             );
         }
@@ -270,7 +270,7 @@ public class TheInstruction{
                    bI = exec.num(b);
 
             double avg = 0.5d * (bI + aI);                
-            if(exec.obj(F) instanceof FunctionEval f && aI != bI && Math.abs(bI - avg) <= 5d)
+            if(exec.obj(F) instanceof Function f && aI != bI && Math.abs(bI - avg) <= 5d)
                 exec.setnum(result, f.integral(exec, aI, bI));
             else 
                 exec.setnum(result, 0d);
@@ -278,6 +278,15 @@ public class TheInstruction{
         
     }
 
+    /**
+     * Using a modified secant method where:
+     * 
+     * <p><b>1.</b>    r_x = f(x_0) * ( (x_1 - x_0) / ( f(x_1) - f(x_0) ) )
+     * 
+     * <p><b>2.</b>    if |x_0 - r_x| > |x_1 - r_x| then x_0 = r_x, otherwise x_1 = r_x
+     * 
+     * <p><b>3.</b>    redo step 1 until the error reach certain threshold or the number of iteration reach {@code maxIter}
+     */
     public static class RootFindingI implements LInstruction{
         public int result, F, maxIter, guess;
 
@@ -291,8 +300,15 @@ public class TheInstruction{
         RootFindingI(){}
 
         @Override
-        public void run(LExecutor exec) {
-            
+        public void run(LExecutor exec){
+            int max = exec.numi(maxIter);
+            if(exec.obj(F) instanceof Function f && max > 0){
+                double x_0 = exec.num(guess);
+                for(int i=0; i<max; i++){
+                    
+                }
+            }
+            else exec.setnum(result, exec.num(guess));
         }
     }
 }
