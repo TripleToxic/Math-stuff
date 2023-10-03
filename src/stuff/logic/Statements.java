@@ -778,14 +778,25 @@ public class Statements{
     public static class RootFindingStatement extends ExtendStatement{
         public String result = "result", F = "f", maxIter = "3", guess_0 = "-1", guess_1 = "1";
 
-        public RootFindingStatement(String result, String F){
-            
+        public RootFindingStatement(String result, String F, String maxIter, String guess_0, String guess_1){
+            this.result = result;
+            this.F = F;
+            this.maxIter = maxIter;
+            this.guess_0 = guess_0;
+            this.guess_1 = guess_1;
         }
 
         @Override
-        public void build(Table table) {
-           
+        public void build(Table table){
             
+        }
+
+        void Button(Table table, Table parent){
+            
+
+            table.collapser(b -> {
+
+            } ,() -> false);
         }
 
         @Override
