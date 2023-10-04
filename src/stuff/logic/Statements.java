@@ -3,6 +3,8 @@ package stuff.logic;
 import arc.func.*;
 import arc.graphics.Color;
 import arc.math.Mathf;
+import arc.scene.ui.Image;
+import arc.scene.ui.TextButton;
 import arc.scene.ui.TextField;
 import arc.scene.ui.layout.*;
 import arc.util.Log;
@@ -777,8 +779,10 @@ public class Statements{
 
     public static class RootFindingStatement extends ExtendStatement{
         public String result = "result", F = "f", maxIter = "3", guess_0 = "-1", guess_1 = "1";
+        public RootFindingEnum op = RootFindingEnum.Bisection;
 
-        public RootFindingStatement(String result, String F, String maxIter, String guess_0, String guess_1){
+        public RootFindingStatement(String op, String result, String F, String maxIter, String guess_0, String guess_1){
+            try{this.op = RootFindingEnum.valueOf(op);}catch(Exception ignore){}
             this.result = result;
             this.F = F;
             this.maxIter = maxIter;
@@ -792,11 +796,22 @@ public class Statements{
         }
 
         void Button(Table table, Table parent){
-            
+            boolean[] shown = {false};
+
+            table.button(op.name(), Icon.downOpen, Styles.togglet, () -> {
+                shown[0] = !shown[0];
+            }).marginLeft(14f).width(260f).height(55f).update(t -> {
+                ((Image)t.getChildren().get(1)).setDrawable(shown[0] ? Icon.upOpen : Icon.downOpen);
+                t.setChecked(shown[0]);
+            }).row();
 
             table.collapser(b -> {
+                for(RootFindingEnum e : RootFindingEnum.values()){
+                    
+                }
+                
+            } ,() -> shown[0]);
 
-            } ,() -> false);
         }
 
         @Override

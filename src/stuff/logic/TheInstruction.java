@@ -282,19 +282,12 @@ public class TheInstruction{
         
     }
 
-    /**
-     * Using a modified secant method where:
-     * 
-     * <p><b>1.</b>    root = x_0 - f(x_0) * ( (x_1 - x_0) / ( f(x_1) - f(x_0) ) )
-     * 
-     * <p><b>2.</b>    if |x_0 - root| > |x_1 - root| then x_0 = r_x, otherwise x_1 = r_x
-     * 
-     * <p><b>3.</b>    redo step 1 until the error of {@code root} reach certain threshold or the number of iteration reach {@code maxIter}
-     */
     public static class RootFindingI implements LInstruction{
         public int result, F, maxIter, guess_0, guess_1;
+        public RootFindingEnum op;
 
-        public RootFindingI(int result, int F, int maxIter, int guess_0, int guess_1){
+        public RootFindingI(RootFindingEnum op, int result, int F, int maxIter, int guess_0, int guess_1){
+            this.op = op;
             this.result = result;
             this.F = F;
             this.maxIter = maxIter;
