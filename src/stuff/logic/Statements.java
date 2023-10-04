@@ -683,19 +683,19 @@ public class Statements{
 
         @Override
         public void build(Table table){
-            table.row();
+            table.clearChildren();
 
             if(Vars.mobile){
                 field3(table, result, str -> result = str);
                 table.add(" = ");
                 field3(table, F, str -> F = str);
-                table.add("(");
             }else{
                 field(table, result, str -> result = str);
                 table.add(" = ");
                 field(table, F, str -> F = str);
-                table.add("(");
             }
+
+            table.add("(");
             field3(table, x, str -> x = str);
             table.add(")");
         }
@@ -735,7 +735,9 @@ public class Statements{
         public IntegralStatement(){}
 
         @Override
-        public void build(Table table) {
+        public void build(Table table){
+            table.clearChildren();
+
             repeat(2, table);
             fieldsmall(table, b, s -> b = s);
             table.row();
@@ -791,9 +793,20 @@ public class Statements{
             this.guess_1 = guess_1;
         }
 
+        public RootFindingStatement(){}
+
         @Override
         public void build(Table table){
+            table.clearChildren();
+            field(table, F, null);
+            table.add("Method: ");
             Button(table, table);
+            table.row();
+            
+
+        }
+
+        void fieldOr(Table table, String value, Cons<String> setter){
             
         }
 
@@ -818,25 +831,21 @@ public class Statements{
                     t.add(button).group(group).checked(op == e).row();
                 }
             } ,() -> shown[0]);
-
         }
 
         @Override
         public LInstruction build(LAssembler builder) {
-            // TODO Auto-generated method stub
             return null;
         }
 
         @Override
         public LCategory category() {
-            // TODO Auto-generated method stub
-            return super.category();
+            return categoryFunction;
         }
 
         @Override
         public void write(StringBuilder builder) {
-            // TODO Auto-generated method stub
-            super.write(builder);
+            
         }
         
     }
@@ -848,6 +857,7 @@ public class Statements{
         registerStatement("poly", args -> new PolynomialStatement(args), PolynomialStatement::new);
         registerStatement("fnop", args -> new FunctionOperationStatement(args[1], args[2], args[3]), FunctionOperationStatement::new);
         registerStatement("int", args -> new IntegralStatement(args[1], args[2], args[3], args[4]), IntegralStatement::new);
+        registerStatement("root", args -> new RootFindingStatement(args[1], args[2], args[3], args[4], args[5], args[6]), RootFindingStatement::new);
     }
 
     public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){
