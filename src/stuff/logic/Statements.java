@@ -3,6 +3,7 @@ package stuff.logic;
 import arc.func.*;
 import arc.graphics.Color;
 import arc.math.Mathf;
+import arc.scene.ui.ButtonGroup;
 import arc.scene.ui.Image;
 import arc.scene.ui.TextButton;
 import arc.scene.ui.TextField;
@@ -792,11 +793,13 @@ public class Statements{
 
         @Override
         public void build(Table table){
+            Button(table, table);
             
         }
 
         void Button(Table table, Table parent){
             boolean[] shown = {false};
+            ButtonGroup<TextButton> group = new ButtonGroup<>();
 
             table.button(op.name(), Icon.downOpen, Styles.togglet, () -> {
                 shown[0] = !shown[0];
@@ -805,11 +808,15 @@ public class Statements{
                 t.setChecked(shown[0]);
             }).row();
 
-            table.collapser(b -> {
+            table.collapser(t -> {
                 for(RootFindingEnum e : RootFindingEnum.values()){
-                    
+                    TextButton button = new TextButton(e.name(), Styles.flatTogglet);
+                    button.clicked(() -> {
+                        op = e;
+                        build(parent);
+                    });
+                    t.add(button).group(group).checked(op == e).row();
                 }
-                
             } ,() -> shown[0]);
 
         }
