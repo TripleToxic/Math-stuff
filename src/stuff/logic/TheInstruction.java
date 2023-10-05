@@ -299,28 +299,47 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
+            
             int max = exec.numi(maxIter);
-            if(exec.obj(F) instanceof Function f && max > 0){
-                double x_0 = exec.num(guess_0),
-                       x_1 = exec.num(guess_1),
-                       f0, f1, root, buffer;
 
-                for(int i=0; i<max; i++){
-                    f0 = f.evaluate(exec, x_0);
-                    f1 = f.evaluate(exec, x_1);
-                    buffer = x_1 - x_0; 
-                    root = f0 * buffer/(f1 - f0);
-                    if(invalid(root)){
-                        exec.setnum(result, exec.num(guess_0));
-                        return;
+            double x_0 = exec.num(guess_0),
+                x_1 = exec.num(guess_1),
+                f0, f1, root, buffer;
+
+            if(exec.obj(F) instanceof Function f && max > 0){
+                switch(op){
+                    
+                    case Bisection -> {
+                        f0 = f.evaluate(exec, x_0);
+                        f1 = f.evaluate(exec, x_1);
+                        //Check if each of two number are positive and negative for bisection process
+                        if((Double.doubleToRawLongBits(f0) ^ Double.doubleToRawLongBits(f1)) < 0)
+                            for(int i=0; i<max; i++, f0 = f.evaluate(exec, x_0), f1 = f.evaluate(exec, x_1)){
+                                
+                            }
+                        else exec.setobj(result, null);
                     }
-                    if(Math.abs(root) > Math.abs(buffer + root))
-                        x_0 -= root;
-                    else
-                        x_1 = x_0 - root;
+
+                    case Secant -> {
+
+                        for(int i=0; i<max; i++){
+                            f0 = f.evaluate(exec, x_0);
+                            f1 = f.evaluate(exec, x_1);
+                            buffer = x_1 - x_0; 
+                            root = f0 * buffer/(f1 - f0);
+                            if(invalid(root)){
+                                exec.setnum(result, exec.num(guess_0));
+                                return;
+                            }
+                            if(Math.abs(root) > Math.abs(buffer + root))
+                                x_0 -= root;
+                            else
+                                x_1 = x_0 - root;
+                        }
+                    }
                 }
             }
-            else exec.setnum(result, exec.num(guess_0));
+            else exec.setobj(result, null);
         }
     }
 }

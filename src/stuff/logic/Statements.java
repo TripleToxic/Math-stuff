@@ -5,6 +5,7 @@ import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.scene.ui.Button;
 import arc.scene.ui.ButtonGroup;
+import arc.scene.ui.Label;
 import arc.scene.ui.TextField;
 import arc.scene.ui.layout.*;
 import arc.util.Log;
@@ -783,13 +784,13 @@ public class Statements{
         public String result = "result", F = "f", maxIter = "3", guess_0 = "-1", guess_1 = "1";
         public RootFindingEnum op = RootFindingEnum.Bisection;
 
-        public RootFindingStatement(String op, String result, String F, String maxIter, String guess_0, String guess_1){
+        public RootFindingStatement(String op, String result, String F, String guess_0, String guess_1, String maxIter){
             try{this.op = RootFindingEnum.valueOf(op);}catch(Exception ignore){}
             this.result = result;
             this.F = F;
-            this.maxIter = maxIter;
             this.guess_0 = guess_0;
             this.guess_1 = guess_1;
+            this.maxIter = maxIter;
         }
 
         public RootFindingStatement(){}
@@ -813,12 +814,15 @@ public class Statements{
             table.add("Starting point:");
             table.row();
 
-            table.add("x");
+            table.add();
+            table.add("    x");
             table.add("0").fontScale(0.5f).padBottom(1f);
             table.add(" = ");
             fieldOr(table, guess_0, str -> guess_0 = str);
+            table.row();
 
-            table.add(" x");
+            table.add();
+            table.add("x");
             table.add("1").fontScale(0.5f).padBottom(1f);
             table.add(" = ");
             fieldOr(table, guess_1, str -> guess_1 = str);
@@ -826,11 +830,13 @@ public class Statements{
 
 
             table.add("Max iteration: ");
+            table.row();
             fieldOr(table, maxIter, str -> maxIter = str);
+            table.row();
 
 
             table.add("Using: ");
-            
+            table.row();
             Button(table, table);
         }
 
@@ -841,17 +847,19 @@ public class Statements{
 
         void Button(Table table, Table parent){
             table.button(b -> {
-                b.label(() -> op.name().replace("_", " "));
+                Cell<Label> text = b.label(() -> op.name().replace("_", " ")).size(100f, 40f);
                 b.image(Icon.downOpen);
                 
                 b.clicked(() -> showSelectTable(b, (t, hide) ->{
                     Table innerTable = 
                     new Table(i -> {
                         for(RootFindingEnum e : RootFindingEnum.values){
-                            i.button(e.name().replace("_", " "), Styles.flatt, () -> {
+                            String str = e.name().replace("_", " ");
+                            i.button(str, Styles.flatt, () -> {
                                 op = e;
+                                text.get().setText(str);
                                 hide.run();
-                            }).self(c -> LCanvas.tooltip(c, e)).row();
+                            }).size(240f, 40f).self(c -> LCanvas.tooltip(c, e)).row();
                         }
                     });
 
@@ -874,7 +882,7 @@ public class Statements{
 
         @Override
         public LInstruction build(LAssembler builder) {
-            return null;
+            return new RootFindingI(op, builder.var(result), builder.var(F), builder.var(guess_0), builder.var(guess_1), builder.var(maxIter));
         }
 
         @Override
@@ -884,7 +892,20 @@ public class Statements{
 
         @Override
         public void write(StringBuilder builder) {
-            
+            builder
+            .append("root ")
+            .append(op.name())
+            .append(" ")
+            .append(result)
+            .append(" ")
+            .append(F)
+            .append(" ")
+            .append(guess_0)
+            .append(" ")
+            .append(guess_1)
+            .append(" ")
+            .append(maxIter)
+            ;
         }
         
     }
