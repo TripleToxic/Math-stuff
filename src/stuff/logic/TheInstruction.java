@@ -312,6 +312,7 @@ public class TheInstruction{
                     case Bisection -> {
                         f0 = f.evaluate(exec, x_0);
                         f1 = f.evaluate(exec, x_1);
+                        
                         //Check if each of two number are positive and negative for bisection process
                         if((Double.doubleToRawLongBits(f0) ^ Double.doubleToRawLongBits(f1)) < 0)
                             for(int i=0; i<max; i++, f0 = f.evaluate(exec, x_0), f1 = f.evaluate(exec, x_1)){

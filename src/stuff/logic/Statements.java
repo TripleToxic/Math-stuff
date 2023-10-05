@@ -8,7 +8,6 @@ import arc.scene.ui.ButtonGroup;
 import arc.scene.ui.Label;
 import arc.scene.ui.TextField;
 import arc.scene.ui.layout.*;
-import arc.util.Log;
 import arc.util.Strings;
 import mindustry.Vars;
 import mindustry.gen.*;
@@ -558,7 +557,6 @@ public class Statements{
             degree = Mathf.clamp(parseInt(names[3]), 0, 11);
 
             System.arraycopy(names, 4, coefficents, 0, degree + 1);
-            Log.info(coefficents + "\n");
         }
 
         public PolynomialStatement(){}
@@ -581,8 +579,6 @@ public class Statements{
         void rebuild(Table table){
             table.clearChildren();
 
-            Log.info(Arrays.toString(coefficents));
-            Log.info(degree);
             table.add("degree = ");
             field2(table, degree, str -> {
                 int a = Mathf.clamp(parseInt(str), 0, 11);
@@ -646,7 +642,6 @@ public class Statements{
 
         @Override
         public LInstruction build(LAssembler builder) {
-            Log.info(Arrays.toString(coefficents));
             builder.putConst(functionName, new Polynomial(coefficents, degree, builder));
             return null;
         }
@@ -816,14 +811,14 @@ public class Statements{
 
             table.add();
             table.add("    x");
-            table.add("0").fontScale(0.5f).padBottom(1f);
+            table.add("0").fontScale(0.5f).padBottom(2f);
             table.add(" = ");
             fieldOr(table, guess_0, str -> guess_0 = str);
             table.row();
 
             table.add();
             table.add("x");
-            table.add("1").fontScale(0.5f).padBottom(1f);
+            table.add("1").fontScale(0.5f).padBottom(2f);
             table.add(" = ");
             fieldOr(table, guess_1, str -> guess_1 = str);
             table.row();
