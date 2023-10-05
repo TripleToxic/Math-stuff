@@ -841,6 +841,7 @@ public class Statements{
 
         void Button(Table table, Table parent){
             table.button(b -> {
+                b.label(() -> op.name().replace("_", " "));
                 b.image(Icon.downOpen);
                 
                 b.clicked(() -> showSelectTable(b, (t, hide) ->{
