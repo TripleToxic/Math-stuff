@@ -3,9 +3,8 @@ package stuff.logic;
 import arc.func.*;
 import arc.graphics.Color;
 import arc.math.Mathf;
+import arc.scene.ui.Button;
 import arc.scene.ui.ButtonGroup;
-import arc.scene.ui.Image;
-import arc.scene.ui.TextButton;
 import arc.scene.ui.TextField;
 import arc.scene.ui.layout.*;
 import arc.util.Log;
@@ -798,39 +797,78 @@ public class Statements{
         @Override
         public void build(Table table){
             table.clearChildren();
-            field(table, F, null);
-            table.add("Method: ");
-            Button(table, table);
-            table.row();
             
 
+            fieldOr(table, result, str -> result = str);
+            table.add(" = ");
+            table.row();
+
+
+            table.add("root of ");
+            repeat(2, table);
+            fieldOr(table, F, str -> F = str);
+            table.row();
+
+
+            table.add("Starting point:");
+            table.row();
+
+            table.add("x");
+            table.add("0").fontScale(0.5f).padBottom(1f);
+            table.add(" = ");
+            fieldOr(table, guess_0, str -> guess_0 = str);
+
+            table.add(" x");
+            table.add("1").fontScale(0.5f).padBottom(1f);
+            table.add(" = ");
+            fieldOr(table, guess_1, str -> guess_1 = str);
+            table.row();
+
+
+            table.add("Max iteration: ");
+            fieldOr(table, maxIter, str -> maxIter = str);
+
+
+            table.add("Using: ");
+            
+            Button(table, table);
         }
 
-        void fieldOr(Table table, String value, Cons<String> setter){
-            
+        Cell<TextField> fieldOr(Table table, String value, Cons<String> setter){
+            if(Vars.mobile) return field3(table, value, setter);
+            else return field(table, value, setter);
         }
 
         void Button(Table table, Table parent){
-            boolean[] shown = {false};
-            ButtonGroup<TextButton> group = new ButtonGroup<>();
-
-            table.button(op.name(), Icon.downOpen, Styles.togglet, () -> {
-                shown[0] = !shown[0];
-            }).marginLeft(14f).width(260f).height(55f).update(t -> {
-                ((Image)t.getChildren().get(1)).setDrawable(shown[0] ? Icon.upOpen : Icon.downOpen);
-                t.setChecked(shown[0]);
-            }).row();
-
-            table.collapser(t -> {
-                for(RootFindingEnum e : RootFindingEnum.values()){
-                    TextButton button = new TextButton(e.name(), Styles.flatTogglet);
-                    button.clicked(() -> {
-                        op = e;
-                        build(parent);
+            table.button(b -> {
+                b.image(Icon.downOpen);
+                
+                b.clicked(() -> showSelectTable(b, (t, hide) ->{
+                    Table innerTable = 
+                    new Table(i -> {
+                        for(RootFindingEnum e : RootFindingEnum.values){
+                            i.button(e.name().replace("_", " "), Styles.flatt, () -> {
+                                op = e;
+                                hide.run();
+                            }).self(c -> LCanvas.tooltip(c, e)).row();
+                        }
                     });
-                    t.add(button).group(group).checked(op == e).row();
-                }
-            } ,() -> shown[0]);
+
+                    Stack stack = new Stack(innerTable);
+                    ButtonGroup<Button> group = new ButtonGroup<>();
+
+                    t.button(Icon.grid, Styles.squareTogglei, () -> {
+                        stack.clearChildren();
+                        stack.addChild(innerTable);
+
+                        t.parent.parent.pack();
+                        t.parent.parent.invalidateHierarchy();
+                    }).height(50f).growX().group(group);
+                    
+                    t.row();
+                    t.add(stack).colspan(3).width(240f).left();
+                }));
+            }, Styles.logict, () -> {}).size(100f, 40f).color(table.color);
         }
 
         @Override

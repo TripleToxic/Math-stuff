@@ -6,4 +6,6 @@ public enum RootFindingEnum {
     Secant,
     ModifiedSecant,
     ;
+
+    public static final RootFindingEnum[] values = values();
 }
