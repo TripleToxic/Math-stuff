@@ -9,6 +9,7 @@ import stuff.util.Function;
 
 //import static stuff.util.Array.*;
 //import static stuff.logic.AFunc.TwoType;
+import static stuff.logic.FunctionEnum.*;
 
 public class TheInstruction{
     public static void setcomplex(LExecutor exec, int index, Complex c){
@@ -299,12 +300,13 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            
             int max = exec.numi(maxIter);
+            max = Math.min(max, 10); // True maximum
 
             double x_0 = exec.num(guess_0),
                 x_1 = exec.num(guess_1),
-                f0, f1, root, buffer;
+                f0, f1, root, buffer,
+                tor = 0.0000000000001d;
 
             if(exec.obj(F) instanceof Function f && max > 0){
                 switch(op){
@@ -312,12 +314,22 @@ public class TheInstruction{
                     case Bisection -> {
                         f0 = f.evaluate(exec, x_0);
                         f1 = f.evaluate(exec, x_1);
+                        double mid = (x_0 + x_1) / 2d, fmid;
                         
+                        long l1 = l(f0),
+                             l2 = l(f1);
                         //Check if each of two number are positive and negative for bisection process
-                        if((Double.doubleToRawLongBits(f0) ^ Double.doubleToRawLongBits(f1)) < 0)
-                            for(int i=0; i<max; i++, f0 = f.evaluate(exec, x_0), f1 = f.evaluate(exec, x_1)){
+                        if(((l1 ^ l2) < 0) && Math.abs(f0) > tor && Math.abs(f1) > tor){
+                            for(int i=0; i<max; i++){
+                                mid = (x_0 + x_1) / 2d;
+                                fmid = f.evaluate(exec, mid);
                                 
+                                if(fmid < tor) break;
+                                if((l(fmid) & l1) > 0){};
                             }
+
+                            exec.setnum(result, mid);
+                        }
                         else exec.setobj(result, null);
                     }
 
