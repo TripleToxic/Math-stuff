@@ -287,6 +287,8 @@ public class TheInstruction{
         public int result, F, maxIter, guess_0, guess_1;
         public RootFindingEnum op;
 
+        double f0, f1, root, buffer, tor = 0.0000000000001d;
+
         public RootFindingI(RootFindingEnum op, int result, int F, int maxIter, int guess_0, int guess_1){
             this.op = op;
             this.result = result;
@@ -300,13 +302,18 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
+            
             int max = exec.numi(maxIter);
             max = Math.min(max, 10); // True maximum
-
+            
             double x_0 = exec.num(guess_0),
-                x_1 = exec.num(guess_1),
-                f0, f1, root, buffer,
-                tor = 0.0000000000001d;
+            x_1 = exec.num(guess_1),
+            tor = 0.0000000000001d;
+
+            Runnable valid = () -> {
+                if(root > tor) exec.setobj(result, null);
+                else exec.setnum(result, root);
+            };
 
             if(exec.obj(F) instanceof Function f && max > 0){
                 f0 = f.evaluate(exec, x_0);
@@ -326,15 +333,20 @@ public class TheInstruction{
                                 mid = (x_0 + x_1) / 2d;
                                 fmid = f.evaluate(exec, mid);
                                 
+                                if(invalid(fmid)){
+                                    exec.setobj(result, null);
+                                    return;
+                                }
+
                                 if(fmid < tor) break;
-                                if((l(fmid) ^ l1) < 0)
+                                if((l(fmid) ^ l1) > 0)
                                     x_0 = mid;
                                 else 
                                     x_1 = mid;
                                 
                             }
 
-                            exec.setnum(result, mid);
+                            valid.run();
                         }
                         else exec.setobj(result, null);
                     }
@@ -343,14 +355,18 @@ public class TheInstruction{
                         for(int i=0; i<max; i++){
                             f0 = f.evaluate(exec, x_0);
                             f1 = f.evaluate(exec, x_1);
-                            buffer = x_1 - x_0; 
-                            root = f0 * buffer/(f1 - f0);
+                            root = f0 * (x_1 - x_0)/(f1 - f0);
                             if(invalid(root)){
-                                exec.setnum(result, exec.num(guess_0));
+                                exec.setobj(result, null);
                                 return;
                             }
-                            
+                            buffer = x_0 - root;
+                            x_0 = x_1;
+                            x_1 = buffer;
+                            root = x_1;
                         }
+
+                        
                     }
 
                     case ModifiedSecant -> {
@@ -360,7 +376,7 @@ public class TheInstruction{
                             buffer = x_1 - x_0; 
                             root = f0 * buffer/(f1 - f0);
                             if(invalid(root)){
-                                exec.setnum(result, exec.num(guess_0));
+                                exec.setobj(result, null);
                                 return;
                             }
                             if(Math.abs(root) > Math.abs(buffer + root)){
