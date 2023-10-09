@@ -16,6 +16,7 @@ import mindustry.logic.*;
 import mindustry.logic.LAssembler.BVar;
 import mindustry.logic.LExecutor.*;
 import mindustry.ui.*;
+import stuff.Loader;
 import stuff.logic.TheInstruction.*;
 import stuff.util.Complex;
 import stuff.util.NormalFunction;
@@ -23,8 +24,6 @@ import stuff.util.Polynomial;
 //import stuff.logic.AFunc.TwoType;
 
 import static stuff.util.AdditionalFunction.*;
-
-import java.util.Arrays;
 
 public class Statements{
     public static Color functionGreen = Color.valueOf("1fa32c");
@@ -95,10 +94,10 @@ public class Statements{
 
         void Button(Table table, Table parent){
             table.button(b -> {
-                b.label(() -> Op.symbol);
+                var label = b.label(() -> Op.symbol);
                 b.clicked(() -> showSelect(b, CFunc.all, Op, o -> {
                     Op = o;
-                    rebuild(parent);
+                    label.get().setText(Op.symbol);
                 }));
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
@@ -489,20 +488,20 @@ public class Statements{
 
         void Button(Table table, Table parent){
             table.button(b -> {
-                b.label(() -> op.symbol);
+                var label = b.label(() -> op.symbol);
                 b.clicked(() -> showSelect(b, FunctionEnum.all, op, o -> {
                     op = o;
-                    build(parent);
+                    label.get().setText(op.symbol);
                 }));
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
 
         void Button2(Table table, Table parent){
             table.button(b -> {
-                b.label(() -> recur + "");
+                var label = b.label(() -> recur + "");
                 b.clicked(() -> {
                     recur = !recur;
-                    build(parent);
+                    label.get().setText(recur + "");
                 });
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color).tooltip("enable or disable a starting number if any part of a function call itself");
         }
@@ -632,10 +631,10 @@ public class Statements{
 
         void Button(Table table, Table parent){
             table.button(b -> {
-                b.label(() -> reversed + "");
+                var label = b.label(() -> reversed + "");
                 b.clicked(() -> {
                     reversed = !reversed;
-                    build(parent);
+                    label.get().setText(reversed + "");
                 });
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
@@ -738,7 +737,7 @@ public class Statements{
             table.row();
             field3(table, result, s -> result = s);
             table.add(" = ");
-            table.add("∫").fontScale(5f);
+            table.image(Loader.integral).size(5f);
             fieldsmall(table, F, s -> F = s);
             table.add("(x) dx");
             table.row();

@@ -309,23 +309,29 @@ public class TheInstruction{
                 tor = 0.0000000000001d;
 
             if(exec.obj(F) instanceof Function f && max > 0){
+                f0 = f.evaluate(exec, x_0);
+                f1 = f.evaluate(exec, x_1);
+                if(Math.abs(f0) < tor) exec.setnum(result, f0);
+
+                else if(Math.abs(f1) < tor) exec.setnum(result, f1);
                 switch(op){
-                    
                     case Bisection -> {
-                        f0 = f.evaluate(exec, x_0);
-                        f1 = f.evaluate(exec, x_1);
                         double mid = (x_0 + x_1) / 2d, fmid;
                         
                         long l1 = l(f0),
                              l2 = l(f1);
                         //Check if each of two number are positive and negative for bisection process
-                        if(((l1 ^ l2) < 0) && Math.abs(f0) > tor && Math.abs(f1) > tor){
+                        if(((l1 ^ l2) < 0)){
                             for(int i=0; i<max; i++){
                                 mid = (x_0 + x_1) / 2d;
                                 fmid = f.evaluate(exec, mid);
                                 
                                 if(fmid < tor) break;
-                                if((l(fmid) & l1) > 0){};
+                                if((l(fmid) ^ l1) < 0)
+                                    x_0 = mid;
+                                else 
+                                    x_1 = mid;
+                                
                             }
 
                             exec.setnum(result, mid);
@@ -334,7 +340,6 @@ public class TheInstruction{
                     }
 
                     case Secant -> {
-
                         for(int i=0; i<max; i++){
                             f0 = f.evaluate(exec, x_0);
                             f1 = f.evaluate(exec, x_1);
@@ -344,10 +349,28 @@ public class TheInstruction{
                                 exec.setnum(result, exec.num(guess_0));
                                 return;
                             }
-                            if(Math.abs(root) > Math.abs(buffer + root))
+                            
+                        }
+                    }
+
+                    case ModifiedSecant -> {
+                        for(int i=0; i<max; i++){
+                            f0 = f.evaluate(exec, x_0);
+                            f1 = f.evaluate(exec, x_1);
+                            buffer = x_1 - x_0; 
+                            root = f0 * buffer/(f1 - f0);
+                            if(invalid(root)){
+                                exec.setnum(result, exec.num(guess_0));
+                                return;
+                            }
+                            if(Math.abs(root) > Math.abs(buffer + root)){
                                 x_0 -= root;
-                            else
+                                root = x_0;
+                            }
+                            else{
                                 x_1 = x_0 - root;
+                                root = x_1;
+                            }
                         }
                     }
                 }
