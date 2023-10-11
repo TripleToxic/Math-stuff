@@ -737,7 +737,7 @@ public class Statements{
             table.row();
             field3(table, result, s -> result = s);
             table.add(" = ");
-            table.image(Loader.integral).size(5f);
+            table.image(Loader.integral);
             fieldsmall(table, F, s -> F = s);
             table.add("(x) dx");
             table.row();
