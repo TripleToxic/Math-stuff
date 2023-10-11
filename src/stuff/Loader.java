@@ -13,7 +13,7 @@ public class Loader extends Mod {
 
     public Loader(){
         Events.on(ClientLoadEvent.class, e -> {
-            integral.set(atlas.find("math-stuff-integral"));
+            integral = atlas.find("math-stuff-integral");
         });
     }
 
