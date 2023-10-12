@@ -6,6 +6,8 @@ import mindustry.logic.LExecutor.Var;
 //import stuff.util.Array;
 import stuff.util.Complex;
 import stuff.util.Function;
+import stuff.util.NormalFunction;
+import stuff.util.Polynomial;
 
 //import static stuff.util.Array.*;
 //import static stuff.logic.AFunc.TwoType;
@@ -243,20 +245,6 @@ public class TheInstruction{
         }
     }
 
-    //Constants for 7-points Gaussian quadrature. x1 = 0
-    static double
-    x2 = 0.405845151377397167d,
-    x3 = -0.405845151377397167d,
-    x4 = 0.74153118559939444d,
-    x5 = -0.74153118559939444d,
-    x6 = 0.949107912342758525d,
-    x7 = -0.949107912342758525,
-
-    w1 = 0.417959183673469388d,
-    w23 = 0.38183005050511894d,
-    w45 = 0.279705391489276668d,
-    w67 = 0.129484966168869693d;
-
     public static class IntegralI implements LInstruction{
         public int result, F, a, b;
 
@@ -273,14 +261,14 @@ public class TheInstruction{
         public void run(LExecutor exec) {
             double aI = exec.num(a),
                    bI = exec.num(b);
-
-            double avg = 0.5d * (bI + aI);                
-            if(exec.obj(F) instanceof Function f && aI != bI && Math.abs(bI - avg) <= 5d)
-                exec.setnum(result, f.integral(exec, aI, bI));
-            else 
-                exec.setnum(result, 0d);
+          
+            if(exec.obj(F) instanceof NormalFunction f && Math.abs(bI - aI) <= 10d)
+                exec.setnum(result, bI == aI ? 0 : f.integral(exec, aI, bI));
+            else if(exec.obj(F) instanceof Polynomial p)
+                exec.setnum(result, bI == aI ? 0 : p.integral(exec, aI, bI));
+            else
+                exec.setobj(result, null);
         }
-        
     }
 
     public static class RootFindingI implements LInstruction{

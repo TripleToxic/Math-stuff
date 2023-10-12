@@ -32,12 +32,14 @@ public class Polynomial implements Function{
             for(int i=L-2; i>=0; i--){
                 total_a = exec.num(coefficents[i])/(double)(i+1) + a*total_a;
             }
+            total_a *= a;
         }
         if(b != 0d){
             total_b = exec.num(coefficents[L - 1])/(double)L;
             for(int i=L-2; i>=0; i--){
                 total_b = exec.num(coefficents[i])/(double)(i+1) + b*total_b;
             }
+            total_b *= b;
         }
         return total_b - total_a;
     }

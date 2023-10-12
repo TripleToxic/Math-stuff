@@ -733,21 +733,19 @@ public class Statements{
             table.clearChildren();
 
             repeat(2, table);
-            fieldsmall(table, b, s -> b = s);
+            field3(table, b, s -> b = s).padTop(2f);
             table.row();
             field3(table, result, s -> result = s);
             table.add(" = ");
-            table.image(Loader.integral);
-            fieldsmall(table, F, s -> F = s);
+            
+            var image = table.image(Loader.integral).padBottom(2f).get();
+            image.y = image.y - 20f;
+
+            field3(table, F, s -> F = s);
             table.add("(x) dx");
             table.row();
             repeat(2, table);
-            fieldsmall(table, a, s -> a = s).padTop(2f);
-        }
-
-        Cell<TextField> fieldsmall(Table table, Object result, Cons<String> setter){
-            return table.field(result.toString(), Styles.nodeField, s -> setter.get(sanitize(s)))
-                .size(50f, 40f).color(table.color).maxTextLength(LAssembler.maxTokenLength);
+            field3(table, a, s -> a = s).padTop(2f);
         }
 
         @Override
