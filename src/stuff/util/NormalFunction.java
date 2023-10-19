@@ -92,7 +92,7 @@ public class NormalFunction implements Function{
     }
 
     @Override
-    public double integral(LExecutor exec, double a, double b) {
+    public double integral(LExecutor exec, double a, double b){
         double c1 = 0.5d * (b - a),
                c2 = 0.5d * (b + a);
 

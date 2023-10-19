@@ -275,7 +275,9 @@ public class TheInstruction{
         public int result, F, maxIter, guess_0, guess_1;
         public RootFindingEnum op;
 
-        double f0, f1, root, buffer, tol = 0.0000000000001d;
+        double f0, f1, root, buffer, tol = 0.0000000000001d,
+        previousx_0 = 0, previousx_1 = 0, previousResult = 0;
+        boolean first = true;
         
         public RootFindingI(RootFindingEnum op, int result, int F, int maxIter, int guess_0, int guess_1){
             this.op = op;
@@ -290,12 +292,24 @@ public class TheInstruction{
         
         @Override
         public void run(LExecutor exec){
+            double x_0 = exec.num(guess_0),
+            x_1 = exec.num(guess_1);
+
+            if(first){
+                first = false;
+            }else{
+                if(previousx_0 == x_0 && previousx_1 == x_1){
+                    exec.setnum(result, previousResult);
+                    return;
+                }
+
+                previousx_0 = x_0;
+                previousx_1 = x_1;
+            }
             
             int max = exec.numi(maxIter);
             max = Math.min(max, 10); // True maximum
             
-            double x_0 = exec.num(guess_0),
-            x_1 = exec.num(guess_1);
 
             if(exec.obj(F) instanceof Function f && max > 0 && x_0 != x_1){
                 f0 = f.evaluate(exec, x_0);
@@ -305,12 +319,10 @@ public class TheInstruction{
                 else if(Math.abs(f1) < tol) exec.setnum(result, f1);
                 switch(op){
                     case Bisection -> {
-                        double mid = (x_0 + x_1) / 2d, fmid;
+                        double mid = (x_0 + x_1) / 2d, fmid = 0;
                         
-                        long l1 = l(f0),
-                             l2 = l(f1);
                         //Check if each of two number are positive and negative for bisection process
-                        if(((l1 ^ l2) < 0)){
+                        if(f0 * f1 <= 0){
                             for(int i=0; i<max; i++){
                                 mid = (x_0 + x_1) / 2d;
                                 fmid = f.evaluate(exec, mid);
@@ -321,18 +333,20 @@ public class TheInstruction{
                                 }
 
                                 if(Math.abs(fmid) < tol) break;
-                                if((l(fmid) ^ l1) > 0){
+                                if(fmid * f1 > 0){
                                     x_0 = mid;
                                 }
                                 else{
                                     x_1 = mid;
                                 }
 
-                                root = fmid;
                             }
 
-                            if(root > tol) exec.setobj(result, null);
-                            else exec.setnum(result, mid);
+                            if(Math.abs(fmid) > tol) exec.setobj(result, null);
+                            else{
+                                exec.setnum(result, mid);
+                                previousResult = mid;
+                            }
                         }
                         else exec.setobj(result, null);
                     }
@@ -345,6 +359,7 @@ public class TheInstruction{
                                 f0 = f.evaluate(exec, x_0);
                                 f1 = f.evaluate(exec, x_1);
                                 root = x_0 - f0 * (x_1 - x_0)/(f1 - f0);
+                                
                                 if(invalid(root)){
                                     exec.setobj(result, null);
                                     return;
