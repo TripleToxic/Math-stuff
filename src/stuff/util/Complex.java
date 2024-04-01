@@ -84,7 +84,7 @@ public class Complex{
     /**
      * @return A complex number with its components swapped
      */
-    public Complex trade(){
+    public Complex swap(){
         double a = r;
         r = i;
         i = a;
@@ -268,14 +268,14 @@ public class Complex{
     }
 
     public Complex asin(){
-        return real.sub(square()).sqrt().add(-i, r).log().trade().negate(false, true);
+        return real.sub(square()).sqrt().add(-i, r).log().swap().negate(false, true);
     }
 
     public Complex acos(){
-        return square().sub(real).sqrt().add(r, i).log().trade().negate(false, true);
+        return square().sub(real).sqrt().add(r, i).log().swap().negate(false, true);
     }
 
     public Complex atan(){
-        return this.add(imaginary).div(imaginary.sub(this)).log().trade().negate(true, false).div(2d);
+        return this.add(imaginary).div(imaginary.sub(this)).log().swap().negate(true, false).mul(0.5d);
     }
 }
