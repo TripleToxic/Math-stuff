@@ -2,6 +2,7 @@ package stuff;
 
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.mod.*;
+import stuff.Content.Block;
 import stuff.logic.*;
 import arc.Events;
 import arc.graphics.g2d.*;
@@ -20,5 +21,6 @@ public class Loader extends Mod {
     @Override
     public void loadContent(){
         Statements.load();
+        Block.load();
     }
 }

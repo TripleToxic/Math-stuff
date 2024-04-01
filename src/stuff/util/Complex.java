@@ -111,7 +111,7 @@ public class Complex{
     }
 
     public Complex div(Complex c){
-        double div = 1 / (c.r*c.r + c.i*c.i),
+        double div = 1.0 / (c.r*c.r + c.i*c.i),
                  a = (r * c.r + i * c.i) * div,
                  b = (i * c.r - r * c.i) * div;
 
@@ -140,7 +140,7 @@ public class Complex{
         double a = Angle(),
                b = length();
         r = Math.cos(a);
-        i = Math.sin(b);
+        i = Math.sin(a);
         return this.mul(b);
     }
 
