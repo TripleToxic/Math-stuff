@@ -3,14 +3,13 @@ package stuff.logic;
 import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.LInstruction;
 import mindustry.logic.LExecutor.Var;
-//import stuff.util.Array;
+import mindustry.world.blocks.logic.MemoryBlock.MemoryBuild;
+import stuff.util.Array;
 import stuff.util.Complex;
 import stuff.util.Function;
 import stuff.util.NormalFunction;
 import stuff.util.Polynomial;
 
-//import static stuff.util.Array.*;
-//import static stuff.logic.AFunc.TwoType;
 import static stuff.logic.FunctionEnum.*;
 
 public class TheInstruction{
@@ -86,148 +85,31 @@ public class TheInstruction{
         }
     }
 
-    //Currently halted
-    /* 
-    public static class AFunction implements LInstruction{
-        public AFunc OpA = AFunc.New;
-        public TwoType TT = TwoType.number;
-        public int a, b, c, d, e, result;
-        public String A, B, Result;
+    public static class SetArrayI implements LInstruction{
+        public int mem, row, column, starter, result;
 
-        public AFunction(AFunc OpA, TwoType TT, int a, int b, int c, int d, int e, int result, String A, String B, String Result){
-            this.OpA = OpA;
-            this.TT = TT;
-            this.a = a;
-            this.b = b;
-            this.c = c;
-            this.d = d;
-            this.e = e;
+        public SetArrayI(int mem, int row, int column, int starter, int result){
+            this.mem = mem;
+            this.row = row;
+            this.column = column;
+            this.starter = starter;
             this.result = result;
-            this.A = A;
-            this.B = B;
-            this.Result = Result;
         }
-
-        AFunction(){}
 
         @Override
-        public void run(LExecutor exec){
-            Arrays Arrs = Arrays.stuff.get(exec.build.toString());
-            if(Arrs == null) Arrs = new Arrays();
-            
-            Array arr1 = Arrs.storage.get(A),
-                  arr2 = Arrs.storage.get(B);
-
-            double s0 = exec.num(b),
-                  s_1 = exec.num(c),
-                    s = exec.num(e);
-            boolean b1 = exec.bool(e);
-            int s2 = exec.numi(b);
-            int[] s3 = {s2, exec.numi(c), exec.numi(d)};
-            
-            try{
-                switch(OpA){
-                    case New -> {
-                        Arrs.storage.put(Result, new Array(exec.numi(a), s2, exec.numi(c)));
-                        break;
-                    }
-                    case Add -> {                     
-                        arr1.add(arr2);  
-                        Arrs.storage.put(Result, arr1);
-                    }
-                    case Subtract -> {      
-                        arr1.minus(arr2);                  
-                        Arrs.storage.put(Result, arr1);
-                    }
-                    case Muliply -> {
-                        switch(TT){
-                            case array -> { 
-                                arr1.prodEach(arr2);                              
-                                Arrs.storage.put(Result, arr1);
-                            }
-                            case number -> {  
-                                arr1.prod(s0);                              
-                                Arrs.storage.put(Result, arr1);
-                            }
-                        }
-                        break;
-                    }
-                    case Divide -> {
-                        switch(TT){
-                            case array -> {
-                                arr1.divEach(arr2);
-                                Arrs.storage.put(Result, arr1);
-                            }
-                            case number -> {
-                                arr1.div(s0);
-                                Arrs.storage.put(Result, arr1);
-                            }
-                        }
-                        break;
-                    }
-                    case SumAll-> {
-                        exec.setnum(result, arr1.sumAll());
-                        break;
-                    }
-                    case Change -> {
-                        switch(TT){
-                            case array -> {
-                                arr1.Change(s3, s);
-                                Arrs.storage.put(A, arr1);
-                            }
-                            case number -> {
-                                arr1.Change(s2, s_1);
-                                Arrs.storage.put(A, arr1);
-                            }
-                        }
-                        break;
-                    }
-                    case CrossProduct -> {
-                        Arrs.storage.put(Result, arr1.crossProd(arr2));
-                        break;
-                    }
-                    case DotProd -> {
-                        exec.setnum(result, arr1.dotProd(arr2));
-                        break;
-                    }
-                    case Get -> {
-                        switch(TT){
-                            case array -> exec.setnum(result, arr1.getNum(s3));
-                            case number -> exec.setnum(result, arr1.s[s2]);
-                        }
-                        break;
-                    }
-                    case ProductAll -> {
-                        exec.setnum(result, productAll(arr1.s));
-                        break;
-                    }
-                    case Resize -> {
-                        arr1.Resize(s3, b1);
-                        Arrs.storage.put(Result, arr1);
-                        break;
-                    }
-                    case Shuffle -> {
-                        arr1.shuffle();
-                        Arrs.storage.put(A, arr1);
-                        break;
-                    }
-                    case Length -> {
-                        switch(TT){
-                            case number -> {exec.setnum(result, arr1.All); break;}
-                            case array -> {Arrs.storage.put(Result, arr1.Length()); break;}
-                        }
-                    }
-                    case Assign -> {
-                        Arrs.storage.put(Result, arr1);
-                    }
+        public void run(LExecutor exec) {
+            Object o = exec.obj(result),
+                   memo = exec.obj(mem);
+            if(memo instanceof MemoryBuild memory){
+                if(o instanceof Array arr){
+                    exec.setobj(result, arr.set(memory, exec.numi(row), exec.numi(column), exec.numi(starter)));
+                }else{
+                    exec.setobj(result, new Array(memory, exec.numi(row), exec.numi(column), exec.numi(starter)));
                 }
-
-                Arrays.stuff.put(exec.build.toString(), Arrs);
-            }catch(Exception n){
-                if(OpA.number) exec.setnum(result, 0d);
             }
         }
-    }*/
+    }
+    
     public static class FunctionOperationI implements LInstruction{
         public int F, x, result;
 

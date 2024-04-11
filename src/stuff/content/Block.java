@@ -1,4 +1,4 @@
-package stuff.Content;
+package stuff.content;
 
 import mindustry.content.Blocks;
 import mindustry.content.Items;
