@@ -170,238 +170,49 @@ public class Statements{
         }
     }
 
-    /*public static class ArrayOperationStatement extends ExtendStatement{
-        public AFunc OpA = AFunc.New;
-        public TwoType TT = TwoType.number;
-        public String result = "result", a = "a", b = "b", c = "c", d = "d", e = "e";
+    public static class AllocateArrayStatement extends ExtendStatement{
+        public String result = "result", starter = "0", column = "1", row = "1", mem = "cell1";
 
-        public ArrayOperationStatement(String OpA, String TT, String a, String b, String c, String d, String e, String result){
-            try{this.OpA = AFunc.valueOf(OpA);}catch(Exception h){}
-            try{this.TT = TwoType.valueOf(TT);}catch(Exception h){}
-            this.a = a;
-            this.b = b;
-            this.c = c;
-            this.d = d;
-            this.e = e;
+        public AllocateArrayStatement(String result, String starter, String column, String row, String mem){
             this.result = result;
+            this.starter = starter;
+            this.column = column;
+            this.row = row;
+            this.mem = mem;
+        }
+
+        @Override
+        public void build(Table table) {
+            table.clearChildren();
+
+            field(table, result, str -> result = str);
+            table.add(" = ");
+
+            row(table);
+
+            table.add("at ");
+            field(table, mem, str -> mem = str);
+
+            row(table);
+            
+            table.add("allocate ");
+            field2(table, row, str -> row = str);
+            table.add(" x ");
+            field2(table, column, str -> column = str);
+            table.add(" matrix");
+
+            row(table);
+
+            table.add(" starting at");
+            field2(table, starter, str -> starter = str);
+        }
+
+        @Override
+        public LInstruction build(LAssembler builder) {
+            return new AllocateArrayI(builder.var(mem), builder.var(row), builder.var(column), builder.var(starter), builder.var(result));
         }
         
-        public ArrayOperationStatement(){}
-
-        @Override
-        public void build(Table table){
-            rebuild(table);
-        }
-
-        void rebuild(Table table){
-            table.clearChildren();
-            if(!OpA.local) {
-                field3(table, result, str -> result = str);
-                table.add(" = ");
-            }
-            switch(OpA){
-                case Add ->{
-                    field2(table, a, str -> a = str);
-                    Button(table, table);
-                    field2(table, b, str -> b = str);
-                    break;
-                }               
-                case Change->{
-                    Button(table, table);
-                    field2(table, a, str -> a = str);
-                    row(table);
-                    table.add(" at ");
-                    Button2(table, table);
-                    switch(TT){
-                        case array -> {
-                            row(table);
-                            table.add("L:"); field2(table, b, str -> b = str);
-                            row(table);
-                            table.add("R:"); field2(table, c, str -> c = str);
-                            row(table);
-                            table.add("C:"); field2(table, d, str -> d = str);
-                            row(table);
-                            table.add("to ");
-                            field2(table, e, str -> e = str);
-                            break;
-                        }
-                        case number -> {
-                            field2(table, b, str -> b = str);
-                            table.add("to ");
-                            field2(table, c, str -> c = str);
-                        }
-                    }
-                    break;
-                }                      
-                case CrossProduct->{
-                    field2(table, a, str -> a = str);
-                    Button(table, table);
-                    field2(table, b, str -> b = str);
-                    break;
-                }                        
-                case Divide->{
-                    field2(table, a, str -> a = str);
-                    Button(table, table);
-                    row(table);
-                    table.add(" by ");
-                    Button2(table, table);
-                    field2(table, b, str -> b = str);
-                    break;
-                }                        
-                case DotProd->{
-                    field2(table, a, str -> a = str);
-                    Button(table, table);
-                    field2(table, b, str -> b = str);
-                    break;
-                }                           
-                case Get->{
-                    Button(table, table);
-                    row(table);
-                    table.add(" from ");
-                    field2(table, a, str -> a = str);
-                    row(table);
-                    table.add(" at ");
-                    Button2(table, table);
-                    switch(TT){
-                        case array -> {
-                            row(table);
-                            table.add("L:"); field2(table, b, str -> b = str);
-                            row(table);
-                            table.add("R:"); field2(table, c, str -> c = str);
-                            row(table);
-                            table.add("C:"); field2(table, d, str -> d = str);
-                        }
-                        case number -> {
-                            field2(table, b, str -> b = str);
-                        }
-                    }
-                    break;
-                }                         
-                case Muliply->{
-                    field2(table, a, str -> a = str);
-                    Button(table, table);
-                    row(table);
-                    table.add(" by ");
-                    Button2(table, table);
-                    field2(table, b, str -> b = str);
-                    break;
-                }                            
-                case New->{
-                    Button(table, table);
-                    row(table);
-                    table.add(" New array of: ");
-                    row(table);
-                    table.add("L:"); field2(table, a, str -> a = str);
-                    row(table);
-                    table.add("R:"); field2(table, b, str -> b = str);
-                    row(table);
-                    table.add("C:"); field2(table, c, str -> c = str);
-                    break;
-                }         
-                case ProductAll->{
-                    Button(table, table);
-                    field2(table, a, str -> a = str);
-                    break;
-                }                           
-                case Resize->{
-                    Button(table, table);
-                    field2(table, a, str -> a = str);
-                    row(table);
-                    table.add(" is lossless: ");
-                    field2(table, e, str -> e = str);
-                    row(table);
-                    table.add(" to: ");
-                    row(table);
-                    table.add("L:"); field2(table, b, str -> b = str);
-                    row(table);
-                    table.add("R:"); field2(table, c, str -> c = str);
-                    row(table);
-                    table.add("C:"); field2(table, d, str -> d = str);
-                    break;
-                }                   
-                case Shuffle->{
-                    Button(table, table);
-                    field2(table, a, str -> a = str);
-                    break;
-                }                           
-                case Subtract->{
-                    field2(table, a, str -> a = str);
-                    Button(table, table);
-                    field2(table, b, str -> b = str);
-                    break;
-                }                        
-                case SumAll->{
-                    Button(table, table);
-                    field2(table, a, str -> a = str);
-                    break;
-                }
-                case Length ->{
-                    Button(table, table);
-                    row(table);
-                    table.add(" of ");
-                    field2(table, a, str -> a = str);
-                    row(table);
-                    table.add(" as ");
-                    Button2(table, table);
-                }         
-                case Assign -> {
-                    field3(table, result, str -> result = str);
-                    Button(table, table);
-                    field(table, a, str -> a = str);
-                }
-            }
-        }
-
-        void Button(Table table, Table parent){
-            table.button(b -> {
-                b.label(() -> OpA.symbol);
-                b.clicked(() -> showSelect(b, AFunc.all, OpA, o -> {
-                    OpA = o;
-                    rebuild(parent);
-                }));
-            }, Styles.logict, () -> {}).size(80f, 40f).pad(2f).color(table.color);
-        }
-
-        void Button2(Table table, Table parent){
-            table.button(b -> {
-                b.label(() -> TT.name());
-                b.clicked(() -> showSelect(b, TwoType.all, TT, o -> {
-                    TT = o;
-                    rebuild(parent);
-                }));
-            }, Styles.logict, () -> {}).size(100f, 40f).pad(2f).color(table.color);
-        }
-
-        @Override
-        public LInstruction build(LAssembler build) {
-            return new AFunction(OpA, TT, build.var(a), build.var(b), build.var(c), build.var(d), build.var(e), build.var(result), a, b, result);
-        }
-
-        public void write(StringBuilder builder){
-            builder
-                .append("Array ")
-                .append(OpA.name())
-                .append(" ")
-                .append(TT.name())
-                .append(" ")
-                .append(a)
-                .append(" ")
-                .append(b)
-                .append(" ")
-                .append(c)
-                .append(" ")
-                .append(d)
-                .append(" ")
-                .append(e)
-                .append(" ")
-                .append(result);
-        }
-
-        @Override
-        public LCategory category(){
-            return LCategory.operation;
-        }
-    }*/
+    }
 
     public static class FunctionStatement extends ExtendStatement{
         public String output = "f", a = "a", b = "b", recur_string = "0";

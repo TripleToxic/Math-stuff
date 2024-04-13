@@ -85,10 +85,10 @@ public class TheInstruction{
         }
     }
 
-    public static class SetArrayI implements LInstruction{
+    public static class AllocateArrayI implements LInstruction{
         public int mem, row, column, starter, result;
 
-        public SetArrayI(int mem, int row, int column, int starter, int result){
+        public AllocateArrayI(int mem, int row, int column, int starter, int result){
             this.mem = mem;
             this.row = row;
             this.column = column;
