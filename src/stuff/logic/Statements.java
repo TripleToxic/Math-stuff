@@ -170,10 +170,10 @@ public class Statements{
         }
     }
 
-    public static class AllocateArrayStatement extends ExtendStatement{
+    public static class AllocateMatrixStatement extends ExtendStatement{
         public String result = "result", starter = "0", column = "1", row = "1", mem = "cell1";
 
-        public AllocateArrayStatement(String result, String starter, String column, String row, String mem){
+        public AllocateMatrixStatement(String result, String starter, String column, String row, String mem){
             this.result = result;
             this.starter = starter;
             this.column = column;

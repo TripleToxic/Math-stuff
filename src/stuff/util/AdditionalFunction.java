@@ -46,32 +46,6 @@ public class AdditionalFunction{
         b %= 360;
         return min((a - b) < 0 ? a - b + 360 : a - b, (b - a) < 0 ? b - a + 360 : b - a);
     }
-    
-    public static double ByteArrayToDouble(byte[] bytes){
-        long out = 0;
-        if(bytes.length < 8){
-            byte[] bufferbyte = bytes;
-            bytes = new byte[8];
-            System.arraycopy(bufferbyte, 0, bytes, 8 - bufferbyte.length, bufferbyte.length);
-        }
-
-        for(int i = Math.min(bytes.length, 8) - 1; i >= 0 ; i--){
-            out |= (bytes[7 - i] & 0xffl) << (i << 3);
-        }
-
-        return Double.longBitsToDouble(out);
-    }
-
-    public static byte[] DoubleToByteArray(Double x){
-        byte[] out = new byte[8];
-        long x2 = Double.doubleToRawLongBits(x);
-
-        for(int i=7; i >= 0; i--){
-            out[7 - i] = (byte)(((0xffl << (i << 3)) & x2) >> (i << 3));
-        }
-
-        return out;
-    }
 
     public static double parseDouble(String s){
         try{

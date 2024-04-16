@@ -4,7 +4,7 @@ import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.LInstruction;
 import mindustry.logic.LExecutor.Var;
 import mindustry.world.blocks.logic.MemoryBlock.MemoryBuild;
-import stuff.util.Array;
+import stuff.util.Matrix;
 import stuff.util.Complex;
 import stuff.util.Function;
 import stuff.util.NormalFunction;
@@ -101,10 +101,10 @@ public class TheInstruction{
             Object o = exec.obj(result),
                    memo = exec.obj(mem);
             if(memo instanceof MemoryBuild memory){
-                if(o instanceof Array arr){
+                if(o instanceof Matrix arr){
                     exec.setobj(result, arr.set(memory, exec.numi(row), exec.numi(column), exec.numi(starter)));
                 }else{
-                    exec.setobj(result, new Array(memory, exec.numi(row), exec.numi(column), exec.numi(starter)));
+                    exec.setobj(result, new Matrix(memory, exec.numi(row), exec.numi(column), exec.numi(starter)));
                 }
             }
         }

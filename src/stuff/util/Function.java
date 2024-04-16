@@ -5,7 +5,7 @@ import mindustry.logic.LExecutor;
 public interface Function {
     double evaluate(LExecutor exec, double val);
 
-    //Constants for 7-points Gaussian quadrature. x1 = 0
+    //Constants for 7-points Gaussian-Legendre quadrature. x1 = 0
     static double
     x2 = 0.405845151377397167d,
     x3 = -0.405845151377397167d,
