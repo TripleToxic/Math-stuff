@@ -3,8 +3,9 @@ import arc.math.Mathf;
 import mindustry.world.blocks.logic.MemoryBlock.MemoryBuild;
 
 /**
- * A class for matrices or arrays using Memory Block type
- * All methods are assumed that matrices are checked before performing matrix operations and cannot be used outside of TheInstruction.java
+ * A class for matrices or arrays using Memory Block type.
+ * 
+ * All methods are assumed that matrices are checked before performing matrix operations and cannot be used outside of TheInstruction.java.
  */
 public class Matrix{
     public MemoryBuild mem;
@@ -25,36 +26,59 @@ public class Matrix{
         return this;
     }
 
+    public double get(int x, int y){
+        return mem.memory[x + y * column];
+    }
+
+    public double[] get(){
+        return mem.memory;
+    }
+
     public double dotProduct(Matrix a, Matrix b){
         double accum = 0;
         for(int i = 0; i<a.row; i++){
-            accum += a.mem.memory[i + a.starter] * b.mem.memory[i + b.starter];
+            accum += a.get()[i + a.starter] * b.get()[i + b.starter];
         }
         return accum;
     }
 
-    public void addMatrix(Matrix a, Matrix b, Matrix c){
+    public static void addMatrix(Matrix a, Matrix b, Matrix c){
         for(int i=0; i<(a.column * a.row); i++){
-            c.mem.memory[i + c.starter] = a.mem.memory[i + a.starter] + b.mem.memory[i + b.starter];
+            c.get()[i + c.starter] = a.get()[i + a.starter] + b.get()[i + b.starter];
         }
     }
 
-    public void subMatrix(Matrix a, Matrix b, Matrix c){
+    public static void subMatrix(Matrix a, Matrix b, Matrix c){
         for(int i=0; i<(a.column * a.row); i++){
-            c.mem.memory[i + c.starter] = a.mem.memory[i + a.starter] - b.mem.memory[i + b.starter];
+            c.get()[i + c.starter] = a.get()[i + a.starter] - b.get()[i + b.starter];
         }
     }
 
-    public void mulMatrix(Matrix a, Matrix b, Matrix c){
-        double[] A = a.mem.memory, B = b.mem.memory, C = c.mem.memory;
+    public static void mulMatrix(Matrix a, Matrix b, Matrix c){
         double sum = 0;
         for(int i=0; i<a.row; i++){
             for(int j=0; j<b.column; j++){
                 for(int k=0; k<a.column; k++){
-                    sum += A[k * b.column + i] * B[j * b.column + k];
+                    sum += a.get(k, i) * b.get(j, k);
                 }
-                C[i * b.column + j] = sum;
+                c.get()[j + i * a.row] = sum;
             }
         }
     }
+
+    /*public void transposeMatrix(Matrix a){
+        double buffer = 0;
+        for(int i=0; i<a.row; i++){
+            for(int j=0; j<a.column; j++){
+                buffer = a.get(i, j);
+                a.get()[i + j * a.row] = a.get(j, i);
+                a.get()[j + i * a.row] = buffer;
+            }
+        }
+
+        int buffer_int = a.row;
+        a.row = a.column;
+        a.column = buffer_int;
+
+    }*/
 }
