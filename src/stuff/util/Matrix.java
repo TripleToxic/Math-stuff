@@ -1,11 +1,15 @@
 package stuff.util;
+import java.util.Arrays;
+
 import arc.math.Mathf;
 import mindustry.world.blocks.logic.MemoryBlock.MemoryBuild;
+
+import static java.lang.Math.*;
 
 /**
  * A class for matrices or arrays using Memory Block type.
  * 
- * All methods are assumed that matrices are checked before performing matrix operations and cannot be used outside of TheInstruction.java.
+ * All methods are assumed that matrices are checked before performing matrix operations.
  */
 public class Matrix{
     public MemoryBuild mem;
@@ -65,6 +69,11 @@ public class Matrix{
             }
         }
     }
+
+    public static void invMatrix(Matrix a, Matrix b){
+        
+    }
+
 
     /*public void transposeMatrix(Matrix a){
         double buffer = 0;
