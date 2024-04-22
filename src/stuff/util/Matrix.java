@@ -1,5 +1,4 @@
 package stuff.util;
-import java.util.Arrays;
 
 import arc.math.Mathf;
 import mindustry.world.blocks.logic.MemoryBlock.MemoryBuild;
@@ -30,6 +29,10 @@ public class Matrix{
         return this;
     }
 
+    public void set(Matrix A){
+        System.arraycopy(A.get(), 0, this.get(), 0, A.get().length);
+    }
+
     public double get(int x, int y){
         return mem.memory[x + y * column];
     }
@@ -38,56 +41,50 @@ public class Matrix{
         return mem.memory;
     }
 
-    public double dotProduct(Matrix a, Matrix b){
+    public void setIdentity(){
+        for(int i=0; i<row; i++){
+            for(int j=0; j<column; j++){
+                get()[j + i * column] = i == j ? 1.0 : 0.0;
+            }
+        }
+    }
+    
+    public double dotProduct(Matrix A, Matrix B){
         double accum = 0;
-        for(int i = 0; i<a.row; i++){
-            accum += a.get()[i + a.starter] * b.get()[i + b.starter];
+        for(int i = 0; i<A.row; i++){
+            accum += A.get()[i + A.starter] * B.get()[i + B.starter];
         }
         return accum;
     }
 
-    public static void addMatrix(Matrix a, Matrix b, Matrix c){
-        for(int i=0; i<(a.column * a.row); i++){
-            c.get()[i + c.starter] = a.get()[i + a.starter] + b.get()[i + b.starter];
+    public static void addMatrix(Matrix A, Matrix B, Matrix C){
+        for(int i=0; i<A.get().length; i++){
+            C.get()[i + C.starter] = A.get()[i + A.starter] + B.get()[i + B.starter];
         }
     }
 
-    public static void subMatrix(Matrix a, Matrix b, Matrix c){
-        for(int i=0; i<(a.column * a.row); i++){
-            c.get()[i + c.starter] = a.get()[i + a.starter] - b.get()[i + b.starter];
+    public static void subMatrix(Matrix A, Matrix B, Matrix C){
+        for(int i=0; i<A.get().length; i++){
+            C.get()[i + C.starter] = A.get()[i + A.starter] - B.get()[i + B.starter];
         }
     }
 
-    public static void mulMatrix(Matrix a, Matrix b, Matrix c){
+    public static void mulMatrix(Matrix A, Matrix B, Matrix C){
         double sum = 0;
-        for(int i=0; i<a.row; i++){
-            for(int j=0; j<b.column; j++){
-                for(int k=0; k<a.column; k++){
-                    sum += a.get(k, i) * b.get(j, k);
+        for(int i=0; i<A.row; i++){
+            for(int j=0; j<B.column; j++){
+                for(int k=0; k<A.column; k++){
+                    sum += A.get(k, i) * B.get(j, k);
                 }
-                c.get()[j + i * a.row] = sum;
+                C.get()[j + i * A.row] = sum;
             }
         }
     }
 
-    public static void invMatrix(Matrix a, Matrix b){
-        
-    }
-
-
-    /*public void transposeMatrix(Matrix a){
-        double buffer = 0;
-        for(int i=0; i<a.row; i++){
-            for(int j=0; j<a.column; j++){
-                buffer = a.get(i, j);
-                a.get()[i + j * a.row] = a.get(j, i);
-                a.get()[j + i * a.row] = buffer;
-            }
+    public static void invMatrix(Matrix A, Matrix B){
+        B.set(A);
+        for(int i=0; i<B.row; i++){
+            
         }
-
-        int buffer_int = a.row;
-        a.row = a.column;
-        a.column = buffer_int;
-
-    }*/
+    }
 }
