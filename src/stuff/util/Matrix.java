@@ -1,5 +1,7 @@
 package stuff.util;
 
+import static java.lang.Math.max;
+
 import arc.math.Mathf;
 import mindustry.world.blocks.logic.MemoryBlock.MemoryBuild;
 
@@ -8,7 +10,9 @@ import static java.lang.Math.*;
 /**
  * A class for matrices or arrays using Memory Block type.
  * 
- * All methods are assumed that matrices are checked before performing matrix operations.
+ * <p>No overlapping between memory allocation
+ * 
+ * <p>All methods are assumed that matrices are checked before performing matrix operations.
  */
 public class Matrix{
     public MemoryBuild mem;
@@ -82,9 +86,30 @@ public class Matrix{
     }
 
     public static void invMatrix(Matrix A, Matrix B){
+        int rowSelected = 0;
+        double pivot;
+        boolean[] inactive = new boolean[B.row];
+
         B.set(A);
+
         for(int i=0; i<B.row; i++){
-            
+            pivot = 0;
+            for(int j=0; j<B.row; j++){
+                if((abs(B.get(j, j)) > pivot) && !inactive[j]){
+                    pivot = B.get(j, j);
+                    rowSelected = j;
+                    inactive[j] = true;
+                }
+            }
+
+            if(pivot == 0d){
+                B.setIdentity();
+                return;
+            }
+
+            for(int j=0; j<B.row; j++){
+                
+            }
         }
     }
 }
