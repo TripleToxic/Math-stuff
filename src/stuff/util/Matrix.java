@@ -1,7 +1,5 @@
 package stuff.util;
 
-import static java.lang.Math.max;
-
 import arc.math.Mathf;
 import mindustry.world.blocks.logic.MemoryBlock.MemoryBuild;
 
@@ -85,10 +83,15 @@ public class Matrix{
         }
     }
 
+    /**
+     * @Return the inverse of a matrix, or an identity matrix if the matrix A is non-invertable
+     */
     public static void invMatrix(Matrix A, Matrix B){
         int rowSelected = 0;
         double pivot;
         boolean[] inactive = new boolean[B.row];
+
+        double[] Bg = B.get();
 
         B.set(A);
 
@@ -107,9 +110,30 @@ public class Matrix{
                 return;
             }
 
+            Bg[rowSelected + rowSelected * B.column] = 1;
+            for(int j=0; j<B.column; j++){
+                Bg[j + rowSelected * B.column] /= pivot;
+            }
+
             for(int j=0; j<B.row; j++){
-                
+                if(j == rowSelected) continue;
+                pivot = B.get(rowSelected, j);
+
+                Bg[rowSelected + j * B.column] = 0;
+
+                for(int k=0; k<B.column; k++){
+                    Bg[k + j * B.column] -= Bg[k + rowSelected * B.column] * pivot;
+                }
             }
         }
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder s = new StringBuilder("");
+        for(int i=0; i<get().length; i++){
+            s.append(get()[i] + " ");
+        }
+        return s.toString();
     }
 }
