@@ -1,6 +1,6 @@
 package stuff.content;
 
-import mindustry.content.Blocks;
+/*import mindustry.content.Blocks;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
 import mindustry.type.Category;
@@ -51,3 +51,4 @@ public class Block {
         }};
     }
 }
+*/

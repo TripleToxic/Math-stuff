@@ -14,7 +14,7 @@ repo: "TripleToxic/Math-stuff"
 main: "stuff.Loader"
 
 #the mod subtitle as seen in the mod dialog
-subtitle: "Math or M(letter next to d that not c)th"
+subtitle: "Math"
 
 #the mod description as seen in the mod dialog
 description: "More math stuff"

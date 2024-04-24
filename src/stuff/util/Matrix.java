@@ -35,8 +35,12 @@ public class Matrix{
         System.arraycopy(A.get(), 0, this.get(), 0, A.get().length);
     }
 
+    public int getp(int x, int y){
+        return starter + x + y * column;
+    }
+
     public double get(int x, int y){
-        return mem.memory[x + y * column];
+        return mem.memory[getp(x, y)];
     }
 
     public double[] get(){
@@ -46,7 +50,7 @@ public class Matrix{
     public void setIdentity(){
         for(int i=0; i<row; i++){
             for(int j=0; j<column; j++){
-                get()[j + i * column] = i == j ? 1.0 : 0.0;
+                get()[getp(j, i)] = i == j ? 1.0 : 0.0;
             }
         }
     }
@@ -71,14 +75,20 @@ public class Matrix{
         }
     }
 
+    public static void mulMatrix(Matrix A, double a, Matrix B){
+        for(int i=0; i<A.get().length; i++){
+            B.get()[i + B.starter] = A.get()[i + A.starter];
+        }
+    }
+
     public static void mulMatrix(Matrix A, Matrix B, Matrix C){
         double sum = 0;
         for(int i=0; i<A.row; i++){
             for(int j=0; j<B.column; j++){
                 for(int k=0; k<A.column; k++){
-                    sum += A.get(k, i) * B.get(j, k);
+                    sum += A.get(k, j) * B.get(i, k);
                 }
-                C.get()[j + i * A.row] = sum;
+                C.get()[i + j * A.row + C.starter] = sum;
             }
         }
     }
@@ -90,7 +100,6 @@ public class Matrix{
         int rowSelected = 0;
         double pivot;
         boolean[] inactive = new boolean[B.row];
-
         double[] Bg = B.get();
 
         B.set(A);
@@ -114,28 +123,19 @@ public class Matrix{
 
             Bg[rowSelected + rowSelected * B.column] = 1;
             for(int j=0; j<B.column; j++){
-                Bg[j + rowSelected * B.column] /= pivot;
+                Bg[B.getp(j, rowSelected)] /= pivot;
             }
 
             for(int j=0; j<B.row; j++){
                 if(j == rowSelected) continue;
                 pivot = B.get(rowSelected, j);
 
-                Bg[rowSelected + j * B.column] = 0;
+                Bg[B.getp(rowSelected, j)] = 0;
 
                 for(int k=0; k<B.column; k++){
-                    Bg[k + j * B.column] -= Bg[k + rowSelected * B.column] * pivot;
+                    Bg[B.getp(k, j)] -= B.get(k, rowSelected) * pivot;
                 }
             }
         }
-    }
-
-    @Override
-    public String toString(){
-        StringBuilder s = new StringBuilder("");
-        for(int i=0; i<get().length; i++){
-            s.append(get()[i] + " ");
-        }
-        return s.toString();
     }
 }
