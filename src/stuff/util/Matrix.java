@@ -99,16 +99,18 @@ public class Matrix{
             pivot = 0;
             for(int j=0; j<B.row; j++){
                 if((abs(B.get(j, j)) > pivot) && !inactive[j]){
-                    pivot = B.get(j, j);
+                    pivot = abs(B.get(j, j));
                     rowSelected = j;
-                    inactive[j] = true;
                 }
             }
-
+            
             if(pivot == 0d){
                 B.setIdentity();
                 return;
             }
+
+            pivot = B.get(rowSelected, rowSelected);
+            inactive[rowSelected] = true;
 
             Bg[rowSelected + rowSelected * B.column] = 1;
             for(int j=0; j<B.column; j++){
