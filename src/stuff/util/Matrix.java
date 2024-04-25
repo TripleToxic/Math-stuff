@@ -96,44 +96,44 @@ public class Matrix{
     /**
      * @Return the inverse of a matrix, or an identity matrix if the matrix A is non-invertable
      */
-    public static void invMatrix(Matrix A, Matrix B){
+    public void invMatrix(Matrix A){
         int rowSelected = 0;
         double pivot;
-        boolean[] inactive = new boolean[B.row];
-        double[] Bg = B.get();
+        short inactive = 0, one = 1;
+        double[] B = get();
 
-        B.set(A);
+        set(A);
 
-        for(int i=0; i<B.row; i++){
+        for(int i=0; i<row; i++){
             pivot = 0;
-            for(int j=0; j<B.row; j++){
-                if((abs(B.get(j, j)) > pivot) && !inactive[j]){
-                    pivot = abs(B.get(j, j));
+            for(int j=0; j<row; j++){
+                if((abs(get(j, j)) > pivot) && (((inactive >> j) & one) != one)){
+                    pivot = abs(get(j, j));
                     rowSelected = j;
                 }
             }
             
             if(pivot == 0d){
-                B.setIdentity();
+                setIdentity();
                 return;
             }
 
-            pivot = B.get(rowSelected, rowSelected);
-            inactive[rowSelected] = true;
+            pivot = get(rowSelected, rowSelected);
+            inactive |= one << rowSelected;
 
-            Bg[rowSelected + rowSelected * B.column] = 1;
-            for(int j=0; j<B.column; j++){
-                Bg[B.getp(j, rowSelected)] /= pivot;
+            B[rowSelected + rowSelected * column] = 1;
+            for(int j=0; j<column; j++){
+                B[getp(j, rowSelected)] /= pivot;
             }
 
-            for(int j=0; j<B.row; j++){
+            for(int j=0; j<row; j++){
                 if(j == rowSelected) continue;
-                pivot = B.get(rowSelected, j);
+                pivot = get(rowSelected, j);
 
-                Bg[B.getp(rowSelected, j)] = 0;
+                B[getp(rowSelected, j)] = 0;
 
-                for(int k=0; k<B.column; k++){
-                    Bg[B.getp(k, j)] -= B.get(k, rowSelected) * pivot;
+                for(int k=0; k<column; k++){
+                    B[getp(k, j)] -= get(k, rowSelected) * pivot;
                 }
             }
         }
