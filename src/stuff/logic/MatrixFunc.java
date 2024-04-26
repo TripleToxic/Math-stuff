@@ -1,10 +1,14 @@
 package stuff.logic;
 
 public enum MatrixFunc {
-    add,
-    sub,
-    mulConst,
-    mul,
-    inv,
+    Set,
+    Add,
+    Sub,
+    MulConst,
+    Mul,
+    Inv,
+    Dot,
     ;
+
+    public static final MatrixFunc[] all = values();
 }

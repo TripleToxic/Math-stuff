@@ -209,7 +209,7 @@ public class Statements{
 
         @Override
         public LInstruction build(LAssembler builder) {
-            return new AllocateArrayI(builder.var(mem), builder.var(row), builder.var(column), builder.var(starter), builder.var(result));
+            return new AllocateMatrixI(builder.var(mem), builder.var(row), builder.var(column), builder.var(starter), builder.var(result));
         }
         
     }
@@ -712,15 +712,48 @@ public class Statements{
         }
         
     }
+
+    public static class MatrixOperationStatement extends ExtendStatement{
+        public MatrixFunc op = MatrixFunc.Add;
+        public String A = "A", B = "B", C = "C", row = "row", column = "column", starter = "starter";
+
+        public MatrixOperationStatement(String op, String C, String A, String B, String row, String column, String starter){
+            try{
+                this.op = MatrixFunc.valueOf(op);
+            }catch(Exception e){}
+
+            this.C = C;
+            this.A = A;
+            this.B = B;
+            this.row = row;
+            this.column = column;
+            this.starter = starter;
+        }
+
+        public MatrixOperationStatement(){}
+
+        @Override
+        public void build(Table table) {
+            table.clearChildren();
+
+            field(table, C, str -> C = str);
+        }
+
+        @Override
+        public LInstruction build(LAssembler builder) {
+            return null;
+        }
+        
+    }
     
     public static void load(){
         registerStatement("comp", args -> new ComplexOperationStatement(args[1], args[2], args[3], args[4]), ComplexOperationStatement::new);
-        //registerStatement("Array", args -> new ArrayOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), ArrayOperationStatement::new);
         registerStatement("fn", args -> new FunctionStatement(args), FunctionStatement::new);
         registerStatement("poly", args -> new PolynomialStatement(args), PolynomialStatement::new);
         registerStatement("fnop", args -> new FunctionOperationStatement(args[1], args[2], args[3]), FunctionOperationStatement::new);
         registerStatement("int", args -> new IntegralStatement(args[1], args[2], args[3], args[4]), IntegralStatement::new);
         registerStatement("root", args -> new RootFindingStatement(args[1], args[2], args[3], args[4], args[5], args[6]), RootFindingStatement::new);
+        registerStatement("Matrix", args -> new MatrixOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), MatrixOperationStatement::new);
     }
 
     public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){
