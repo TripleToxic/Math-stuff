@@ -5,7 +5,7 @@ import stuff.util.*;
 public enum CFunc{
     set("set"),
     get("get"),
-    addC("+", (Complex c1,  Complex c2) -> c1.add(c2)),
+    addC("+", (Complex c1,  Complex c2) -> add(c1, c2)),
     subC("-", (Complex c1, Complex c2) -> c1.sub(c2)),
     mulC("*", (Complex c1, Complex c2) -> c1.mul(c2)),
     divC("/", (Complex c1, Complex c2) -> c1.div(c2)), 
