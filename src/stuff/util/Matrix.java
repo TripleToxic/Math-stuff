@@ -96,7 +96,7 @@ public class Matrix{
     /**
      * @Return the inverse of a matrix, or an identity matrix if the matrix A is non-invertable
      */
-    public  void invMatrix(Matrix A){
+    public void invMatrix(Matrix A){
         int rowSelected = 0;
         double pivot;
         short inactive = 0, one = 1;
@@ -107,7 +107,7 @@ public class Matrix{
         for(int i=0; i<row; i++){
             pivot = 0;
             for(int j=0; j<row; j++){
-                if((abs(get(j, j)) > pivot) && (((inactive >> j) & one) == one)){
+                if((abs(get(j, j)) > pivot) && (((inactive >> j) & one) != one)){
                     pivot = abs(get(j, j));
                     rowSelected = j;
                 }
