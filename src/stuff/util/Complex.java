@@ -46,10 +46,10 @@ public class Complex{
         return Math.atan2(i, r);
     }
 
-    public Complex add(Complex c1, Complex c2){
-        r = c1.r + c2.r;
-        i += c1.r + c2.r;
-        return this;
+    public static Complex add(Complex c1, Complex c2, Complex c3){
+        c3.r = c1.r + c2.r;
+        c3.i = c1.r + c2.r;
+        return c3;
     }
 
     public Complex add(double x, double y){
@@ -58,10 +58,10 @@ public class Complex{
         return this;
     }
 
-    public Complex sub(Complex c1, Complex c2){
-        r = c1.r - c2.r;
-        i = c1.r - c2.r;
-        return this;
+    public static Complex sub(Complex c1, Complex c2, Complex c3){
+        c3.r = c1.r - c2.r;
+        c3.i = c1.r - c2.r;
+        return c3;
     }
 
     public Complex sub(double x, double y){
@@ -91,55 +91,56 @@ public class Complex{
         return this;
     }
 
-    public Complex mul(Complex c, double x){
-        r = c.r * x;
-        i = c.i * x;
-        return this;
+    public static  Complex mul(Complex c1, double x, Complex c2){
+        c2.r = c1.r * x;
+        c2.i = c1.i * x;
+        return c2;
     }
 
-    public Complex mul(Complex c1, Complex c2){
+    public static Complex mul(Complex c1, Complex c2, Complex c3){
         double a = c1.i * c2.r + c1.r * c2.i;
-        r = c1.r * c2.r - c1.i * c2.i;
-        i = a;
-        return this;
+        c3.r = c1.r * c2.r - c1.i * c2.i;
+        c3.i = a;
+        return c3;
     }
 
-    public Complex div(Complex c, double x){
-       return this.mul(c, 1/x);
+    public static Complex div(Complex c1, double x, Complex c2){
+       return mul(c1, 1/x, c2);
     }
 
-    public Complex div(Complex c1, Complex c2){
+    public static Complex div(Complex c1, Complex c2, Complex c3){
         double div = 1.0 / (c2.r*c2.r + c2.i*c2.i), 
                a   = (c1.i * c2.r - c1.r * c2.i) * div;
 
-        r = (c1.r * c2.r + c1.i * c2.i) * div;
-        i = a;
-        return this;
+        c3.r = (c1.r * c2.r + c1.i * c2.i) * div;
+        c3.i = a;
+        return c3;
     }
 
-    public Complex square(Complex c){
-        r = c.r*c.r + c.i*c.i;
-        i = 2d*c.r*c.i;
-        return this;
+    public static Complex square(Complex c1, Complex c2){
+        double a = 2d*c1.r*c1.i;
+        c2.r = c1.r*c1.r + c1.i*c1.i;
+        c1.i = a;
+        return c2;
     }
 
-    public Complex complexToPolar(Complex c){
-        double a = c.Angle();
+    public static Complex complexToPolar(Complex c1, Complex c2){
+        double a = c1.Angle();
 
-        r = c.length();
-        i = a;
-        return this;
+        c2.r = c1.length();
+        c2.i = a;
+        return c2;
     }
 
-    public Complex polarToComplex(Complex c){
-        double a = c.Angle(),
-               b = c.length();
-        r = Math.cos(a);
-        i = Math.sin(a);
-        return this.mul(this, b);
+    public static Complex polarToComplex(Complex c1, Complex c2){
+        double a = c1.Angle(),
+               b = c1.length();
+        c2.r = Math.cos(a);
+        c2.i = Math.sin(a);
+        return mul(c2, b, c2);
     }
 
-    public Complex pow(Complex c1, Complex c2){
+    public static Complex pow(Complex c1, Complex c2, Complex c3){
         double var1 = c1.length(), 
                var2 = c1.Angle(), 
                
@@ -150,15 +151,15 @@ public class Complex{
             var6 = c2.i * Math.log(var1);
 
             if(c2.r == 0) {
-                r = var5 * Math.cos(var6);
-                i = var5 * Math.sin(var6);
-                return this;
+                c3.r = var5 * Math.cos(var6);
+                c3.i = var5 * Math.sin(var6);
+                return c3;
             }
         }
 
         if(c2.r == 0) return real;
-        if(c2.r == 1) return this;
-        if(c2.r == 2) return square(c1);
+        if(c2.r == 1) return c3.set(c1);
+        if(c2.r == 2) return square(c1, c3);
 
         double var3 = Math.pow(var1, c2.r),
                var4 = c2.r * var1;
@@ -166,9 +167,9 @@ public class Complex{
         var3 *= var5;
         var4 += var6;
 
-        r = var3 * Math.cos(var4);
-        i = var3 * Math.sin(var4);
-        return this;
+        c3.r = var3 * Math.cos(var4);
+        c3.i = var3 * Math.sin(var4);
+        return c3;
     }
 
     /**
@@ -176,100 +177,99 @@ public class Complex{
      * @return The square root of a complex number with special cases
      */
 
-    public Complex sqrt(Complex c){
-        if(i == 0) {
-            if(c.r >= 0) r = Math.sqrt(c.r);
-            else i = Math.sqrt(c.r);
-        }else if(r == 0){
-            double var = 0.5d * Math.sqrt(2d * Math.abs(c.i));
+    public static Complex sqrt(Complex c1, Complex c2){
+        if(c1.i == 0) {
+            if(c1.r >= 0) c2.r = Math.sqrt(c1.r);
+            else c2.i = Math.sqrt(c1.r);
+        }else if(c1.r == 0){
+            double var = 0.5d * Math.sqrt(2d * Math.abs(c1.i));
 
-            if(i >= 0){
-                r = i = var;
+            if(c1.i >= 0){
+                c2.r = c2.i = var;
             }else{
-                r = -var;
-                i = var;
+                c2.r = -var;
+                c2.i = var;
             }
         }else{
-            double var = Math.sqrt(0.5d * (length() - c.r));
-            r = 0.5d * i/var;
-            i = var;
+            double var = Math.sqrt(0.5d * (c1.length() - c1.r));
+            c2.r = 0.5d * c1.i/var;
+            c2.i = var;
         }
-        return this;
+        return c2;
     }
 
     /**
      * @return The natural log of a complex number
      */
-    public Complex log(Complex c){
-        if(i == 0){
-            r = Math.log(c.r);
-        }else if(r == 0){
-            r = Math.log(c.i);
-            i = 0.5 * Math.PI;
+    public static Complex log(Complex c1, Complex c2){
+        if(c1.i == 0){
+            c2.r = Math.log(c1.r);
+        }else if(c1.r == 0){
+            c2.r = Math.log(c1.i);
+            c2.i = 0.5 * Math.PI;
         }else{
-            double a = c.Angle();
-            r = Math.log(c.length());
-            i = a;
+            double a = c1.Angle();
+            c2.r = Math.log(c1.length());
+            c2.i = a;
         }
-        return this;
+        return c2;
     }
 
-    public Complex sin(Complex c){
-        if(i == 0){
-            r = Math.sin(c.r);
-        }else if(r == 0){
-            i = Math.sinh(c.i);
+    public static Complex sin(Complex c1, Complex c2){
+        if(c1.i == 0){
+            c2.r = Math.sin(c1.r);
+        }else if(c1.r == 0){
+            c2.i = Math.sinh(c1.i);
         }else{
-            double a = Math.cos(c.r) * Math.sinh(c.i);
-            r = Math.sin(c.r) * Math.cosh(c.i);
-            i = a;
+            double a = Math.cos(c1.r) * Math.sinh(c1.i);
+            c2.r = Math.sin(c1.r) * Math.cosh(c1.i);
+            c2.i = a;
         }
-        return this;
+        return c2;
         
     }
 
-    public Complex cos(Complex c){
-        if(i == 0){
-            r = Math.cos(c.r);
-        }else if(r == 0){
-            r = Math.cosh(c.i);
+    public static Complex cos(Complex c1, Complex c2){
+        if(c1.i == 0){
+            c2.r = Math.cos(c1.r);
+        }else if(c1.r == 0){
+            c2.r = Math.cosh(c1.i);
+            c2.i = 0;
         }else{
-            double a = -Math.sin(c.r) * Math.sinh(c.i);
-            r = Math.cos(c.r) * Math.cosh(c.i);
-            i = a;
+            double a = -Math.sin(c1.r) * Math.sinh(c1.i);
+            c2.r = Math.cos(c1.r) * Math.cosh(c1.i);
+            c2.i = a;
         }
-        return this;
+        return c2;
     }
 
-    public Complex tan(Complex c){
-        if(i == 0){
-            r = Math.tan(c.r);
-        }else if(r == 0){
-            i = Math.tanh(c.i);
+    public static Complex tan(Complex c1, Complex c2){
+        if(c1.i == 0){
+            c2.r = Math.tan(c1.r);
+        }else if(c1.r == 0){
+            c2.i = Math.tanh(c1.i);
         }else{
-            double var1 = 2 * c.r,
-                var2 = 2 * c.i,
+            double var1 = 2 * c1.r,
+                var2 = 2 * c1.i,
 
                 var3 = Math.cos(var1) + Math.cosh(var2);
-            r = Math.sin(var1);
-            i = Math.sinh(var2);
-            this.div(this, var3);
+            c2.r = Math.sin(var1);
+            c2.i = Math.sinh(var2);
+            div(c2, var3, c2);
         }
-        return this;
+        return c2;
     }
 
-    public Complex asin(Complex c){
-        set(c);
-        return sub(real, square(c)).sqrt(this).add(c.i, c.r).log(this).swap().negate(false, true);
+    public static Complex asin(Complex c1, Complex c2){
+        sub(real, square(c1, c2), c2);sqrt(c2, c2).add(c1.i, c1.r);return log(c2, c2).swap().negate(false, true);
     }
 
-    public Complex acos(Complex c){
-        set(c);
-        return sub(square(this), real).sqrt(this).add(c.r, c.i).log(this).swap().negate(false, true);
+    public static Complex acos(Complex c1, Complex c2){
+        sub(square(c1, c2), real, c2);sqrt(c2, c2).add(c1.r, c1.i);return log(c2, c2).swap().negate(false, true);
     }
 
-    public Complex atan(Complex c){
-        set(c);
-        return this.add(imaginary, c).div(this, sub(imaginary, this)).log(this).swap().negate(true, false).mul(this, 0.5d);
+    public static Complex atan(Complex c1, Complex c2){
+        Complex c = new Complex(c1);
+        sub(c1, imaginary, c2);div(c2, sub(c1, imaginary, c), c2);log(c2, c2).swap().negate(true, false); return mul(c2, 0.5d, c2);
     }
 }

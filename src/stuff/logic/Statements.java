@@ -88,8 +88,6 @@ public class Statements{
                 Button(table, table);
                 field(table, i, str -> i = str);
             }
-
-            if(Op.real) Button(table, table);
         }
 
         void Button(Table table, Table parent){

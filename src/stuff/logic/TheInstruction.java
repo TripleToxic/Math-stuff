@@ -48,40 +48,37 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            Complex c1 = complex(exec, result);
-            if(c1 == null) return;
+            Complex R = complex(exec, result);
+            if(R == null) return;
 
             if(Op == CFunc.set){
-                setcomplex(exec, result, c1.set(exec.num(r), exec.num(i)));
+                setcomplex(exec, result, R.set(exec.num(r), exec.num(i)));
                 return;
             }
             
             if(Op == CFunc.get){
-                exec.setnum(r, c1.r);
-                exec.setnum(i, c1.i);
+                exec.setnum(r, R.r);
+                exec.setnum(i, R.i);
                 return;
             }
             
-            Complex c2 = complex(exec, r);
-            if(c2 == null){
-                setcomplex(exec, result, c1.Default());
+            Complex c1 = complex(exec, r);
+            if(c1 == null){
+                setcomplex(exec, result, R.Default());
                 return;
             }
 
-            Complex c2s = r == result ? c2 : new Complex(c2);
             if(Op.unary){
-                c1.set(Op.Unary.get(c2));
+                R.set(Op.Unary.get(c1, R));
             }else{
-                Complex c3 = complex(exec, i);
-                if(c3 == null){
-                    setcomplex(exec, result, c1.Default());
+                Complex c2 = complex(exec, i);
+                if(c2 == null){
+                    setcomplex(exec, result, R.Default());
                     return;
                 }
 
-                c1.set(Op.Binary.get(c2, c3));
+                R.set(Op.Binary.get(c1, c2, R));
             }
-            setcomplex(exec, result, c1);
-            c2 = c2s;
         }
     }
 

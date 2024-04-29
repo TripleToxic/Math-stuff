@@ -5,11 +5,11 @@ import stuff.util.*;
 public enum CFunc{
     set("set"),
     get("get"),
-    addC("+", (Complex c1,  Complex c2) -> add(c1, c2)),
-    subC("-", (Complex c1, Complex c2) -> c1.sub(c2)),
-    mulC("*", (Complex c1, Complex c2) -> c1.mul(c2)),
-    divC("/", (Complex c1, Complex c2) -> c1.div(c2)), 
-    powC("^", (Complex c1, Complex c2) -> c1.pow(c2)),
+    addC("+", Complex::add),
+    subC("-", Complex::sub),
+    mulC("*", Complex::mul),
+    divC("/", Complex::div),
+    powC("^", Complex::pow),
     logC("ln", Complex::log),
     sinC("sin", Complex::sin),
     cosC("cos", Complex::cos),
@@ -27,8 +27,7 @@ public enum CFunc{
     public Lambda1 Unary = null;
     public Lambda2 Binary = null;
     public boolean unary = false, 
-                   binary = false, 
-                   real = false;
+                   binary = false;
     
     CFunc(String symbol){this.symbol = symbol;}
 
@@ -50,10 +49,10 @@ public enum CFunc{
     }
 
     interface Lambda1{
-        Complex get(Complex c);
+        Complex get(Complex c1, Complex c2);
     }
     
     interface Lambda2{
-        Complex get(Complex c1, Complex c2);
+        Complex get(Complex c1, Complex c2, Complex c3);
     }
 }
