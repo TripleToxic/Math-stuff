@@ -269,7 +269,6 @@ public class Complex{
     }
 
     public static Complex atan(Complex c1, Complex c2){
-        Complex c = new Complex(c1);
-        sub(c1, imaginary, c2);div(c2, sub(c1, imaginary, c), c2);log(c2, c2).swap().negate(true, false); return mul(c2, 0.5d, c2);
+        sub(c1, imaginary, c2);div(c2, sub(c1, imaginary, c1), c2);log(c2, c2).swap().negate(true, false); return mul(c2, 0.5d, c2);
     }
 }

@@ -14,9 +14,9 @@ public enum CFunc{
     sinC("sin", Complex::sin),
     cosC("cos", Complex::cos),
     tanC("tan", Complex::tan),
-    asinC("asin", Complex::asin),
-    acosC("acos", Complex::acos),
-    atanC("atan", Complex::atan),
+    asinC("asin", Complex::asin, true),
+    acosC("acos", Complex::acos, true),
+    atanC("atan", Complex::atan, true),
     cartesian("complex", Complex::polarToComplex),
     polar("polar", Complex::complexToPolar)
     ;
@@ -27,7 +27,8 @@ public enum CFunc{
     public Lambda1 Unary = null;
     public Lambda2 Binary = null;
     public boolean unary = false, 
-                   binary = false;
+                   binary = false,
+                   unsafe = false;
     
     CFunc(String symbol){this.symbol = symbol;}
 
@@ -41,6 +42,13 @@ public enum CFunc{
         this.symbol = symbol;
         this.Binary = f;
         this.binary = true;
+    }
+
+    CFunc(String symbol, Lambda1 f, boolean unsafe){
+        this.symbol = symbol;
+        this.Unary = f;
+        this.binary = true;
+        this.unsafe = unsafe;
     }
     
     @Override

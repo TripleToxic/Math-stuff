@@ -258,14 +258,6 @@ public class Statements{
 
             table.row();
             repeat(1, table);
-            table.add("enable: ");
-            Button2(table, table);
-            if(recur){
-                table.row();
-                repeat(1, table);
-                table.add("number: ");
-                field(table, recur_string, str -> recur_string = str);
-            }
         }
 
         void rebuildMobile(Table table){
@@ -285,14 +277,6 @@ public class Statements{
 
             table.row();
             repeat(1, table);
-            table.add("enable: ");
-            Button2(table, table);
-            if(recur){
-                table.row();
-                repeat(1, table);
-                table.add("number: ");
-                field2(table, recur_string, str -> recur_string = str);
-            }
         }
 
         void Button(Table table, Table parent){
@@ -305,19 +289,9 @@ public class Statements{
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
 
-        void Button2(Table table, Table parent){
-            table.button(b -> {
-                var label = b.label(() -> recur + "");
-                b.clicked(() -> {
-                    recur = !recur;
-                    label.get().setText(recur + "");
-                });
-            }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color).tooltip("enable or disable a starting number if any part of a function call itself");
-        }
-
         @Override
         public LInstruction build(LAssembler builder){
-            builder.putConst(output, new NormalFunction(output, op, a, b, recur, recur_string, builder));
+            builder.putConst(output, new NormalFunction(output, op, a, b, builder));
             return null;
         }
         

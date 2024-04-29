@@ -69,7 +69,7 @@ public class TheInstruction{
             }
 
             if(Op.unary){
-                R.set(Op.Unary.get(c1, R));
+                R.set(Op.Unary.get(Op.unsafe ? new Complex(c1) : c1, R));
             }else{
                 Complex c2 = complex(exec, i);
                 if(c2 == null){
@@ -104,6 +104,7 @@ public class TheInstruction{
                     exec.setobj(result, new Matrix(memory, exec.numi(row), exec.numi(column), exec.numi(starter)));
                 }
             }
+            
         }
     }
     
