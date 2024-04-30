@@ -4,3 +4,4 @@ adding:
 - Function operation
     * Normal Function
     * Polynomial
+- Matrix
