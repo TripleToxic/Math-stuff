@@ -20,16 +20,10 @@ public class Matrix{
     private static final int length_limit = 16;
 
     public Matrix(MemoryBuild mem, int row, int column, int starter){
-        set(mem, row, column, starter);
-    }
-
-    public Matrix set(MemoryBuild mem, int row, int column, int starter){
         this.mem = mem;
         this.row = Mathf.clamp(row, 1, length_limit);
         this.column = Mathf.clamp(column, 1, length_limit);
         this.starter = starter;
-
-        return this;
     }
 
     public void set(Matrix A){

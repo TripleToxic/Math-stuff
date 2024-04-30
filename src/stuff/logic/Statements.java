@@ -92,10 +92,10 @@ public class Statements{
 
         void Button(Table table, Table parent){
             table.button(b -> {
-                var label = b.label(() -> Op.symbol);
+                b.label(() -> Op.symbol);
                 b.clicked(() -> showSelect(b, CFunc.all, Op, o -> {
                     Op = o;
-                    label.get().setText(Op.symbol);
+                    rebuild(parent);
                 }));
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
@@ -281,10 +281,10 @@ public class Statements{
 
         void Button(Table table, Table parent){
             table.button(b -> {
-                var label = b.label(() -> op.symbol);
+                b.label(() -> op.symbol);
                 b.clicked(() -> showSelect(b, FunctionEnum.all, op, o -> {
                     op = o;
-                    label.get().setText(op.symbol);
+                    rebuild(parent);
                 }));
             }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
@@ -709,6 +709,38 @@ public class Statements{
             table.clearChildren();
 
             field(table, C, str -> C = str);
+
+            switch (op) {
+                case Add, Sub, Mul, Inner, Outer-> {
+
+                }
+
+                case Inverse -> {
+
+                }
+
+                case Transpose -> {
+
+                }
+
+                case RowAdd, RowSub -> {
+
+                }
+
+                case RowSwap -> {
+                    
+                }
+            }
+        }
+
+        void Button(Table table, Table parent){
+            table.button(b -> {
+                b.label(() -> op.symbol);
+                b.clicked(() -> showSelect(b, MatrixFunc.all, op, o -> {
+                    op = o;
+                    build(parent);
+                }));
+            }, Styles.logict, () -> {}).size(64f, 40f).pad(2f).color(table.color);
         }
 
         @Override

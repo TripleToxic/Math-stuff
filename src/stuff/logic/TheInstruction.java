@@ -98,13 +98,10 @@ public class TheInstruction{
             Object o = exec.obj(result),
                    memo = exec.obj(mem);
             if(memo instanceof MemoryBuild memory){
-                if(o instanceof Matrix arr){
-                    exec.setobj(result, arr.set(memory, exec.numi(row), exec.numi(column), exec.numi(starter)));
-                }else{
+                if(!(o instanceof Matrix)){
                     exec.setobj(result, new Matrix(memory, exec.numi(row), exec.numi(column), exec.numi(starter)));
                 }
             }
-            
         }
     }
     
