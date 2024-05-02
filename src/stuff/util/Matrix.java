@@ -13,9 +13,9 @@ import static java.lang.Math.*;
  * <p>All methods are assumed that matrices are checked before performing matrix operations.
  */
 public class Matrix{
-    public MemoryBuild mem;
-    public int row, column, starter;
-    public boolean transpose;
+    public final MemoryBuild mem;
+    public final int row, column, starter;
+    public boolean transpose = false;
 
     private static final int length_limit = 16;
 
@@ -91,44 +91,44 @@ public class Matrix{
     /**
      * @Return the inverse of a matrix, or an identity matrix if the matrix A is non-invertable
      */
-    public static void invMatrix(Matrix A, Matrix B){
+    public void invMatrix(Matrix A){
         int rowSelected = 0;
         double pivot;
         short inactive = 0, one = 1;
-        double[] Bg = B.get();
+        double[] Bg = get();
 
-        B.set(A);
+        set(A);
 
-        for(int i=0; i<B.row; i++){
+        for(int i=0; i<row; i++){
             pivot = 0;
-            for(int j=0; j<B.row; j++){
-                if((abs(B.get(j, j)) > pivot) && (((inactive >> j) & one) != one)){
-                    pivot = abs(B.get(j, j));
+            for(int j=0; j<row; j++){
+                if((abs(get(j, j)) > pivot) && (((inactive >> j) & one) != one)){
+                    pivot = abs(get(j, j));
                     rowSelected = j;
                 }
             }
             
             if(pivot == 0d){
-                B.setIdentity();
+                setIdentity();
                 return;
             }
 
-            pivot = B.get(rowSelected, rowSelected);
+            pivot = get(rowSelected, rowSelected);
             inactive |= one << rowSelected;
 
-            Bg[rowSelected + rowSelected * B.column] = 1;
-            for(int j=0; j<B.column; j++){
-                Bg[B.getp(j, rowSelected)] /= pivot;
+            Bg[rowSelected + rowSelected * column] = 1;
+            for(int j=0; j<column; j++){
+                Bg[getp(j, rowSelected)] /= pivot;
             }
 
-            for(int j=0; j<B.row; j++){
+            for(int j=0; j<row; j++){
                 if(j == rowSelected) continue;
-                pivot = B.get(rowSelected, j);
+                pivot = get(rowSelected, j);
 
-                Bg[B.getp(rowSelected, j)] = 0;
+                Bg[getp(rowSelected, j)] = 0;
 
-                for(int k=0; k<B.column; k++){
-                    Bg[B.getp(k, j)] -= B.get(k, rowSelected) * pivot;
+                for(int k=0; k<column; k++){
+                    Bg[getp(k, j)] -= get(k, rowSelected) * pivot;
                 }
             }
         }
