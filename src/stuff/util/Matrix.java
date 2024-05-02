@@ -1,51 +1,43 @@
 package stuff.util;
 
 import arc.math.Mathf;
-import mindustry.world.blocks.logic.MemoryBlock.MemoryBuild;
 
 import static java.lang.Math.*;
 
 /**
- * A class for matrices or arrays using Memory Block type.
- * 
- * <p>No overlapping between memory allocation
+ * A class for matrices or arrays using Matrix Block type.
  * 
  * <p>All methods are assumed that matrices are checked before performing matrix operations.
  */
 public class Matrix{
-    public final MemoryBuild mem;
-    public final int row, column, starter;
+    public final double[] mem;
+    public final int row, column;
     public boolean transpose = false;
 
     private static final int length_limit = 16;
 
-    public Matrix(MemoryBuild mem, int row, int column, int starter){
-        this.mem = mem;
+    public Matrix(int row, int column){
         this.row = Mathf.clamp(row, 1, length_limit);
         this.column = Mathf.clamp(column, 1, length_limit);
-        this.starter = starter;
+        this.mem = new double[row * column];
     }
 
     public void set(Matrix A){
-        System.arraycopy(A.get(), 0, get(), 0, A.get().length);
+        System.arraycopy(A.mem, 0, mem, 0, A.mem.length);
     }
 
     public int getp(int x, int y){
-        return starter + x + y * column;
+        return x + y * column;
     }
 
     public double get(int x, int y){
-        return mem.memory[getp(x, y)];
-    }
-
-    public double[] get(){
-        return mem.memory;
+        return mem[getp(x, y)];
     }
 
     public void setIdentity(){
         for(int i=0; i<row; i++){
             for(int j=0; j<column; j++){
-                get()[getp(j, i)] = i == j ? 1.0 : 0.0;
+                mem[getp(j, i)] = i == j ? 1.0 : 0.0;
             }
         }
     }
@@ -53,26 +45,26 @@ public class Matrix{
     public double dotProduct(Matrix A, Matrix B){
         double accum = 0;
         for(int i = 0; i<A.row; i++){
-            accum += A.get()[i + A.starter] * B.get()[i + B.starter];
+            accum += A.mem[i] * B.mem[i];
         }
         return accum;
     }
 
     public void addMatrix(Matrix A, Matrix B){
-        for(int i=0; i<A.get().length; i++){
-            get()[i + starter] = A.get()[i + A.starter] + B.get()[i + B.starter];
+        for(int i=0; i<A.mem.length; i++){
+            mem[i] = A.mem[i] + B.mem[i];
         }
     }
 
     public void subMatrix(Matrix A, Matrix B){
-        for(int i=0; i<A.get().length; i++){
-            get()[i + starter] = A.get()[i + A.starter] - B.get()[i + B.starter];
+        for(int i=0; i<A.mem.length; i++){
+            mem[i] = A.mem[i] - B.mem[i];
         }
     }
 
     public void mulMatrix(Matrix A, double a){
-        for(int i=0; i<A.get().length; i++){
-            get()[i + starter] = A.get()[i + A.starter];
+        for(int i=0; i<A.mem.length; i++){
+            mem[i] = A.mem[i];
         }
     }
 
@@ -83,7 +75,7 @@ public class Matrix{
                 for(int k=0; k<A.column; k++){
                     sum += A.get(k, j) * B.get(i, k);
                 }
-                get()[i + j * A.row + starter] = sum;
+                mem[i + j * A.row] = sum;
             }
         }
     }
@@ -95,7 +87,7 @@ public class Matrix{
         int rowSelected = 0;
         double pivot;
         short inactive = 0, one = 1;
-        double[] Bg = get();
+        double[] Bg = mem;
 
         set(A);
 
