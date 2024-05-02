@@ -3,8 +3,6 @@ package stuff.logic;
 import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.LInstruction;
 import mindustry.logic.LExecutor.Var;
-import mindustry.world.blocks.logic.MemoryBlock.MemoryBuild;
-import stuff.util.Matrix;
 import stuff.util.Complex;
 import stuff.util.Function;
 import stuff.util.NormalFunction;
@@ -78,29 +76,6 @@ public class TheInstruction{
                 }
 
                 R.set(Op.Binary.get(c1, c2, R));
-            }
-        }
-    }
-
-    public static class AllocateMatrixI implements LInstruction{
-        public int mem, row, column, starter, result;
-
-        public AllocateMatrixI(int mem, int row, int column, int starter, int result){
-            this.mem = mem;
-            this.row = row;
-            this.column = column;
-            this.starter = starter;
-            this.result = result;
-        }
-
-        @Override
-        public void run(LExecutor exec) {
-            Object o = exec.obj(result),
-                   memo = exec.obj(mem);
-            if(memo instanceof MemoryBuild memory){
-                if(!(o instanceof Matrix)){
-                    exec.setobj(result, new Matrix(memory, exec.numi(row), exec.numi(column), exec.numi(starter)));
-                }
             }
         }
     }

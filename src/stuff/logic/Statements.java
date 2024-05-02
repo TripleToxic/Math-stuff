@@ -168,50 +168,6 @@ public class Statements{
         }
     }
 
-    public static class AllocateMatrixStatement extends ExtendStatement{
-        public String result = "result", starter = "0", column = "1", row = "1", mem = "cell1";
-
-        public AllocateMatrixStatement(String result, String starter, String column, String row, String mem){
-            this.result = result;
-            this.starter = starter;
-            this.column = column;
-            this.row = row;
-            this.mem = mem;
-        }
-
-        @Override
-        public void build(Table table) {
-            table.clearChildren();
-
-            field(table, result, str -> result = str);
-            table.add(" = ");
-
-            row(table);
-
-            table.add("at ");
-            field(table, mem, str -> mem = str);
-
-            row(table);
-            
-            table.add("allocate ");
-            field2(table, row, str -> row = str);
-            table.add(" x ");
-            field2(table, column, str -> column = str);
-            table.add(" matrix");
-
-            row(table);
-
-            table.add(" starting at");
-            field2(table, starter, str -> starter = str);
-        }
-
-        @Override
-        public LInstruction build(LAssembler builder) {
-            return new AllocateMatrixI(builder.var(mem), builder.var(row), builder.var(column), builder.var(starter), builder.var(result));
-        }
-        
-    }
-
     public static class FunctionStatement extends ExtendStatement{
         public String output = "f", a = "a", b = "b", recur_string = "0";
         public boolean recur = false;

@@ -43,7 +43,7 @@ public class MatrixBlock extends Block{
     }
 
     public class MatrixBuild extends Building{
-        ObjectMap<String, Matrix> matTrack = new ObjectMap<>();
+        Seq<Matrix> matTrack = new Seq<>(false, matrixCap);
 
         @Override
         public void buildConfiguration(Table table){
@@ -55,8 +55,8 @@ public class MatrixBlock extends Block{
             super.write(write);
 
             write.i(matrixCap);
-            matTrack.each((name, m) -> {
-                write.str(name);
+            int u = matTrack.size;
+            matTrack.each((m) -> {
                 int j = m.column * m.row;
                 for(int i=0; i<j; i++){
                     write.d(m.mem[i]);
@@ -69,6 +69,9 @@ public class MatrixBlock extends Block{
             super.read(read, revision);
 
             int cap = read.i();
+            for(int i=0; i<cap; i++){
+                
+            }
         }
     }
 }
