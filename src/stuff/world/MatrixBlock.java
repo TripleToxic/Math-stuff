@@ -1,12 +1,13 @@
 
 package stuff.world;
 
+import arc.func.Cons2;
 import arc.func.Prov;
 import arc.scene.event.EventListener;
 import arc.scene.ui.CheckBox;
 import arc.scene.ui.Label;
+import arc.scene.ui.ScrollPane;
 import arc.scene.ui.TextField;
-import arc.scene.ui.Tooltip.Tooltips;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.Align;
@@ -19,8 +20,6 @@ import mindustry.world.meta.*;
 import stuff.util.Matrix;
 
 import static mindustry.Vars.*;
-
-import java.util.List;
 
 public class MatrixBlock extends Block{
     public static final Stat matrixCapacity = new Stat("matrixCapacity");
@@ -58,26 +57,48 @@ public class MatrixBlock extends Block{
         boolean edit = false;
         int color = 200, 
             width = 400;
+        
+        //JavaScript portability nightmare
+        Cell<ScrollPane> paneCell;
+        ScrollPane pane;
+        Matrix choseMat;
 
         @Override
         public void buildConfiguration(Table table){
+            Cons2<Boolean, MatrixBuild> updatePane = (upSize, that) -> {
+                Table paneTable = (Table)pane.getWidget();
+                paneTable.clearChildren();
+                paneTable = that.setTable(paneTable);
+                pane.setWidget(paneTable);
+                if (upSize) {
+                    paneCell.minWidth(Math.max(that.width, that.color * that.choseMat.column));
+                }
+            };
+
             table.background(Styles.black6);
+
+            final int height = 500;
 
             CheckBox c = table.check("", v -> {
                 this.edit = v;
-                //updatePane.get(true, this);
+                updatePane.get(true, this);
             }).size(40).right().pad(10).get();
             c.setChecked(this.edit);
+
+            paneCell = table.pane(t -> t.top()).height(height).pad(10).left().colspan(4);
+            pane = paneCell.get();
+            pane.setOverscroll(false, false);
+            pane.setSmoothScrolling(false);
+            updatePane.get(true, this);
         }
 
         private Table setTable(Table table){
             int count = 0;
-            Matrix m = matTrack.get(0);
+            choseMat = matTrack.get(0);
 
+            for (int j = 0; j < choseMat.mem.length; j++){
 
-            for (int j = 0; j < m.mem.length; j++){
-
-                if (count % m.column != 0) {
+                if (count % choseMat.column != 0) {
                     table.add(" [gray]|[] ");
                 } else {
                     table.row();
@@ -86,56 +107,59 @@ public class MatrixBlock extends Block{
                 table.add("[accent]#" + j).left().width(60).get().setAlignment(Align.center);
 
                 int index = j;
-                float lastTime1 = 0, lastTime2 = 0;
-                float lastVal = (float)m.mem[index];
-                int lastColor = 0; /* [], [red], [green] */
+                float[] t1 = {0}, t2 = {0};
+                float[] lastVal = {(float)choseMat.mem[index]};
+                int[] lastColor = {0}; /* [], [red], [green] */
+                
                 Prov<String> upVal = () -> {
-                    float val = (float)m.mem[index];
-                    if (val != lastVal) {
-                        lastVal = val;
-                        lastTime1 = Time.time + 5;
-                        lastTime2 = lastTime1 + 15;
+                    float val = (float)choseMat.mem[index];
+                    if (val != lastVal[0]) {
+                        lastVal[0] = val;
+                        t1[0] = Time.time + 5;
+                        t2[0] = t1[0] + 15;
                         return "[red]" + val;
                     }
 
-                    if (lastTime1 >= Time.time) {
+                    if (t1[0] >= Time.time) {
                         return null;
                     }
 
-                    if (lastTime2 >= Time.time) {
-                        if (lastColor == 2) {
+                    if (t2[0] >= Time.time) {
+                        if (lastColor[0] == 2) {
                             return null;
                         }
 
-                        lastColor = 2;
+                        lastColor[0] = 2;
                         return "[green]" + val;
                     }
 
-                    if (lastColor == 0) {
+                    if (lastColor[0] == 0) {
                         return null;
                     }
 
-                    lastColor = 0;
+                    lastColor[0] = 0;
                     return String.valueOf(val);
                 };
 
-                float min = Math.max(this.width, this.color * m.column);
-                min = min / m.column - 90;
+                float min = Math.max(this.width, this.color * choseMat.column);
+                min = min / choseMat.column - 90;
                 if (this.edit) {
-                    Cell<TextField> cell = table.field(String.valueOf(lastVal), v -> {
-                        Seq<EventListener> listens = cell.get().getListeners();
+                    @SuppressWarnings("unchecked")
+                    Cell<TextField>[] cell = new Cell[1];
+                    cell[0] = table.field(String.valueOf(lastVal), v -> {
+                        Seq<EventListener> listens = cell[0].get().getListeners();
                         listens.remove(listens.size - 1);
-                        m.mem[index] = Double.parseDouble(v);
-                        cell.tooltip(v + ", " + v.length());
+                        choseMat.mem[index] = Double.parseDouble(v);
+                        cell[0].tooltip(v + ", " + v.length());
                     }).width(min).right().tooltip(lastVal + ", " + String.valueOf(lastVal).length());
                 }else{
-                    Label lbl = new Label(String.valueOf(lastVal));
-                    lbl.setAlignment(Align.right);
-                    table.add(lbl).minWidth(min).right();
-                    lbl.update(() -> {
+                    Label lab = new Label(String.valueOf(lastVal));
+                    lab.setAlignment(Align.right);
+                    table.add(lab).minWidth(min).right();
+                    lab.update(() -> {
                         String val = upVal.get();
                         if (val != null) {
-                            lbl.setText(val);
+                            lab.setText(val);
                         }
                     });
                 }
