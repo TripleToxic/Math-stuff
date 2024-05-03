@@ -10,13 +10,15 @@ import static java.lang.Math.*;
  * <p>All methods are assumed that matrices are checked before performing matrix operations.
  */
 public class Matrix{
+    public final String name;
     public final double[] mem;
     public final int row, column;
     public boolean transpose = false;
 
     private static final int length_limit = 16;
 
-    public Matrix(int row, int column){
+    public Matrix(String name, int row, int column){
+        this.name = name;
         this.row = Mathf.clamp(row, 1, length_limit);
         this.column = Mathf.clamp(column, 1, length_limit);
         this.mem = new double[row * column];
