@@ -77,7 +77,7 @@ public class MatrixBlock extends Block{
             table.row();
 
             table.table(t -> {
-                t.defaults().size(140f, 60f);
+                t.defaults().size(100f, 60f);
 
                 TextButton b1 = t.button("Delete", () -> {
                     maxPage--;
@@ -119,8 +119,8 @@ public class MatrixBlock extends Block{
             choseMat = matTrack.get(page - 1);
 
             table.table(t -> {
-                t.add("[").growY().get().setFontScale(1f, (float)choseMat.row);
-            }).center().get();
+                t.add("[").growY().get().setFontScale(1f, 1.1f * (float)choseMat.row);
+            }).growY().right();
 
             table.table(t -> {
                 int count = 0;
@@ -171,11 +171,11 @@ public class MatrixBlock extends Block{
                             listens.remove(listens.size - 1);
                             choseMat.mem[index] = Double.parseDouble(v);
                             cell[0].tooltip(v + ", " + v.length());
-                        }).width(cellWidth).bottom().tooltip(lastVal[0] + ", " + String.valueOf(lastVal[0]).length());
+                        }).width(cellWidth).right().tooltip(lastVal[0] + ", " + String.valueOf(lastVal[0]).length());
                     }else{
                         Label lab = new Label(String.valueOf(lastVal[0]));
-                        lab.setAlignment(Align.bottom);
-                        t.add(lab).minWidth(cellWidth).bottom();
+                        lab.setAlignment(Align.right);
+                        t.add(lab).minWidth(cellWidth).right();
                         lab.update(() -> {
                             String val = upVal.get();
                             if (val != null) {
@@ -183,16 +183,14 @@ public class MatrixBlock extends Block{
                             }
                         });
                     }
-
                     count++;
                 }
-            }).get();
+            });
 
             table.table(t -> {
                 t.add("]").growY().get().setFontScale(1f, (float)choseMat.row);
-            }).growY();
+            }).growY().left();
 
-            table.background(Styles.black6);
             return table;
         }
 
