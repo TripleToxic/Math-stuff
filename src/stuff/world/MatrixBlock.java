@@ -61,20 +61,18 @@ public class MatrixBlock extends Block{
         @Override
         public void buildConfiguration(Table table){
             table.background(Styles.black6);
-            CheckBox c = table.check("edit: ", v -> {
-                edit = v;
-                update(table);
-            }).size(40).right().pad(10).get();
-
-            table.row();
-            c.setChecked(edit);
-
             update(table);
         }
 
         public void update(Table table){
             table.clearChildren();
             this.setTable(table);
+
+            CheckBox c = table.check("edit: ", v -> {
+                edit = v;
+                update(table);
+            }).size(40).right().pad(10).get();
+            c.setChecked(edit);
 
             table.row();
 
@@ -118,78 +116,81 @@ public class MatrixBlock extends Block{
                 return table;
             }
 
-            int count = 0;
             choseMat = matTrack.get(page - 1);
 
             table.table(t -> {
-                t.add("[").get().setFontScale(1f, (float)choseMat.row);
-            });
+                t.add("[").growY().get().setFontScale(1f, (float)choseMat.row);
+            }).growY();
 
-            for (int j = 0; j < choseMat.mem.length; j++){
+            table.table(t -> {
+                int count = 0;
+                for (int j = 0; j < choseMat.mem.length; j++){
 
-                if(count % choseMat.column == 0) table.row();
+                    if(count % choseMat.column == 0) table.row();
 
-                int index = j;
-                float[] t1 = {0}, t2 = {0};
-                float[] lastVal = {(float)choseMat.mem[index]};
-                int[] lastColor = {0}; /* [], [red], [green] */
-                
-                Prov<String> upVal = () -> {
-                    float val = (float)choseMat.mem[index];
-                    if (val != lastVal[0]) {
-                        lastVal[0] = val;
-                        t1[0] = Time.time + 5;
-                        t2[0] = t1[0] + 15;
-                        return "[red]" + val;
-                    }
+                    int index = j;
+                    float[] t1 = {0}, t2 = {0};
+                    float[] lastVal = {(float)choseMat.mem[index]};
+                    int[] lastColor = {0}; /* [], [red], [green] */
+                    
+                    Prov<String> upVal = () -> {
+                        float val = (float)choseMat.mem[index];
+                        if (val != lastVal[0]) {
+                            lastVal[0] = val;
+                            t1[0] = Time.time + 5;
+                            t2[0] = t1[0] + 15;
+                            return "[red]" + val;
+                        }
 
-                    if (t1[0] >= Time.time) {
-                        return null;
-                    }
-
-                    if (t2[0] >= Time.time) {
-                        if (lastColor[0] == 2) {
+                        if (t1[0] >= Time.time) {
                             return null;
                         }
 
-                        lastColor[0] = 2;
-                        return "[green]" + val;
-                    }
+                        if (t2[0] >= Time.time) {
+                            if (lastColor[0] == 2) {
+                                return null;
+                            }
 
-                    if (lastColor[0] == 0) {
-                        return null;
-                    }
-
-                    lastColor[0] = 0;
-                    return String.valueOf(val);
-                };
-
-                if(edit){
-                    @SuppressWarnings("unchecked")
-                    Cell<TextField>[] cell = new Cell[1];
-                    cell[0] = table.field(String.valueOf(lastVal[0]), v -> {
-                        Seq<EventListener> listens = cell[0].get().getListeners();
-                        listens.remove(listens.size - 1);
-                        choseMat.mem[index] = Double.parseDouble(v);
-                        cell[0].tooltip(v + ", " + v.length());
-                    }).width(cellWidth).right().tooltip(lastVal[0] + ", " + String.valueOf(lastVal[0]).length());
-                }else{
-                    Label lab = new Label(String.valueOf(lastVal[0]));
-                    lab.setAlignment(Align.right);
-                    table.add(lab).minWidth(cellWidth).right();
-                    lab.update(() -> {
-                        String val = upVal.get();
-                        if (val != null) {
-                            lab.setText(val);
+                            lastColor[0] = 2;
+                            return "[green]" + val;
                         }
-                    });
-                }
 
-                count++;
-            }
-            table.table(t -> {
-                t.add("]").get().setFontScale(1f, (float)choseMat.row);
+                        if (lastColor[0] == 0) {
+                            return null;
+                        }
+
+                        lastColor[0] = 0;
+                        return String.valueOf(val);
+                    };
+
+                    if(edit){
+                        @SuppressWarnings("unchecked")
+                        Cell<TextField>[] cell = new Cell[1];
+                        cell[0] = table.field(String.valueOf(lastVal[0]), v -> {
+                            Seq<EventListener> listens = cell[0].get().getListeners();
+                            listens.remove(listens.size - 1);
+                            choseMat.mem[index] = Double.parseDouble(v);
+                            cell[0].tooltip(v + ", " + v.length());
+                        }).width(cellWidth).right().tooltip(lastVal[0] + ", " + String.valueOf(lastVal[0]).length());
+                    }else{
+                        Label lab = new Label(String.valueOf(lastVal[0]));
+                        lab.setAlignment(Align.right);
+                        table.add(lab).minWidth(cellWidth).right();
+                        lab.update(() -> {
+                            String val = upVal.get();
+                            if (val != null) {
+                                lab.setText(val);
+                            }
+                        });
+                    }
+
+                    count++;
+                }
             });
+
+            table.table(t -> {
+                t.add("]").growY().get().setFontScale(1f, (float)choseMat.row);
+            }).growY();
 
             table.background(Styles.black6);
             return table;

@@ -39,6 +39,6 @@ public class CreateDialog extends MSBaseDialog{
             build.maxPage++;
             build.update(config);
             hide();
-        }).center();
+        }).center().growX();
     }
 }
