@@ -66,13 +66,16 @@ public class MatrixBlock extends Block{
 
         public void update(Table table){
             table.clearChildren();
-            this.setTable(table);
-
+            
             CheckBox c = table.check("edit: ", v -> {
                 edit = v;
                 update(table);
             }).size(40).right().pad(10).get();
             c.setChecked(edit);
+
+            table.row();
+
+            this.setTable(table);
 
             table.row();
 
@@ -119,7 +122,7 @@ public class MatrixBlock extends Block{
             choseMat = matTrack.get(page - 1);
 
             table.table(t -> {
-                t.add("[").growY().get().setFontScale(1f, 1.1f * (float)choseMat.row);
+                t.add("[").growY().get().setFontScale(1f + 0.25f * (choseMat.row - 1), 1.2f * choseMat.row);
             }).growY().right();
 
             table.table(t -> {
@@ -130,11 +133,11 @@ public class MatrixBlock extends Block{
 
                     int index = j;
                     float[] t1 = {0}, t2 = {0};
-                    float[] lastVal = {(float)choseMat.mem[index]};
+                    double[] lastVal = {choseMat.mem[index]};
                     int[] lastColor = {0}; /* [], [red], [green] */
                     
                     Prov<String> upVal = () -> {
-                        float val = (float)choseMat.mem[index];
+                        double val = choseMat.mem[index];
                         if (val != lastVal[0]) {
                             lastVal[0] = val;
                             t1[0] = Time.time + 5;
@@ -188,7 +191,7 @@ public class MatrixBlock extends Block{
             });
 
             table.table(t -> {
-                t.add("]").growY().get().setFontScale(1f, (float)choseMat.row);
+                t.add("]").growY().get().setFontScale(1f + 0.25f * (choseMat.row - 1), 1.2f * choseMat.row);
             }).growY().left();
 
             return table;

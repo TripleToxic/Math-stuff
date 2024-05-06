@@ -11,11 +11,13 @@ import arc.graphics.g2d.*;
 import static arc.Core.*;
 
 public class Loader extends Mod {
-    public static TextureRegion integral;
+    public static TextureRegion integral, leftBracket, rightBracket;
 
     public Loader(){
         Events.on(ClientLoadEvent.class, e -> {
             integral = atlas.find("ms-integral");
+            leftBracket = atlas.find("ms-left-bracket");
+            rightBracket = atlas.find("ms-right-bracket");
         });
     }
 
