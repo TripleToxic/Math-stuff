@@ -1,6 +1,7 @@
 package stuff.util;
 
 import arc.math.Mathf;
+import arc.util.pooling.Pool;
 
 import static java.lang.Math.*;
 

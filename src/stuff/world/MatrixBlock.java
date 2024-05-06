@@ -83,13 +83,13 @@ public class MatrixBlock extends Block{
                     maxPage--;
                     matTrack.remove(page - 1);
                     if(page > 1) page--;
-                    update(table);
+                    update(t);
                 }).left().get();
                 b1.visible(() -> (matTrack.size > 0)  && ((page != maxPage) || (matTrack.size == matrixCap))).updateVisibility();
 
                 ImageButton b2 = table.button(Icon.leftOpen, () -> {
                     page--;
-                    update(table);
+                    update(t);
                 }).get();
                 b2.visible(() -> page > 1).updateVisibility();
 
@@ -97,13 +97,13 @@ public class MatrixBlock extends Block{
 
                 ImageButton b3 = table.button(Icon.rightOpen, () -> {
                     page++;
-                    update(table);
+                    update(t);
                 }).get();
                 b3.visible(() -> page < maxPage).updateVisibility();
 
                 TextButton b4 = table.button("Create", () -> {
                     createDialog.build = this;
-                    createDialog.config = table;
+                    createDialog.config = t;
                     createDialog.show();
                 }).right().get();
                 b4.visible(() -> maxPage < matrixCap).updateVisibility();
@@ -120,7 +120,7 @@ public class MatrixBlock extends Block{
 
             table.table(t -> {
                 t.add("[").growY().get().setFontScale(1f, (float)choseMat.row);
-            }).growY();
+            }).center().get();
 
             table.table(t -> {
                 int count = 0;
@@ -166,16 +166,16 @@ public class MatrixBlock extends Block{
                     if(edit){
                         @SuppressWarnings("unchecked")
                         Cell<TextField>[] cell = new Cell[1];
-                        cell[0] = table.field(String.valueOf(lastVal[0]), v -> {
+                        cell[0] = t.field(String.valueOf(lastVal[0]), v -> {
                             Seq<EventListener> listens = cell[0].get().getListeners();
                             listens.remove(listens.size - 1);
                             choseMat.mem[index] = Double.parseDouble(v);
                             cell[0].tooltip(v + ", " + v.length());
-                        }).width(cellWidth).right().tooltip(lastVal[0] + ", " + String.valueOf(lastVal[0]).length());
+                        }).width(cellWidth).bottom().tooltip(lastVal[0] + ", " + String.valueOf(lastVal[0]).length());
                     }else{
                         Label lab = new Label(String.valueOf(lastVal[0]));
-                        lab.setAlignment(Align.right);
-                        table.add(lab).minWidth(cellWidth).right();
+                        lab.setAlignment(Align.bottom);
+                        t.add(lab).minWidth(cellWidth).bottom();
                         lab.update(() -> {
                             String val = upVal.get();
                             if (val != null) {
@@ -186,7 +186,7 @@ public class MatrixBlock extends Block{
 
                     count++;
                 }
-            });
+            }).get();
 
             table.table(t -> {
                 t.add("]").growY().get().setFontScale(1f, (float)choseMat.row);
