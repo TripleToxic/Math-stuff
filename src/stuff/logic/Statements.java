@@ -212,6 +212,7 @@ public class Statements{
                 field(table, b, str -> b = str);
             }
 
+            
             table.row();
             repeat(1, table);
         }
@@ -292,7 +293,7 @@ public class Statements{
 
             reversed = names[2].equals("true") ? true : false;
 
-            degree = Mathf.clamp(parseInt(names[3]), 0, 11);
+            degree = Mathf.clamp(parseInt(names[3], 0), 0, 11);
 
             System.arraycopy(names, 4, coefficents, 0, degree + 1);
         }
@@ -319,7 +320,7 @@ public class Statements{
 
             table.add("degree = ");
             field2(table, degree, str -> {
-                int a = Mathf.clamp(parseInt(str), 0, 11);
+                int a = Mathf.clamp(parseInt(str, 0), 0, 11);
                 if(!str.equals("")){
                     degree = a;
                     rebuild(table);
@@ -702,6 +703,11 @@ public class Statements{
         @Override
         public LInstruction build(LAssembler builder) {
             return null;
+        }
+
+        @Override
+        public LCategory category() {
+            return LCategory.operation;
         }
         
     }

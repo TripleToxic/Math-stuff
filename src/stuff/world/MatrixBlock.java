@@ -1,17 +1,12 @@
 
 package stuff.world;
 
-import arc.func.Cons2;
-import arc.func.Prov;
-import arc.scene.event.EventListener;
-import arc.scene.ui.CheckBox;
-import arc.scene.ui.Label;
-import arc.scene.ui.ScrollPane;
-import arc.scene.ui.TextField;
+import arc.func.*;
+import arc.scene.event.*;
+import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
-import arc.util.Align;
-import arc.util.Time;
+import arc.util.*;
 import arc.util.io.*;
 import mindustry.gen.*;
 import mindustry.ui.*;
@@ -19,6 +14,7 @@ import mindustry.world.*;
 import mindustry.world.meta.*;
 import stuff.util.Matrix;
 
+import static stuff.dialog.MSDialog.*;
 import static mindustry.Vars.*;
 
 public class MatrixBlock extends Block{
@@ -52,59 +48,81 @@ public class MatrixBlock extends Block{
     }
 
     public class MatrixBuild extends Building{
-        Seq<Matrix> matTrack = new Seq<>(false, matrixCap);
+        public Seq<Matrix> matTrack = new Seq<>(false, matrixCap);
 
         boolean edit = false;
-        int color = 200, 
-            width = 400;
-        
-        //JavaScript portability nightmare
-        Cell<ScrollPane> paneCell;
-        ScrollPane pane;
+        public int cellWidth = 200,
+            page = 1,
+            maxPage = 1,
+            maxColumn = 6;
+
         Matrix choseMat;
 
         @Override
         public void buildConfiguration(Table table){
-            Cons2<Boolean, MatrixBuild> updatePane = (upSize, that) -> {
-                Table paneTable = (Table)pane.getWidget();
-                paneTable.clearChildren();
-                paneTable = that.setTable(paneTable);
-                pane.setWidget(paneTable);
-                if (upSize) {
-                    paneCell.minWidth(Math.max(that.width, that.color * that.choseMat.column));
-                }
-            };
-
             table.background(Styles.black6);
-
-            final int height = 500;
-
-            CheckBox c = table.check("", v -> {
+            CheckBox c = table.check("edit: ", v -> {
                 this.edit = v;
-                updatePane.get(true, this);
+                update(table);
             }).size(40).right().pad(10).get();
-            c.setChecked(this.edit);
 
-            paneCell = table.pane(t -> t.top()).height(height).pad(10).left().colspan(4);
-            pane = paneCell.get();
-            pane.setOverscroll(false, false);
-            pane.setSmoothScrolling(false);
-            updatePane.get(true, this);
+            table.row();
+            c.setChecked(edit);
+
+            update(table);
+        }
+
+        public void update(Table table){
+            table.clearChildren();
+            this.setTable(table);
+
+            table.row();
+
+            table.table(t -> {
+                TextButton b1 = table.button("Delete", () -> {
+                    maxPage--;
+                    matTrack.remove(page - 1);
+                    if(page > 1) page--;
+                    update(table);
+                }).left().get();
+                b1.setWidth(120f);
+                b1.visible(() -> maxPage > 1).updateVisibility();
+
+                ImageButton b2 = table.button(Icon.leftOpen, () -> {
+                    page--;
+                    update(table);
+                }).get();
+                b2.visible(() -> page > 1).updateVisibility();
+
+                table.add("  " + page + " / " + maxPage + "  ").center();
+
+                ImageButton b3 = table.button(Icon.rightOpen, () -> {
+                    page++;
+                    update(table);
+                }).get();
+                b3.visible(() -> page < maxPage).updateVisibility();
+
+                TextButton b4 = table.button("Create", () -> {
+                    createDialog.build = this;
+                    createDialog.config = table;
+                    createDialog.show();
+                }).right().get();
+                b4.visible(() -> maxPage < matrixCap).updateVisibility();
+            }).get().center();
         }
 
         private Table setTable(Table table){
+            Log.info(table.getWidth());
+            if(page - 1 == matTrack.size){
+                return table;
+            }
+
             int count = 0;
-            choseMat = matTrack.get(0);
+            choseMat = matTrack.get(page - 1);
 
             for (int j = 0; j < choseMat.mem.length; j++){
 
-                if (count % choseMat.column != 0) {
-                    table.add(" [gray]|[] ");
-                } else {
-                    table.row();
-                }
-
-                table.add("[accent]#" + j).left().width(60).get().setAlignment(Align.center);
+                if(count % choseMat.column == 0) table.row();
 
                 int index = j;
                 float[] t1 = {0}, t2 = {0};
@@ -141,21 +159,19 @@ public class MatrixBlock extends Block{
                     return String.valueOf(val);
                 };
 
-                float min = Math.max(this.width, this.color * choseMat.column);
-                min = min / choseMat.column - 90;
-                if (this.edit) {
+                if(edit){
                     @SuppressWarnings("unchecked")
                     Cell<TextField>[] cell = new Cell[1];
-                    cell[0] = table.field(String.valueOf(lastVal), v -> {
+                    cell[0] = table.field(String.valueOf(lastVal[0]), v -> {
                         Seq<EventListener> listens = cell[0].get().getListeners();
                         listens.remove(listens.size - 1);
                         choseMat.mem[index] = Double.parseDouble(v);
                         cell[0].tooltip(v + ", " + v.length());
-                    }).width(min).right().tooltip(lastVal + ", " + String.valueOf(lastVal).length());
+                    }).width(cellWidth).right().tooltip(lastVal[0] + ", " + String.valueOf(lastVal[0]).length());
                 }else{
-                    Label lab = new Label(String.valueOf(lastVal));
+                    Label lab = new Label(String.valueOf(lastVal[0]));
                     lab.setAlignment(Align.right);
-                    table.add(lab).minWidth(min).right();
+                    table.add(lab).minWidth(cellWidth).right();
                     lab.update(() -> {
                         String val = upVal.get();
                         if (val != null) {
@@ -186,6 +202,8 @@ public class MatrixBlock extends Block{
                     write.d(m.mem[i]);
                 }
             });
+
+            
         }
 
         @Override
@@ -211,7 +229,7 @@ public class MatrixBlock extends Block{
                     size = m.row * m.column;
                     for(int j=0; j<size; j++){
                         num = read.d();
-                        m.mem[i] = num;
+                        m.mem[j] = num;
                     }
                 }
             }

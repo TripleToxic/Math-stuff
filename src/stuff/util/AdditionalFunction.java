@@ -47,19 +47,19 @@ public class AdditionalFunction{
         return min((a - b) < 0 ? a - b + 360 : a - b, (b - a) < 0 ? b - a + 360 : b - a);
     }
 
-    public static double parseDouble(String s){
+    public static double parseDouble(String s, double failed){
         try{
             return Double.parseDouble(s);
         }catch(Exception e){
-            return 0;
+            return failed;
         }
     }
 
-    public static int parseInt(String s){
+    public static int parseInt(String s, int failed){
         try{
             return Integer.parseInt(s);
         }catch(Exception e){
-            return 0;
+            return failed;
         }
     }
 

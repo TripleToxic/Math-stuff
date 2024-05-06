@@ -2,7 +2,8 @@ package stuff;
 
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.mod.*;
-//import stuff.content.Block;
+import stuff.content.Blockss;
+import stuff.dialog.MSDialog;
 import stuff.logic.*;
 import arc.Events;
 import arc.graphics.g2d.*;
@@ -14,13 +15,18 @@ public class Loader extends Mod {
 
     public Loader(){
         Events.on(ClientLoadEvent.class, e -> {
-            integral = atlas.find("math-stuff-integral");
+            integral = atlas.find("ms-integral");
         });
     }
 
     @Override
     public void loadContent(){
         Statements.load();
-        //Block.load();
+        Blockss.load();
+    }
+
+    @Override
+    public void init() {
+        MSDialog.load();
     }
 }

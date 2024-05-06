@@ -2,7 +2,7 @@
 displayName: "Math-stuff"
 
 #the internal name of the mod
-name: "math-stuff"
+name: "ms"
 
 #your name
 author: "Triple-Toxic"
@@ -12,9 +12,6 @@ repo: "TripleToxic/Math-stuff"
 
 #the fully qualified main class of the mod
 main: "stuff.Loader"
-
-#the mod subtitle as seen in the mod dialog
-subtitle: "Math"
 
 #the mod description as seen in the mod dialog
 description: "More math stuff"
