@@ -62,7 +62,7 @@ public class MatrixBlock extends Block{
         public void buildConfiguration(Table table){
             table.background(Styles.black6);
             CheckBox c = table.check("edit: ", v -> {
-                this.edit = v;
+                edit = v;
                 update(table);
             }).size(40).right().pad(10).get();
 
@@ -79,14 +79,15 @@ public class MatrixBlock extends Block{
             table.row();
 
             table.table(t -> {
+                t.defaults().size(140f, 60f);
+
                 TextButton b1 = table.button("Delete", () -> {
                     maxPage--;
                     matTrack.remove(page - 1);
                     if(page > 1) page--;
                     update(table);
                 }).left().get();
-                b1.setWidth(120f);
-                b1.visible(() -> maxPage > 1).updateVisibility();
+                b1.visible(() -> (matTrack.size > 0)  && ((page != maxPage) || (matTrack.size == matrixCap))).updateVisibility();
 
                 ImageButton b2 = table.button(Icon.leftOpen, () -> {
                     page--;
@@ -108,7 +109,7 @@ public class MatrixBlock extends Block{
                     createDialog.show();
                 }).right().get();
                 b4.visible(() -> maxPage < matrixCap).updateVisibility();
-            }).get().center();
+            }).center();
         }
 
         private Table setTable(Table table){
@@ -119,6 +120,10 @@ public class MatrixBlock extends Block{
 
             int count = 0;
             choseMat = matTrack.get(page - 1);
+
+            table.table(t -> {
+                t.add("[").get().setFontScale(1f, (float)choseMat.row);
+            });
 
             for (int j = 0; j < choseMat.mem.length; j++){
 
@@ -182,6 +187,11 @@ public class MatrixBlock extends Block{
 
                 count++;
             }
+            table.table(t -> {
+                t.add("]").get().setFontScale(1f, (float)choseMat.row);
+            });
+
+            table.background(Styles.black6);
             return table;
         }
 
@@ -197,13 +207,11 @@ public class MatrixBlock extends Block{
                 write.i(m.column);
                 write.bool(m.transpose);
 
-                int j = m.column * m.row;
-                for(int i=0; i<j; i++){
-                    write.d(m.mem[i]);
+                for(double v : m.mem){
+                    write.d(v);
                 }
             });
 
-            
         }
 
         @Override
