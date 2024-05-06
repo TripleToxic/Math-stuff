@@ -79,7 +79,7 @@ public class MatrixBlock extends Block{
             table.table(t -> {
                 t.defaults().size(140f, 60f);
 
-                TextButton b1 = table.button("Delete", () -> {
+                TextButton b1 = t.button("Delete", () -> {
                     maxPage--;
                     matTrack.remove(page - 1);
                     if(page > 1) page--;
@@ -87,21 +87,21 @@ public class MatrixBlock extends Block{
                 }).left().get();
                 b1.visible(() -> (matTrack.size > 0)  && ((page != maxPage) || (matTrack.size == matrixCap))).updateVisibility();
 
-                ImageButton b2 = table.button(Icon.leftOpen, () -> {
+                ImageButton b2 = t.button(Icon.leftOpen, () -> {
                     page--;
                     update(t);
                 }).get();
                 b2.visible(() -> page > 1).updateVisibility();
 
-                table.add("  " + page + " / " + maxPage + "  ").center();
+                t.add("  " + page + " / " + maxPage + "  ").center();
 
-                ImageButton b3 = table.button(Icon.rightOpen, () -> {
+                ImageButton b3 = t.button(Icon.rightOpen, () -> {
                     page++;
                     update(t);
                 }).get();
                 b3.visible(() -> page < maxPage).updateVisibility();
 
-                TextButton b4 = table.button("Create", () -> {
+                TextButton b4 = t.button("Create", () -> {
                     createDialog.build = this;
                     createDialog.config = t;
                     createDialog.show();
@@ -126,7 +126,7 @@ public class MatrixBlock extends Block{
                 int count = 0;
                 for (int j = 0; j < choseMat.mem.length; j++){
 
-                    if(count % choseMat.column == 0) table.row();
+                    if(count % choseMat.column == 0) t.row();
 
                     int index = j;
                     float[] t1 = {0}, t2 = {0};
