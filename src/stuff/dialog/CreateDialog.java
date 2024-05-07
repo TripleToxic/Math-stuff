@@ -10,7 +10,6 @@ public class CreateDialog extends MSBaseDialog{
     public String row = "1", column = "1", name = "A";
     public MatrixBuild build;
     public Table config;
-    Table t = new Table();
 
     public CreateDialog(){
         super("@ms-create.name");
@@ -39,6 +38,6 @@ public class CreateDialog extends MSBaseDialog{
             build.maxPage++;
             build.update(config);
             hide();
-        }).center().growX();
+        }).center();
     }
 }

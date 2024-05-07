@@ -12,9 +12,11 @@ import mindustry.gen.*;
 import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
+import stuff.Loader;
 import stuff.util.Matrix;
 
 import static stuff.dialog.MSDialog.*;
+import static stuff.util.AdditionalFunction.parseDouble;
 import static mindustry.Vars.*;
 
 public class MatrixBlock extends Block{
@@ -51,11 +53,11 @@ public class MatrixBlock extends Block{
         public Seq<Matrix> matTrack = new Seq<>(false, matrixCap);
 
         boolean edit = false;
-        public int cellWidth = 200,
+        public int cellWidth = 250,
             page = 1,
             maxPage = 1,
             maxColumn = 6;
-
+        float scale = 0.6f, shift = 100f;
         Matrix choseMat;
 
         @Override
@@ -67,7 +69,7 @@ public class MatrixBlock extends Block{
         public void update(Table table){
             table.clearChildren();
             
-            CheckBox c = table.check("edit: ", v -> {
+            CheckBox c = table.check("", v -> {
                 edit = v;
                 update(table);
             }).size(40).right().pad(10).get();
@@ -79,6 +81,8 @@ public class MatrixBlock extends Block{
 
             table.row();
 
+            table.add();table.add();
+
             table.table(t -> {
                 t.defaults().size(100f, 60f);
 
@@ -86,13 +90,13 @@ public class MatrixBlock extends Block{
                     maxPage--;
                     matTrack.remove(page - 1);
                     if(page > 1) page--;
-                    update(t);
+                    update(table);
                 }).left().get();
                 b1.visible(() -> (matTrack.size > 0)  && ((page != maxPage) || (matTrack.size == matrixCap))).updateVisibility();
 
                 ImageButton b2 = t.button(Icon.leftOpen, () -> {
                     page--;
-                    update(t);
+                    update(table);
                 }).get();
                 b2.visible(() -> page > 1).updateVisibility();
 
@@ -100,33 +104,38 @@ public class MatrixBlock extends Block{
 
                 ImageButton b3 = t.button(Icon.rightOpen, () -> {
                     page++;
-                    update(t);
+                    update(table);
                 }).get();
                 b3.visible(() -> page < maxPage).updateVisibility();
 
                 TextButton b4 = t.button("Create", () -> {
                     createDialog.build = this;
-                    createDialog.config = t;
+                    createDialog.config = table;
                     createDialog.show();
                 }).right().get();
                 b4.visible(() -> maxPage < matrixCap).updateVisibility();
-            }).center();
+            }).growX().center();
         }
 
         private Table setTable(Table table){
             Log.info(table.getWidth());
+            
             if(page - 1 == matTrack.size){
                 return table;
             }
 
             choseMat = matTrack.get(page - 1);
+            table.add();
 
-            table.table(t -> {
-                t.add("[").growY().get().setFontScale(1f + 0.25f * (choseMat.row - 1), 1.2f * choseMat.row);
-            }).growY().right();
+            Table ct = table.table(t -> {
+                t.image(Loader.leftBracket).growX().right().get().setScale(scale / (17 - choseMat.row));
+            }).right().get();
+
+            ct.x = ct.x + shift;
 
             table.table(t -> {
                 int count = 0;
+
                 for (int j = 0; j < choseMat.mem.length; j++){
 
                     if(count % choseMat.column == 0) t.row();
@@ -145,22 +154,18 @@ public class MatrixBlock extends Block{
                             return "[red]" + val;
                         }
 
-                        if (t1[0] >= Time.time) {
-                            return null;
-                        }
+                        if (t1[0] >= Time.time) return null;
+                            
 
                         if (t2[0] >= Time.time) {
-                            if (lastColor[0] == 2) {
-                                return null;
-                            }
-
+                            if (lastColor[0] == 2) return null;
+                            
                             lastColor[0] = 2;
                             return "[green]" + val;
                         }
 
-                        if (lastColor[0] == 0) {
-                            return null;
-                        }
+                        if (lastColor[0] == 0) return null;
+                        
 
                         lastColor[0] = 0;
                         return String.valueOf(val);
@@ -172,7 +177,7 @@ public class MatrixBlock extends Block{
                         cell[0] = t.field(String.valueOf(lastVal[0]), v -> {
                             Seq<EventListener> listens = cell[0].get().getListeners();
                             listens.remove(listens.size - 1);
-                            choseMat.mem[index] = Double.parseDouble(v);
+                            choseMat.mem[index] = parseDouble(v, 0d);
                             cell[0].tooltip(v + ", " + v.length());
                         }).width(cellWidth).right().tooltip(lastVal[0] + ", " + String.valueOf(lastVal[0]).length());
                     }else{
@@ -190,9 +195,11 @@ public class MatrixBlock extends Block{
                 }
             });
 
-            table.table(t -> {
-                t.add("]").growY().get().setFontScale(1f + 0.25f * (choseMat.row - 1), 1.2f * choseMat.row);
-            }).growY().left();
+            Table ct2 = table.table(t -> {
+                t.image(Loader.rightBracket).growX().left().get().setScale(scale / (17 - choseMat.row));
+            }).left().get();
+
+            ct2.x = ct2.x - shift; 
 
             return table;
         }
