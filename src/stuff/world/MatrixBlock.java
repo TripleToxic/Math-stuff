@@ -180,7 +180,7 @@ public class MatrixBlock extends Block{
                         }).width(cellWidth).right().tooltip(lastVal[0] + ", " + String.valueOf(lastVal[0]).length());
                     }else{
                         Label lab = new Label(String.valueOf(lastVal[0]));
-                        lab.setAlignment(Align.right);
+                        lab.setAlignment(Align.center);
                         t.add(lab).minWidth(cellWidth).right();
                         lab.update(() -> {
                             String val = upVal.get();
