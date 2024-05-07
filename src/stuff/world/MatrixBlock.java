@@ -57,7 +57,7 @@ public class MatrixBlock extends Block{
             page = 1,
             maxPage = 1,
             maxColumn = 6;
-        float scale = 0.6f, shift = 100f;
+        float scale = 0.6f;
         Matrix choseMat;
 
         @Override
@@ -127,11 +127,9 @@ public class MatrixBlock extends Block{
             choseMat = matTrack.get(page - 1);
             table.add();
 
-            Table ct = table.table(t -> {
-                t.image(Loader.leftBracket).growX().right().get().setScale(scale / (17 - choseMat.row));
-            }).right().get();
-
-            ct.x = ct.x + shift;
+            table.table(t -> {
+                t.image(Loader.leftBracket).right().get().setScale(scale / 16 * choseMat.row);
+            }).right();
 
             table.table(t -> {
                 int count = 0;
@@ -195,11 +193,9 @@ public class MatrixBlock extends Block{
                 }
             });
 
-            Table ct2 = table.table(t -> {
-                t.image(Loader.rightBracket).growX().left().get().setScale(scale / (17 - choseMat.row));
-            }).left().get();
-
-            ct2.x = ct2.x - shift; 
+            table.table(t -> {
+                t.image(Loader.rightBracket).left().get().setScale(scale / 16 * choseMat.row);
+            }).left();
 
             return table;
         }
