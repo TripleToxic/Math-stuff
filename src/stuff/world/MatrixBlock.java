@@ -230,15 +230,15 @@ public class MatrixBlock extends Block{
             double num;
             
             for(int i=0; i<cap; i++){
+                name = read.str();
+                row = read.i();
+                column = read.i();
+                transpose = read.bool();
                 if(i < matTrack.size){
-                    name = read.str();
-                    row = read.i();
-                    column = read.i();
-                    transpose = read.bool();
                     m = new Matrix(name, row, column);
                     matTrack.add(m);
                     m.transpose = transpose;
-
+                
                     size = m.row * m.column;
                     for(int j=0; j<size; j++){
                         num = read.d();
