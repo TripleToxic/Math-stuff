@@ -13,6 +13,7 @@ public class CreateDialog extends MSBaseDialog{
 
     public CreateDialog(){
         super("@ms-create.name");
+        cont.defaults().size(100f, 60f);
 
         cont.add("Create Matrix").center();
 

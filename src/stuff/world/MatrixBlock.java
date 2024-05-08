@@ -1,4 +1,3 @@
-
 package stuff.world;
 
 import arc.func.*;
@@ -51,14 +50,13 @@ public class MatrixBlock extends Block{
     }
 
     public class MatrixBuild extends Building{
+        public Seq<Matrix> matTrack = new Seq<>(false, matrixCap);
+        public int page = 1, maxPage = 1;
+
         private static final int cellWidth = 250, cellHeight = 50;
         private static final float scale = 1.3f, textScale = 0.8f;
-        
-        public Seq<Matrix> matTrack = new Seq<>(false, matrixCap);
-
-        boolean edit = false;
-        public int page = 1, maxPage = 1;
-        Matrix choseMat;
+        private boolean edit = false;
+        private Matrix choseMat;
 
         @Override
         public void buildConfiguration(Table table){
@@ -200,7 +198,7 @@ public class MatrixBlock extends Block{
             return table;
         }
 
-        @Override
+        /*@Override
         public void write(Writes write) {
             super.write(write);
 
@@ -246,6 +244,6 @@ public class MatrixBlock extends Block{
                     }
                 }
             }
-        }
+        }*/
     }
 }
