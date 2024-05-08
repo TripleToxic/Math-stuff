@@ -15,7 +15,7 @@ import stuff.Loader;
 import stuff.util.Matrix;
 
 import static stuff.dialog.MSDialog.*;
-import static stuff.util.AdditionalFunction.parseDouble;
+import static stuff.util.AdditionalFunction.*;
 import static mindustry.Vars.*;
 
 public class MatrixBlock extends Block{
@@ -68,7 +68,7 @@ public class MatrixBlock extends Block{
 
             table.row();
 
-            table.add();table.add();table.add();
+            table.add();
 
             table.table(t -> {
                 t.defaults().size(100f, 60f);
@@ -198,7 +198,7 @@ public class MatrixBlock extends Block{
             return table;
         }
 
-        /*@Override
+        @Override
         public void write(Writes write) {
             super.write(write);
 
@@ -244,6 +244,6 @@ public class MatrixBlock extends Block{
                     }
                 }
             }
-        }*/
+        }
     }
 }
