@@ -31,6 +31,7 @@ public class MatrixBlock extends Block{
         drawDisabled = false;
         envEnabled = Env.any;
         canOverdrive = false;
+        configurable = true;
     }
 
     @Override
@@ -53,7 +54,7 @@ public class MatrixBlock extends Block{
         public Seq<Matrix> matTrack = new Seq<>(false, matrixCap);
 
         boolean edit = false;
-        public int cellWidth = 250, cellHeight = 50,
+        public int cellWidth = 240, cellHeight = 30,
             page = 1,
             maxPage = 1,
             maxColumn = 6;
@@ -119,15 +120,15 @@ public class MatrixBlock extends Block{
 
             choseMat = matTrack.get(page - 1);
 
-            table.add(choseMat.name).fontScale(4f);
+            table.add();
 
-            table.add(" = ").fontScale(4f);
+            table.add("Matrix [accent]#" + page + "[white]  " + choseMat.name).center();
 
-            Image[] I = new Image[1];
+            table.row();
+
             table.table(t -> {
-                I[0] = t.image(Loader.leftBracket).right().get();
-                I[0].setScale(scale * textScale * choseMat.row / 16);
-            }).right().get().setSize(I[0].getImageWidth(), I[0].getImageHeight());
+                t.image(Loader.leftBracket).right().get().setScale(scale * textScale * choseMat.row / 16);
+            }).right().get().setScale(textScale);
 
             table.table(t -> {
                 int count = 0;

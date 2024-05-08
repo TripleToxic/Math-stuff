@@ -1,6 +1,7 @@
 package stuff.logic;
 
 public enum MatrixFunc{
+    Get("get"),
     Add("+"),
     Sub("-"),
     Mul(""),
@@ -8,8 +9,6 @@ public enum MatrixFunc{
     Inner("•"),
     Outer("⊗"),
     Transpose("ᵀ"),
-    RowAdd("row+"),
-    RowSub("row-"),
     RowSwap("swap"),
     ;
 

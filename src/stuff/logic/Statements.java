@@ -643,10 +643,10 @@ public class Statements{
     }
 
     public static class MatrixOperationStatement extends ExtendStatement{
-        public MatrixFunc op = MatrixFunc.Add;
-        public String A = "A", B = "B", C = "C", row = "row", column = "column", starter = "starter";
+        public MatrixFunc op = MatrixFunc.Get;
+        public String A = "A", B = "B", C = "C";
 
-        public MatrixOperationStatement(String op, String C, String A, String B, String row, String column, String starter){
+        public MatrixOperationStatement(String op, String C, String A, String B){
             try{
                 this.op = MatrixFunc.valueOf(op);
             }catch(Exception e){}
@@ -654,9 +654,6 @@ public class Statements{
             this.C = C;
             this.A = A;
             this.B = B;
-            this.row = row;
-            this.column = column;
-            this.starter = starter;
         }
 
         public MatrixOperationStatement(){}
@@ -666,26 +663,34 @@ public class Statements{
             table.clearChildren();
 
             field(table, C, str -> C = str);
+            table.add(" = ");
 
-            switch (op) {
-                case Add, Sub, Mul, Inner, Outer-> {
-
+            switch(op) {
+                case Get -> {
+                    Button(table, table);
+                    table.add(" from ");
+                    field(table, A, s -> A = s);
+                    table.add(" at ");
+                    field(table, B, s -> B = s);
                 }
 
-                case Inverse -> {
-
+                case Add, Sub, Mul, Inner, Outer -> {
+                    field(table, A, s -> A = s);
+                    Button(table, table);
+                    field(table, B, s -> B = s);
                 }
 
-                case Transpose -> {
-
-                }
-
-                case RowAdd, RowSub -> {
-
+                case Inverse, Transpose -> {
+                    field(table, A, s -> A = s);
+                    Button(table, table);
                 }
 
                 case RowSwap -> {
-                    
+                    Button(table, table);
+                    table.add(" row ");
+                    field(table, A, s -> A = s);
+                    table.add(" with row ");
+                    field(table, B, s -> B = s);
                 }
             }
         }
@@ -701,7 +706,7 @@ public class Statements{
         }
 
         @Override
-        public LInstruction build(LAssembler builder) {
+        public LInstruction build(LAssembler builder){
             return null;
         }
 
@@ -709,7 +714,6 @@ public class Statements{
         public LCategory category() {
             return LCategory.operation;
         }
-        
     }
     
     public static void load(){
@@ -719,7 +723,7 @@ public class Statements{
         registerStatement("fnop", args -> new FunctionOperationStatement(args[1], args[2], args[3]), FunctionOperationStatement::new);
         registerStatement("int", args -> new IntegralStatement(args[1], args[2], args[3], args[4]), IntegralStatement::new);
         registerStatement("root", args -> new RootFindingStatement(args[1], args[2], args[3], args[4], args[5], args[6]), RootFindingStatement::new);
-        registerStatement("Matrix", args -> new MatrixOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), MatrixOperationStatement::new);
+        registerStatement("Matrix", args -> new MatrixOperationStatement(args[1], args[2], args[3], args[4]), MatrixOperationStatement::new);
     }
 
     public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){

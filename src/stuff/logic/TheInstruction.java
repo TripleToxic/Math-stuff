@@ -276,4 +276,52 @@ public class TheInstruction{
             else exec.setobj(result, null);
         }
     }
+
+    public static class MatrixOperation implements LInstruction{
+        public MatrixFunc op;
+        public int A, B, C;
+
+        public MatrixOperation(MatrixFunc op, int A, int B, int C){
+            this.op = op;
+            this.A = A;
+            this.B = B;
+            this.C = C;
+        }
+
+        public MatrixOperation(){}
+
+        @Override
+        public void run(LExecutor exec){
+            switch (op) {
+                case Get -> {
+                    
+                }
+
+                case Add, Sub -> {
+
+                }
+
+                case Mul -> {
+
+                }
+
+                case Inner -> {
+
+                }
+
+                case Outer -> {
+
+                }
+
+                case Inverse, Transpose -> {
+
+                }
+
+                case RowSwap -> {
+
+                }
+            }
+        }
+        
+    }
 }
