@@ -53,50 +53,45 @@ public class MatrixBlock extends Block{
         public Seq<Matrix> matTrack = new Seq<>(false, matrixCap);
 
         boolean edit = false;
-        public int cellWidth = 250,
+        public int cellWidth = 250, cellHeight = 50,
             page = 1,
             maxPage = 1,
             maxColumn = 6;
-        float scale = 0.6f;
+        float scale = 1.5f, textScale = 0.8f;
         Matrix choseMat;
 
         @Override
         public void buildConfiguration(Table table){
-            table.background(Styles.black6);
-            update(table);
-        }
-
-        public void update(Table table){
             table.clearChildren();
-            
-            CheckBox c = table.check("", v -> {
-                edit = v;
-                update(table);
-            }).size(40).right().pad(10).get();
-            c.setChecked(edit);
 
-            table.row();
+            table.background(Styles.black6);
 
             this.setTable(table);
 
             table.row();
 
-            table.add();table.add();
+            table.add();table.add();table.add();
 
             table.table(t -> {
                 t.defaults().size(100f, 60f);
+
+                CheckBox c = t.check("", v -> {
+                    edit = v;
+                    buildConfiguration(table);
+                }).size(40).right().pad(10).get();
+                c.setChecked(edit);
 
                 TextButton b1 = t.button("Delete", () -> {
                     maxPage--;
                     matTrack.remove(page - 1);
                     if(page > 1) page--;
-                    update(table);
+                    buildConfiguration(table);
                 }).left().get();
                 b1.visible(() -> (matTrack.size > 0)  && ((page != maxPage) || (matTrack.size == matrixCap))).updateVisibility();
 
                 ImageButton b2 = t.button(Icon.leftOpen, () -> {
                     page--;
-                    update(table);
+                    buildConfiguration(table);
                 }).get();
                 b2.visible(() -> page > 1).updateVisibility();
 
@@ -104,7 +99,7 @@ public class MatrixBlock extends Block{
 
                 ImageButton b3 = t.button(Icon.rightOpen, () -> {
                     page++;
-                    update(table);
+                    buildConfiguration(table);
                 }).get();
                 b3.visible(() -> page < maxPage).updateVisibility();
 
@@ -118,20 +113,24 @@ public class MatrixBlock extends Block{
         }
 
         private Table setTable(Table table){
-            Log.info(table.getWidth());
-            
             if(page - 1 == matTrack.size){
                 return table;
             }
 
             choseMat = matTrack.get(page - 1);
-            table.add();
+
+            table.add(choseMat.name).fontScale(4f);
+
+            table.add(" = ").fontScale(4f);
+
+            Image[] I = new Image[1];
+            table.table(t -> {
+                I[0] = t.image(Loader.leftBracket).right().get();
+                I[0].setScale(scale * textScale / 16 * choseMat.row);
+            }).get().right().setSize(I[0].getImageWidth(), I[0].getImageHeight());
 
             table.table(t -> {
-                t.image(Loader.leftBracket).right().get().setScale(scale / 16 * choseMat.row);
-            }).right();
-
-            table.table(t -> {
+                t.defaults();
                 int count = 0;
 
                 for (int j = 0; j < choseMat.mem.length; j++){
@@ -177,11 +176,13 @@ public class MatrixBlock extends Block{
                             listens.remove(listens.size - 1);
                             choseMat.mem[index] = parseDouble(v, 0d);
                             cell[0].tooltip(v + ", " + v.length());
-                        }).width(cellWidth).right().tooltip(lastVal[0] + ", " + String.valueOf(lastVal[0]).length());
+                        }).size(cellWidth * textScale, cellHeight * textScale).right().tooltip(lastVal[0] + ", " + String.valueOf(lastVal[0]).length());
                     }else{
                         Label lab = new Label(String.valueOf(lastVal[0]));
+                        lab.setFontScale(textScale);
+                        lab.setScale(textScale);
                         lab.setAlignment(Align.center);
-                        t.add(lab).minWidth(cellWidth).right();
+                        t.add(lab).minSize(cellWidth * textScale, cellHeight * textScale).right();
                         lab.update(() -> {
                             String val = upVal.get();
                             if (val != null) {
@@ -194,8 +195,8 @@ public class MatrixBlock extends Block{
             });
 
             table.table(t -> {
-                t.image(Loader.rightBracket).left().get().setScale(scale / 16 * choseMat.row);
-            }).left();
+                t.image(Loader.rightBracket).left().get().setScale(scale * textScale / 16 * choseMat.row);
+            }).left().get().setScale(textScale);
 
             return table;
         }

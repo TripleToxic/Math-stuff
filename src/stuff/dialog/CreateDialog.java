@@ -36,7 +36,7 @@ public class CreateDialog extends MSBaseDialog{
         cont.button("Create", () -> {
             build.matTrack.add(new Matrix(name, parseInt(row, 1), parseInt(column, 1)));
             build.maxPage++;
-            build.update(config);
+            build.buildConfiguration(config);
             hide();
         }).center();
     }
