@@ -19,7 +19,6 @@ public class Blockss{
 
             matrixCap = 8;
             size = 1;
-            configurable = true;
         }};
 
         matrixBank = new MatrixBlock("matrix-bank"){{
@@ -27,7 +26,6 @@ public class Blockss{
 
             matrixCap = 16;
             size = 2;
-            configurable = true;
         }};
     }
 }
