@@ -50,14 +50,13 @@ public class MatrixBlock extends Block{
     }
 
     public class MatrixBuild extends Building{
+        private static final int cellWidth = 250, cellHeight = 50:
+        private static final float scale = 1.3f, textScale = 0.8f;
+        
         public Seq<Matrix> matTrack = new Seq<>(false, matrixCap);
 
         boolean edit = false;
-        public int cellWidth = 250, cellHeight = 50,
-            page = 1,
-            maxPage = 1,
-            maxColumn = 6;
-        float scale = 1.3f, textScale = 0.8f;
+        public int page = 1, maxPage = 1;
         Matrix choseMat;
 
         @Override
