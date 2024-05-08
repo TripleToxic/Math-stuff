@@ -57,7 +57,7 @@ public class MatrixBlock extends Block{
             page = 1,
             maxPage = 1,
             maxColumn = 6;
-        float scale = 1.5f, textScale = 0.8f;
+        float scale = 1.3f, textScale = 0.8f;
         Matrix choseMat;
 
         @Override
@@ -126,11 +126,10 @@ public class MatrixBlock extends Block{
             Image[] I = new Image[1];
             table.table(t -> {
                 I[0] = t.image(Loader.leftBracket).right().get();
-                I[0].setScale(scale * textScale / 16 * choseMat.row);
-            }).get().right().setSize(I[0].getImageWidth(), I[0].getImageHeight());
+                I[0].setScale(scale * textScale * choseMat.row / 16);
+            }).right().get().setSize(I[0].getImageWidth(), I[0].getImageHeight());
 
             table.table(t -> {
-                t.defaults();
                 int count = 0;
 
                 for (int j = 0; j < choseMat.mem.length; j++){
@@ -192,10 +191,10 @@ public class MatrixBlock extends Block{
                     }
                     count++;
                 }
-            });
+            }).left();
 
             table.table(t -> {
-                t.image(Loader.rightBracket).left().get().setScale(scale * textScale / 16 * choseMat.row);
+                t.image(Loader.rightBracket).left().get().setScale(scale * textScale * choseMat.row / 16);
             }).left().get().setScale(textScale);
 
             return table;
