@@ -643,7 +643,7 @@ public class Statements{
     }
 
     public static class MatrixOperationStatement extends ExtendStatement{
-        public MatrixFunc op = MatrixFunc.Get;
+        public MatrixFunc op = MatrixFunc.Add;
         public String A = "A", B = "B", C = "C";
 
         public MatrixOperationStatement(String op, String C, String A, String B){
@@ -666,14 +666,6 @@ public class Statements{
             table.add(" = ");
 
             switch(op) {
-                case Get -> {
-                    Button(table, table);
-                    table.add(" from ");
-                    field(table, A, s -> A = s);
-                    table.add(" at ");
-                    field(table, B, s -> B = s);
-                }
-
                 case Add, Sub, Mul, Inner, Outer -> {
                     field(table, A, s -> A = s);
                     Button(table, table);

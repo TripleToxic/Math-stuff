@@ -292,11 +292,9 @@ public class TheInstruction{
 
         @Override
         public void run(LExecutor exec){
-            switch (op) {
-                case Get -> {
-                    
-                }
+            
 
+            switch(op) {
                 case Add, Sub -> {
 
                 }
