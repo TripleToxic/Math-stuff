@@ -210,9 +210,9 @@ public class MatrixBlock extends Block{
                 write.i(m.column);
                 write.bool(m.transpose);
 
-                for(double v : m.mem){
+                /*for(double v : m.mem){
                     write.d(v);
-                }
+                }*/
             });
 
         }
@@ -237,11 +237,11 @@ public class MatrixBlock extends Block{
                     matTrack.add(m);
                     m.transpose = transpose;
                 
-                    size = m.row * m.column;
+                    /*size = m.row * m.column;
                     for(int j=0; j<size; j++){
                         num = read.d();
                         m.mem[j] = num;
-                    }
+                    }*/
                 }
             }
         }
