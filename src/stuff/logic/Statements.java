@@ -687,6 +687,14 @@ public class Statements{
             }
         }
 
+        private void fieldCell(Table t, String[] strs){
+            t.table(ta -> {
+                field(ta, strs[0], s -> strs[0] = s);
+                ta.add(", ");
+                field(ta, strs[1], s -> strs[1] = s);
+            });
+        }
+
         void Button(Table table, Table parent){
             table.button(b -> {
                 b.label(() -> op.symbol);
@@ -715,7 +723,7 @@ public class Statements{
         registerStatement("fnop", args -> new FunctionOperationStatement(args[1], args[2], args[3]), FunctionOperationStatement::new);
         registerStatement("int", args -> new IntegralStatement(args[1], args[2], args[3], args[4]), IntegralStatement::new);
         registerStatement("root", args -> new RootFindingStatement(args[1], args[2], args[3], args[4], args[5], args[6]), RootFindingStatement::new);
-        registerStatement("Matrix", args -> new MatrixOperationStatement(args[1], args[2], args[3], args[4]), MatrixOperationStatement::new);
+        registerStatement("matop", args -> new MatrixOperationStatement(args[1], args[2], args[3], args[4]), MatrixOperationStatement::new);
     }
 
     public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){
