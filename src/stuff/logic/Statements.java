@@ -644,9 +644,9 @@ public class Statements{
 
     public static class MatrixOperationStatement extends ExtendStatement{
         public MatrixFunc op = MatrixFunc.Add;
-        public String A = "A", B = "B", C = "C";
+        public String A = "A", Apos = "0", B = "B", Bpos = "0", C = "C", Cpos = "0";
 
-        public MatrixOperationStatement(String op, String C, String A, String B){
+        public MatrixOperationStatement(String op, String C, String Cpos, String A, String Apos, String B, String Bpos){
             try{
                 this.op = MatrixFunc.valueOf(op);
             }catch(Exception e){}
@@ -667,13 +667,13 @@ public class Statements{
 
             switch(op) {
                 case Add, Sub, Mul, Inner, Outer -> {
-                    field(table, A, s -> A = s);
+                    fieldCell(table, A, Apos);
                     Button(table, table);
-                    field(table, B, s -> B = s);
+                    fieldCell(table, A, Apos);
                 }
 
                 case Inverse, Transpose -> {
-                    field(table, A, s -> A = s);
+                    fieldCell(table, A, Apos);
                     Button(table, table);
                 }
 
@@ -682,15 +682,16 @@ public class Statements{
                     table.add(" row ");
                     field(table, A, s -> A = s);
                     table.add(" with row ");
-                    field(table, B, s -> B = s);
+                    field(table, Apos, s -> Apos = s);
                 }
             }
         }
 
-        private void fieldCell(Table t, String[] strs){
+        private void fieldCell(Table t, String block, String pos){
+            String[] strs = {block, pos};
             t.table(ta -> {
                 field(ta, strs[0], s -> strs[0] = s);
-                ta.add(", ");
+                ta.add(" , ");
                 field(ta, strs[1], s -> strs[1] = s);
             });
         }
@@ -723,7 +724,7 @@ public class Statements{
         registerStatement("fnop", args -> new FunctionOperationStatement(args[1], args[2], args[3]), FunctionOperationStatement::new);
         registerStatement("int", args -> new IntegralStatement(args[1], args[2], args[3], args[4]), IntegralStatement::new);
         registerStatement("root", args -> new RootFindingStatement(args[1], args[2], args[3], args[4], args[5], args[6]), RootFindingStatement::new);
-        registerStatement("matop", args -> new MatrixOperationStatement(args[1], args[2], args[3], args[4]), MatrixOperationStatement::new);
+        registerStatement("matop", args -> new MatrixOperationStatement(args[1], args[2], args[3], args[4], args[5], args[6], args[7]), MatrixOperationStatement::new);
     }
 
     public static void registerStatement(String name, Func<String[], LStatement> func, Prov<LStatement> prov){

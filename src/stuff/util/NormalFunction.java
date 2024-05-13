@@ -3,14 +3,12 @@ package stuff.util;
 import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
 import stuff.logic.FunctionEnum;
-import java.util.ArrayList;
 
-
-public class NormalFunction implements Function{
-    public String functionName;
-    int id1, id2, id3, ptr1, ptr2;
-    FunctionEnum op;
-    boolean unchecked = true;
+public class NormalFunction extends Function{
+    public final String functionName;
+    final int id1, id2;
+    final FunctionEnum op;
+    boolean unchecked = true, threadInUse = false;
     NormalFunction f1, f2;
 
     static final int length = 5;
@@ -20,46 +18,42 @@ public class NormalFunction implements Function{
         op = ope;
 
         if(!name1.equals("x")) id1 = builder.var(name1);
+        else id1 = 0;
+
         if(!name2.equals("x")) id2 = builder.var(name2);
+        else id2 = 0;
 
     }
-
-    public NormalFunction(){}
 
     @Override
     public double evaluate(LExecutor exec, double val){
-        ArrayList<NormalFunction> names = new ArrayList<>();
-        double out = evaluate(exec, val, names, 0);
+        double out = evaluate(exec, val, 0);
         return out;
     }
 
-    public double evaluate(LExecutor exec, double val, ArrayList<NormalFunction> names, int i){
-        names.add(this);
-
+    public double evaluate(LExecutor exec, double val, int i){
         if(unchecked){
             f1 = exec.obj(id1) instanceof NormalFunction f ? f : null;
             f2 = exec.obj(id2) instanceof NormalFunction f ? f : null;
             
-            ptr1 = check(names, f1);
-            ptr2 = check(names, f2);
             unchecked = false;
         }
 
         double out = op.isUnary ?
         op.eval.eval(
             f1 != null && i < length - 1 ?
-                ptr1 != -1 ? 0 : f1.evaluate(exec, val, names, i + 1)
+                f1.evaluate(exec, val, i + 1)
                 :
                 id1 == 0 ? val : exec.num(id1))
         :
         op.evals.eval(
             f1 != null && i < length - 1 ?
-                ptr1 != -1 ? 0 : f1.evaluate(exec, val, names, i + 1)
+                f1.evaluate(exec, val, i + 1)
                 :
                 id1 == 0 ? val : exec.num(id1),
 
             f2 != null && i < length - 1 ?
-                ptr2 != -1 ? 0 : f2.evaluate(exec, val, names, i + 1) 
+                f2.evaluate(exec, val, i + 1) 
                 :
                 id2 == 0 ? val : exec.num(id2)
         );
@@ -67,20 +61,12 @@ public class NormalFunction implements Function{
         return out;
     }
 
-    private static int check(ArrayList<NormalFunction> fs, NormalFunction f){
-        if(f == null) return -1;
-        int i = 0;
-        while(!fs.get(i).functionName.equals(f.functionName)){
-            i++;
-            if(i == fs.size() || fs.get(i) == null) return -1;
-        }
-        return i;
-    }
-
     @Override
     public double integral(LExecutor exec, double a, double b){
-        double c1 = 0.5d * (b - a),
-               c2 = 0.5d * (b + a);
+        if(a == b) return 0;
+
+        c1 = 0.5d * (b - a);
+        c2 = 0.5d * (b + a);
 
         double f2 = evaluate(exec, c1 * x2 + c2),
                f3 = evaluate(exec, c1 * x3 + c2),

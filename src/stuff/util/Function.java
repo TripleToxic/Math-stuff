@@ -2,11 +2,11 @@ package stuff.util;
 
 import mindustry.logic.LExecutor;
 
-public interface Function {
-    double evaluate(LExecutor exec, double val);
+public abstract class Function{
+    public abstract double evaluate(LExecutor exec, double val);
 
     //Constants for 7-points Gaussian-Legendre quadrature. x1 = 0
-    static double
+    static final double
     x2 = 0.405845151377397167d,
     x3 = -0.405845151377397167d,
     x4 = 0.74153118559939444d,
@@ -19,5 +19,7 @@ public interface Function {
     w45 = 0.279705391489276668d,
     w67 = 0.129484966168869693d;
 
-    double integral(LExecutor exec, double a, double b);
+    double c1, c2;
+
+    public abstract double integral(LExecutor exec, double a, double b);
 }

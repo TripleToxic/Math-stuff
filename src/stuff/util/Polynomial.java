@@ -3,9 +3,8 @@ package stuff.util;
 import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
 
-public class Polynomial implements Function{
-    String functionName;
-    int[] coefficents;
+public class Polynomial extends Function{
+    final int[] coefficents;
 
     public Polynomial(String[] strs, int degree, LAssembler builder){
         coefficents = new int[degree + 1];
@@ -26,21 +25,24 @@ public class Polynomial implements Function{
     @Override
     public double integral(LExecutor exec, double a, double b) {
         int L = coefficents.length;
-        double total_a = 0, total_b = 0;
+
+        c1 = 0; 
+        c2 = 0;
+
         if(a != 0d){
-            total_a = exec.num(coefficents[L - 1])/(double)L;
+            c1 = exec.num(coefficents[L - 1])/(double)L;
             for(int i=L-2; i>=0; i--){
-                total_a = exec.num(coefficents[i])/(double)(i+1) + a*total_a;
+                c1 = exec.num(coefficents[i])/(double)(i+1) + a*c1;
             }
-            total_a *= a;
+            c1 *= a;
         }
         if(b != 0d){
-            total_b = exec.num(coefficents[L - 1])/(double)L;
+            c2 = exec.num(coefficents[L - 1])/(double)L;
             for(int i=L-2; i>=0; i--){
-                total_b = exec.num(coefficents[i])/(double)(i+1) + b*total_b;
+                c2 = exec.num(coefficents[i])/(double)(i+1) + b * c2;
             }
-            total_b *= b;
+            c2 *= b;
         }
-        return total_b - total_a;
+        return c2 - c1;
     }
 }

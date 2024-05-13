@@ -1,34 +1,19 @@
 package stuff.logic;
 
 import mindustry.logic.LExecutor;
-import mindustry.logic.LExecutor.LInstruction;
-import mindustry.logic.LExecutor.Var;
+import mindustry.logic.LExecutor.*;
 import stuff.util.Complex;
 import stuff.util.Function;
 import stuff.util.NormalFunction;
 import stuff.util.Polynomial;
+import stuff.world.MatrixBlock.*;
+import stuff.util.*;
 
 import static stuff.logic.FunctionEnum.*;
 
 public class TheInstruction{
-    public static void setcomplex(LExecutor exec, int index, Complex c){
-        exec.setnum(index + 1, c.r);
-        exec.setnum(index + 2, c.i);
-    }
-
     public static boolean invalid(double a){
         return Double.isNaN(a) || Double.isInfinite(a);
-    }
-
-    public static Complex complex(LExecutor exec, int index){
-        Var v = exec.var(index);
-        Complex c = v.isobj && v.objval instanceof Complex complex ? complex : null;
-        if(c.unchecked && c != null){
-            c.r = exec.num(index + 1);
-            c.i = exec.num(index + 2);
-            c.unchecked = false;
-        }
-        return c;
     }
 
     public static class ComplexOperationI implements LInstruction{
@@ -77,6 +62,22 @@ public class TheInstruction{
 
                 R.set(Op.Binary.get(c1, c2, R));
             }
+        }
+
+        static void setcomplex(LExecutor exec, int index, Complex c){
+            exec.setnum(index + 1, c.r);
+            exec.setnum(index + 2, c.i);
+        }
+    
+        static Complex complex(LExecutor exec, int index){
+            Var v = exec.var(index);
+            Complex c = v.isobj && v.objval instanceof Complex complex ? complex : null;
+            if(c.unchecked && c != null){
+                c.r = exec.num(index + 1);
+                c.i = exec.num(index + 2);
+                c.unchecked = false;
+            }
+            return c;
         }
     }
     
@@ -279,23 +280,37 @@ public class TheInstruction{
 
     public static class MatrixOperation implements LInstruction{
         public MatrixFunc op;
-        public int A, B, C;
+        public int A, B, C, Apos, Bpos, Cpos;
 
-        public MatrixOperation(MatrixFunc op, int A, int B, int C){
+        public MatrixOperation(MatrixFunc op, int A, int Apos, int B, int Bpos, int C, int Cpos){
             this.op = op;
             this.A = A;
+            this.Apos = Apos;
             this.B = B;
+            this.Bpos = Bpos;
             this.C = C;
+            this.Cpos = Cpos;
         }
 
         public MatrixOperation(){}
 
         @Override
         public void run(LExecutor exec){
-            
+            if(op != MatrixFunc.RowSwap){
+                MatrixBuild mb1 = get(exec, A),
+                            mb2 = get(exec, B),
+                            mb3 = get(exec, C);
+                Matrix m1 = get(exec, mb1, Apos),
+                       m2 = get(exec, mb2, Bpos),
+                       m3 = get(exec, mb3, Cpos);
+            }
 
             switch(op) {
-                case Add, Sub -> {
+                case Add -> {
+                    
+                }
+
+                case Sub -> {
 
                 }
 
@@ -311,7 +326,11 @@ public class TheInstruction{
 
                 }
 
-                case Inverse, Transpose -> {
+                case Inverse -> {
+
+                }
+
+                case Transpose -> {
 
                 }
 
@@ -321,5 +340,16 @@ public class TheInstruction{
             }
         }
         
+        static MatrixBuild get(LExecutor e, int index){
+            int i;
+            return e.building(index) instanceof MatrixBuild b ? b
+            :
+            (i = e.numi(index)) >= 0 ? (e.links[i] instanceof MatrixBuild b ? b : null) : null;
+        }
+
+        static Matrix get(LExecutor e, MatrixBuild b, int index){
+            int i = e.numi(index);
+            return i >= 0 && i < b.matTrack.size ? b.matTrack.get(i) : null;
+        }
     }
 }

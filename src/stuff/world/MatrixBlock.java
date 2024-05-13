@@ -54,7 +54,7 @@ public class MatrixBlock extends Block{
         public int page = 1, maxPage = 1;
 
         private static final int cellWidth = 250, cellHeight = 50;
-        private static final float scale = 1.3f, textScale = 0.8f;
+        private static final float scale = 1f, textScale = 0.6f;
         private boolean edit = false;
         private Matrix choseMat;
 
