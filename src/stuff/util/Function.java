@@ -1,8 +1,10 @@
 package stuff.util;
 
+import java.util.concurrent.RecursiveTask;
+
 import mindustry.logic.LExecutor;
 
-public abstract class Function{
+public abstract class Function extends RecursiveTask<Double>{
     public abstract double evaluate(LExecutor exec, double val);
 
     //Constants for 7-points Gaussian-Legendre quadrature. x1 = 0

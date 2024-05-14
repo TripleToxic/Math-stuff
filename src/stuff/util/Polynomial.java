@@ -45,4 +45,9 @@ public class Polynomial extends Function{
         }
         return c2 - c1;
     }
+
+    @Override
+    protected Double compute() {
+        return null;
+    }
 }

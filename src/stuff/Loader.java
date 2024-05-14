@@ -7,14 +7,13 @@ import stuff.dialog.MSDialog;
 import stuff.logic.*;
 import arc.Events;
 import arc.graphics.g2d.*;
-import arc.util.OS;
 
 import static arc.Core.*;
 
 public class Loader extends Mod{
     public static TextureRegion integral, leftBracket, rightBracket;
 
-    public static final boolean instr = OS.propNoNull("os.arch").contains("64") || OS.propNoNull("os.arch").startsWith("armv8");
+    public static final boolean instr = false;
 
     public Loader(){
         Events.on(ClientLoadEvent.class, e -> {

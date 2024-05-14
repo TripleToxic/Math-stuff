@@ -49,7 +49,7 @@ public class Matrix{
     public double innerProduct(Matrix A, Matrix B){
         double accum = 0;
         for(int i = 0; i<A.row; i++){
-            if(Loader.instr) accum = Math.fma(A.mem[i], B.mem[i], accum);
+            if(Loader.instr) accum = fma(A.mem[i], B.mem[i], accum);
             else accum += A.mem[i] * B.mem[i];
         }
         return accum;
@@ -90,7 +90,7 @@ public class Matrix{
             for(int j=0; j<B.column; j++){
                 sum = 0;
                 for(int k=0; k<A.column; k++){
-                    if(Loader.instr) sum = Math.fma(A.get(k, j), B.get(i, k), sum);
+                    if(Loader.instr) sum = fma(A.get(k, j), B.get(i, k), sum);
                     else sum += A.get(k, j) * B.get(i, k);
                 }
                 mem[i + j * A.row] = sum;
@@ -137,7 +137,7 @@ public class Matrix{
                 mem[getp(rowSelected, j)] = 0;
 
                 for(int k=0; k<column; k++){
-                    if(Loader.instr) mem[getp(k, j)] = Math.fma(-get(k, rowSelected), pivot, mem[getp(k, j)]);
+                    if(Loader.instr) mem[getp(k, j)] = fma(-get(k, rowSelected), pivot, mem[getp(k, j)]);
                     else mem[getp(k, j)] -= get(k, rowSelected) * pivot;
                 }
             }

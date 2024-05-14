@@ -1,5 +1,7 @@
 package stuff.util;
 
+import java.util.concurrent.*;
+
 import mindustry.logic.LAssembler;
 import mindustry.logic.LExecutor;
 import stuff.logic.FunctionEnum;
@@ -10,6 +12,7 @@ public class NormalFunction extends Function{
     final FunctionEnum op;
     boolean unchecked = true, threadInUse = false;
     NormalFunction f1, f2;
+    private final ForkJoinPool p = ForkJoinPool.commonPool();
 
     static final int length = 5;
 
@@ -27,8 +30,12 @@ public class NormalFunction extends Function{
 
     @Override
     public double evaluate(LExecutor exec, double val){
-        double out = evaluate(exec, val, 0);
-        return out;
+        return compute();
+    }
+
+    @Override
+    protected Double compute(){
+        return null;
     }
 
     public double evaluate(LExecutor exec, double val, int i){
