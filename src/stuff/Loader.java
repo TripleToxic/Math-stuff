@@ -13,8 +13,6 @@ import static arc.Core.*;
 public class Loader extends Mod{
     public static TextureRegion integral, leftBracket, rightBracket;
 
-    public static final boolean instr = false;
-
     public Loader(){
         Events.on(ClientLoadEvent.class, e -> {
             integral = atlas.find("ms-integral");

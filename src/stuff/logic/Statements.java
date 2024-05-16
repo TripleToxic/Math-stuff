@@ -644,9 +644,9 @@ public class Statements{
 
     public static class MatrixOperationStatement extends ExtendStatement{
         public MatrixFunc op = MatrixFunc.Add;
-        public String A = "A", Apos = "0", B = "B", Bpos = "0", C = "C", Cpos = "0";
+        public String C = "C", A = "A", B = "B", Cpos = "0", Apos = "0", Bpos = "0";
 
-        public MatrixOperationStatement(String op, String C, String Cpos, String A, String Apos, String B, String Bpos){
+        public MatrixOperationStatement(String op, String C, String A, String B, String Cpos, String Bpos, String Apos){
             try{
                 this.op = MatrixFunc.valueOf(op);
             }catch(Exception e){}
@@ -654,6 +654,9 @@ public class Statements{
             this.C = C;
             this.A = A;
             this.B = B;
+            this.Cpos = Cpos;
+            this.Apos = Apos;
+            this.Bpos = Bpos;
         }
 
         public MatrixOperationStatement(){}
@@ -662,37 +665,39 @@ public class Statements{
         public void build(Table table) {
             table.clearChildren();
 
-            field(table, C, str -> C = str);
-            table.add(" = ");
-
-            switch(op) {
+            switch(op){
                 case Add, Sub, Mul, Inner, Outer -> {
+                    if(op == MatrixFunc.Inner) field(table, C, s -> C = s);
+                    else fieldCell(table, C, Cpos);
+                    table.add(" = ");
                     fieldCell(table, A, Apos);
                     Button(table, table);
-                    fieldCell(table, A, Apos);
+                    fieldCell(table, B, Bpos);
                 }
 
                 case Inverse, Transpose -> {
-                    fieldCell(table, A, Apos);
+                    fieldCell(table, C, Cpos);
                     Button(table, table);
                 }
 
                 case RowSwap -> {
+                    fieldCell(table, C, Cpos);
                     Button(table, table);
                     table.add(" row ");
                     field(table, A, s -> A = s);
                     table.add(" with row ");
-                    field(table, Apos, s -> Apos = s);
+                    field(table, B, s -> B = s);
                 }
             }
         }
 
-        private void fieldCell(Table t, String block, String pos){
-            String[] strs = {block, pos};
-            t.table(ta -> {
-                field(ta, strs[0], s -> strs[0] = s);
-                ta.add(" , ");
-                field(ta, strs[1], s -> strs[1] = s);
+        void fieldCell(Table table, String build, String address){
+            table.table(t -> {
+                String[] np = {build, address};
+                t.add("from");
+                field(t, build, s -> np[0] = s);
+                t.add(" at");
+                field(t, address, s -> np[1] = s);
             });
         }
 
@@ -714,6 +719,15 @@ public class Statements{
         @Override
         public LCategory category() {
             return LCategory.operation;
+        }
+
+        @Override
+        public void write(StringBuilder builder) {
+            builder
+                .append(op.symbol)
+                .append(C)
+                .append(A)
+                .append(B);                ;
         }
     }
     

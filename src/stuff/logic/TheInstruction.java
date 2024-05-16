@@ -1,15 +1,14 @@
 package stuff.logic;
 
+import mindustry.gen.*;
 import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.*;
-import stuff.util.Complex;
-import stuff.util.Function;
-import stuff.util.NormalFunction;
-import stuff.util.Polynomial;
 import stuff.world.MatrixBlock.*;
 import stuff.util.*;
+import arc.util.*;
 
 import static stuff.logic.FunctionEnum.*;
+
 
 public class TheInstruction{
     public static boolean invalid(double a){
@@ -280,76 +279,91 @@ public class TheInstruction{
 
     public static class MatrixOperation implements LInstruction{
         public MatrixFunc op;
-        public int A, B, C, Apos, Bpos, Cpos;
+        public int C, A, B, Cpos, Apos, Bpos;
 
-        public MatrixOperation(MatrixFunc op, int A, int Apos, int B, int Bpos, int C, int Cpos){
+        public MatrixOperation(MatrixFunc op, int C, int A, int B, int Cpos, int Apos, int Bpos){
             this.op = op;
-            this.A = A;
-            this.Apos = Apos;
-            this.B = B;
-            this.Bpos = Bpos;
             this.C = C;
+            this.A = A;
+            this.B = B;
             this.Cpos = Cpos;
+            this.Apos = Apos;
+            this.Bpos = Bpos;
         }
 
         public MatrixOperation(){}
 
         @Override
         public void run(LExecutor exec){
-            if(op != MatrixFunc.RowSwap){
-                MatrixBuild mb1 = get(exec, A),
-                            mb2 = get(exec, B),
-                            mb3 = get(exec, C);
-                Matrix m1 = get(exec, mb1, Apos),
-                       m2 = get(exec, mb2, Bpos),
-                       m3 = get(exec, mb3, Cpos);
+            if(op.different){
+                switch(op){
+                    case Mul -> {
+                        final Matrix m1 = get(exec, A, Apos),
+                                     m2 = get(exec, B, Bpos);
+                        if(m1 == null){
+                            if(m2 == null) return;
+                            return;
+                        }
+                    }
+
+                    case Inner -> {
+                        Matrix m1 = get(exec, A, Apos),
+                               m2 = get(exec, B, Bpos);
+                        if(m1 == null && m2 == null) return;
+                        exec.setnum(C, m1.innerProduct(m2));
+                    }
+
+                    case RowSwap -> {
+
+                    }
+
+                    default -> {}
+                }
+
+                return;
             }
 
-            switch(op) {
-                case Add -> {
-                    
-                }
+            Matrix m1 = get(exec, A, Apos),
+                   m2 = get(exec, B, Bpos),
+                   result = get(exec, C, Cpos);
 
-                case Sub -> {
-
-                }
-
-                case Mul -> {
-
-                }
-
-                case Inner -> {
-
-                }
-
+            switch(op){
+                case Add -> result.addMatrix(m1, m2);
+                
+            
+                case Sub -> result.subMatrix(m1, m2);
+            
+            
                 case Outer -> {
-
+            
                 }
-
+            
                 case Inverse -> {
-
+            
                 }
-
+            
                 case Transpose -> {
-
+            
                 }
-
-                case RowSwap -> {
-
-                }
+            
+                default -> {}
             }
         }
         
-        static MatrixBuild get(LExecutor e, int index){
-            int i;
-            return e.building(index) instanceof MatrixBuild b ? b
+        static Matrix get(LExecutor e, int index, int address){
+            final int i = e.numi(index), ad = e.numi(address);
+            return e.building(index) instanceof MatrixBuild b ? b.get(e, ad)
             :
-            (i = e.numi(index)) >= 0 ? (e.links[i] instanceof MatrixBuild b ? b : null) : null;
+            i >= 0 && i < e.links.length ? (e.links[i] instanceof MatrixBuild b ? b.get(e, ad) : null) : null;
         }
 
-        static Matrix get(LExecutor e, MatrixBuild b, int index){
-            int i = e.numi(index);
-            return i >= 0 && i < b.matTrack.size ? b.matTrack.get(i) : null;
+        static @Nullable Matrix building(LExecutor e, int index){
+            final Object o = e.var(index).objval;
+            return e.var(index).isobj && o instanceof Matrix building ? building : null;
+        }
+
+        static void extraction(){
+
         }
     }
 }

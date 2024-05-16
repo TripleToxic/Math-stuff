@@ -3,18 +3,25 @@ package stuff.logic;
 public enum MatrixFunc{
     Add("+"),
     Sub("-"),
-    Mul(""),
+    Mul("", true),
     Inverse("⁻¹"),
-    Inner("•"),
+    Inner("•", true),
     Outer("⊗"),
     Transpose("ᵀ"),
-    RowSwap("swap"),
+    RowSwap("swap", true),
     ;
 
     public final String symbol;
+    public final boolean different;
 
     MatrixFunc(String symbol){
         this.symbol = symbol;
+        this.different = false;
+    }
+
+    MatrixFunc(String symbol, boolean diff){
+        this.symbol = symbol;
+        this.different = diff;
     }
 
     @Override

@@ -8,6 +8,7 @@ import arc.struct.*;
 import arc.util.*;
 import arc.util.io.*;
 import mindustry.gen.*;
+import mindustry.logic.LExecutor;
 import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
@@ -50,13 +51,17 @@ public class MatrixBlock extends Block{
     }
 
     public class MatrixBuild extends Building{
-        public Seq<Matrix> matTrack = new Seq<>(false, matrixCap);
+        public Seq<Matrix> matTrack = new Seq<>(matrixCap);
         public int page = 1, maxPage = 1;
 
         private static final int cellWidth = 250, cellHeight = 50;
         private static final float scale = 1f, textScale = 0.6f;
         private boolean edit = false;
         private Matrix choseMat;
+
+        public Matrix get(LExecutor e, int address){
+            return address >= 0 && address < matTrack.size ? matTrack.get(address) : null;
+        }
 
         @Override
         public void buildConfiguration(Table table){
@@ -77,6 +82,7 @@ public class MatrixBlock extends Block{
                     edit = v;
                     buildConfiguration(table);
                 }).size(40).right().pad(10).get();
+                c.add("edit");
                 c.setChecked(edit);
 
                 TextButton b1 = t.button("Delete", () -> {

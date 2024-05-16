@@ -25,7 +25,6 @@ public class NormalFunction extends Function{
 
         if(!name2.equals("x")) id2 = builder.var(name2);
         else id2 = 0;
-
     }
 
     @Override

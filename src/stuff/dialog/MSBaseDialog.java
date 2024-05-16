@@ -11,11 +11,7 @@ public class MSBaseDialog extends BaseDialog{
         
         shouldPause = false;
         addCloseButton();
-        shown(this::rebuild);
-        onResize(this::rebuild);
 
         Events.on(GameOverEvent.class, e -> hide());
     }
-
-    protected void rebuild(){}
 }
