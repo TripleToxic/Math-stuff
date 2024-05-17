@@ -95,10 +95,14 @@ public class Matrix{
 
     public void mulMatrixSafe(Matrix A, Matrix B){
         double sum = 0;
-        boolean a = this == A;
+        final boolean identical = this == A;
 
-        double[] buffer = new double[a ? column : B.row];
+        double[] buffer = new double[identical ? column : B.row];
         for(int i=0; i<A.row; i++){
+            for(int j=0; j<buffer.length; j++){
+                
+            }
+
             for(int j=0; j<B.column; j++){
                 sum = 0;
                 for(int k=0; k<A.column; k++){

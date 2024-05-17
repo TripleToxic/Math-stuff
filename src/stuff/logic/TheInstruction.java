@@ -313,7 +313,7 @@ public class TheInstruction{
 
                         if(m1.column == m2.row) return;
 
-                        if(result != m1 || result != m2) result.mulMatrix(m1, m2);
+                        if(result != m1 && result != m2) result.mulMatrix(m1, m2);
                         else result.mulMatrixSafe(m1, m2);
                     }
 
@@ -331,7 +331,6 @@ public class TheInstruction{
 
                     default -> {}
                 }
-
                 return;
             }
 
