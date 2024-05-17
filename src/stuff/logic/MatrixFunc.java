@@ -10,9 +10,11 @@ public enum MatrixFunc{
     Transpose("ᵀ"),
     RowSwap("swap", true),
     ;
-
+    
     public final String symbol;
     public final boolean different;
+
+    public static final MatrixFunc[] all = values();
 
     MatrixFunc(String symbol){
         this.symbol = symbol;
@@ -28,6 +30,4 @@ public enum MatrixFunc{
     public String toString() {
         return symbol;
     }
-
-    public static final MatrixFunc[] all = values();
 }

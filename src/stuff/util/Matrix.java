@@ -93,6 +93,22 @@ public class Matrix{
         }
     }
 
+    public void mulMatrixSafe(Matrix A, Matrix B){
+        double sum = 0;
+        boolean a = this == A;
+
+        double[] buffer = new double[a ? column : B.row];
+        for(int i=0; i<A.row; i++){
+            for(int j=0; j<B.column; j++){
+                sum = 0;
+                for(int k=0; k<A.column; k++){
+                    sum += A.get(k, j) * B.get(i, k);
+                }
+                mem[i + j * A.row] = sum;
+            }
+        }
+    }
+
     /**
      * @Return the inverse of a matrix, or an identity matrix if the matrix A is non-invertable
      */

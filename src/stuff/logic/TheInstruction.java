@@ -1,6 +1,5 @@
 package stuff.logic;
 
-import mindustry.gen.*;
 import mindustry.logic.LExecutor;
 import mindustry.logic.LExecutor.*;
 import stuff.world.MatrixBlock.*;
@@ -299,18 +298,31 @@ public class TheInstruction{
                 switch(op){
                     case Mul -> {
                         final Matrix m1 = get(exec, A, Apos),
-                                     m2 = get(exec, B, Bpos);
+                                     m2 = get(exec, B, Bpos),
+                                     result = get(exec, C, Cpos);
                         if(m1 == null){
                             if(m2 == null) return;
+                            result.mulMatrix(m1, exec.num(B));
                             return;
                         }
+                        
+                        if(m2 == null){
+                            result.mulMatrix(m2, exec.num(A));
+                            return;
+                        }
+
+                        if(m1.column == m2.row) return;
+
+                        if(result != m1 || result != m2) result.mulMatrix(m1, m2);
+                        else result.mulMatrixSafe(m1, m2);
                     }
 
                     case Inner -> {
-                        Matrix m1 = get(exec, A, Apos),
+                        final Matrix m1 = get(exec, A, Apos),
                                m2 = get(exec, B, Bpos);
-                        if(m1 == null && m2 == null) return;
-                        exec.setnum(C, m1.innerProduct(m2));
+                        final boolean b = m1 != null && m2 != null && m1.row == m2.row && m1.column == 1 && m2.column == 1;
+
+                        exec.setnum(C, b ? m1.innerProduct(m2) : 0);
                     }
 
                     case RowSwap -> {
@@ -323,27 +335,33 @@ public class TheInstruction{
                 return;
             }
 
-            Matrix m1 = get(exec, A, Apos),
+            final Matrix m1 = get(exec, A, Apos),
                    m2 = get(exec, B, Bpos),
                    result = get(exec, C, Cpos);
+            if(result == null) return;
+
+            final boolean b1 = m1.row == m2.row && m1.row == result.row && m1 != null && m2 != null,
+                          b2 = b1 && m1.column == m2.column && m1.column == result.column;
 
             switch(op){
-                case Add -> result.addMatrix(m1, m2);
+                case Add -> {
+                    if(b2) result.addMatrix(m1, m2);
+                }
                 
-            
-                case Sub -> result.subMatrix(m1, m2);
-            
+                case Sub -> {
+                    if(b2) result.subMatrix(m1, m2);
+                }
             
                 case Outer -> {
-            
+                    if(b1 && m1.column == 1 && m2.column == 1 && m1.row == result.column) result.outerProduct(m1, m2);
                 }
             
                 case Inverse -> {
-            
+                    if(result.row == result.column && m1.row == m1.column && m1 != null) result.invMatrix(m1); 
                 }
             
                 case Transpose -> {
-            
+                    result.transpose = !result.transpose;
                 }
             
                 default -> {}
@@ -360,10 +378,6 @@ public class TheInstruction{
         static @Nullable Matrix building(LExecutor e, int index){
             final Object o = e.var(index).objval;
             return e.var(index).isobj && o instanceof Matrix building ? building : null;
-        }
-
-        static void extraction(){
-
         }
     }
 }
