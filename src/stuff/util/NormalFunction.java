@@ -69,8 +69,9 @@ public class NormalFunction extends Function{
             );
         }
 
-        double left;
-        if(f1 != null && i < length - 1)
+        double left = 0;
+        final boolean b = f1 != null && i < length - 1;
+        if(b)
             f1.set().fork();
         else
             left = id1 == 0 ? val : exec.num(id1);
@@ -81,7 +82,7 @@ public class NormalFunction extends Function{
             id2 == 0 ? val : exec.num(id2);
 
 
-        return op.evals.eval(f1.join(), right);
+        return op.evals.eval(b ? f1.join() : left, right);
     }
 
     NormalFunction setTop(NormalFunction top){
