@@ -44,7 +44,7 @@ public class NormalFunction extends Function{
     public double evaluate(LExecutor exec, double val){
         this.exec = exec;
         this.val = val;
-        return compute();
+        return p.invoke(this);
     }
 
     @Override
