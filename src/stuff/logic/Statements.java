@@ -724,10 +724,18 @@ public class Statements{
         @Override
         public void write(StringBuilder builder) {
             builder
-                .append(op.symbol)
+                .append(op.name())
                 .append(C)
+                .append(" ")
                 .append(A)
-                .append(B);                ;
+                .append(" ")
+                .append(B)
+                .append(" ")
+                .append(Cpos)
+                .append(" ")
+                .append(Apos)
+                .append(" ")
+                .append(Bpos);       
         }
     }
     
