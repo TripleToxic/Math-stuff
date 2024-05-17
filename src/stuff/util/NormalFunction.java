@@ -10,11 +10,24 @@ public class NormalFunction extends Function{
     public final String functionName;
     final int id1, id2;
     final FunctionEnum op;
-    boolean unchecked = true, threadInUse = false;
-    NormalFunction f1, f2;
-    private final ForkJoinPool p = ForkJoinPool.commonPool();
+    boolean unchecked = true;
+    NormalFunction f1, f2, topFunction;
+    private static final ForkJoinPool p = ForkJoinPool.commonPool();
 
     static final int length = 5;
+
+    //values for fork-join
+    LExecutor exec;
+    double val;
+    int i;
+
+    NormalFunction set(){
+        exec = topFunction.exec;
+        val = topFunction.val;
+        i = topFunction.i + 1;
+
+        return this;
+    }
 
     public NormalFunction(String output, FunctionEnum ope, String name1, String name2, LAssembler builder){
         functionName = output;
@@ -29,42 +42,60 @@ public class NormalFunction extends Function{
 
     @Override
     public double evaluate(LExecutor exec, double val){
+        this.exec = exec;
+        this.val = val;
         return compute();
     }
 
     @Override
     protected Double compute(){
-        return null;
+        return evaluate();
     }
 
-    public double evaluate(LExecutor exec, double val, int i){
+    public double evaluate(){
         if(unchecked){
-            f1 = exec.obj(id1) instanceof NormalFunction f ? f : null;
-            f2 = exec.obj(id2) instanceof NormalFunction f ? f : null;
+            f1 = exec.obj(id1) instanceof NormalFunction f ? (f.search() ? null : f.setTop(this)) : null;
+            f2 = exec.obj(id2) instanceof NormalFunction f ? (f.search() ? null : f.setTop(this)) : null;
             
             unchecked = false;
         }
 
-        double out = op.isUnary ?
-        op.eval.eval(
-            f1 != null && i < length - 1 ?
-                f1.evaluate(exec, val, i + 1)
-                :
-                id1 == 0 ? val : exec.num(id1))
-        :
-        op.evals.eval(
-            f1 != null && i < length - 1 ?
-                f1.evaluate(exec, val, i + 1)
-                :
-                id1 == 0 ? val : exec.num(id1),
+        if(op.isUnary){
+            return op.eval.eval(
+                f1 != null && i < length - 1 ?
+                    f1.set().evaluate()
+                    :
+                    id1 == 0 ? val : exec.num(id1)
+            );
+        }
 
-            f2 != null && i < length - 1 ?
-                f2.evaluate(exec, val, i + 1) 
-                :
-                id2 == 0 ? val : exec.num(id2)
-        );
+        double left;
+        if(f1 != null && i < length - 1)
+            f1.set().fork();
+        else
+            left = id1 == 0 ? val : exec.num(id1);
+        
+        double right = f2 != null && i < length - 1 ?
+            f2.set().evaluate()
+            :
+            id2 == 0 ? val : exec.num(id2);
 
-        return out;
+
+        return op.evals.eval(f1.join(), right);
+    }
+
+    NormalFunction setTop(NormalFunction top){
+        this.topFunction = top;
+        return this;
+    }
+
+    boolean search(){
+        NormalFunction check = topFunction;
+        while(true){
+            if(check == null) return false;
+            if(check == this) return true;
+            check = check.topFunction;
+        }
     }
 
     @Override

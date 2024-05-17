@@ -326,7 +326,7 @@ public class TheInstruction{
                     }
 
                     case RowSwap -> {
-
+                        
                     }
 
                     default -> {}
@@ -368,16 +368,11 @@ public class TheInstruction{
             }
         }
         
-        static Matrix get(LExecutor e, int index, int address){
+        static @Nullable Matrix get(LExecutor e, int index, int address){
             final int i = e.numi(index), ad = e.numi(address);
             return e.building(index) instanceof MatrixBuild b ? b.get(e, ad)
             :
             i >= 0 && i < e.links.length ? (e.links[i] instanceof MatrixBuild b ? b.get(e, ad) : null) : null;
-        }
-
-        static @Nullable Matrix building(LExecutor e, int index){
-            final Object o = e.var(index).objval;
-            return e.var(index).isobj && o instanceof Matrix building ? building : null;
         }
     }
 }
