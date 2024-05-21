@@ -37,7 +37,7 @@ public class MatrixBlock extends Block{
     @Override
     public void setStats(){
         super.setStats();
-
+ 
         stats.add(Stat.memoryCapacity, matrixCap, StatUnit.none);
     }
 
