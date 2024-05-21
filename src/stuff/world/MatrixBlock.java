@@ -50,12 +50,29 @@ public class MatrixBlock extends Block{
         return accessible();
     }
 
+    static final int truncateLength = 8;
+    static String numberStringTruncate(double a){
+        final String s = String.valueOf(a);
+
+        if(s.length() <= truncateLength) return s;
+
+        final int ETextPos = s.indexOf('E');
+        if(ETextPos == -1){
+            return s.substring(0, truncateLength);
+        }
+
+        final int ETextLength = s.length() - ETextPos;
+        
+        return s.substring(truncateLength - ETextLength)
+                .concat(s.substring(ETextPos));
+    }
+
     public class MatrixBuild extends Building{
         public Seq<Matrix> matTrack = new Seq<>(matrixCap);
         public int page = 1, maxPage = 1;
 
-        private static final int cellWidth = 250, cellHeight = 50;
-        private static final float scale = 1f, textScale = 0.6f;
+        private static final int cellWidth = 125, cellHeight = 50;
+        private static final float scale = 1f, textScale = 0.8f;
         private boolean edit = false;
         private Matrix choseMat;
 
@@ -181,7 +198,7 @@ public class MatrixBlock extends Block{
                             cell[0].tooltip(v + ", " + v.length());
                         }).size(cellWidth * textScale, cellHeight * textScale).right().tooltip(lastVal[0] + ", " + String.valueOf(lastVal[0]).length());
                     }else{
-                        Label lab = new Label(String.valueOf(lastVal[0]));
+                        Label lab = new Label(numberStringTruncate(lastVal[0]));
                         lab.setFontScale(textScale);
                         lab.setScale(textScale);
                         lab.setAlignment(Align.center);
