@@ -696,9 +696,10 @@ public class Statements{
                 String[] np = {build, address};
                 t.add("from");
                 field(t, build, s -> np[0] = s);
+                table.row();
                 t.add(" at");
                 field(t, address, s -> np[1] = s);
-            });
+            }).style(Styles.logict);
         }
 
         void Button(Table table, Table parent){

@@ -100,7 +100,7 @@ public class Matrix{
         double[] buffer = new double[identical ? column : B.row];
         for(int i=0; i<A.row; i++){
             for(int j=0; j<buffer.length; j++){
-                
+                buffer[j] = identical ? A.get(j, i) : B.get(j, i);
             }
 
             for(int j=0; j<B.column; j++){
