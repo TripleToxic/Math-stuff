@@ -37,7 +37,7 @@ public class MatrixBlock extends Block{
     @Override
     public void setStats(){
         super.setStats();
-
+ 
         stats.add(Stat.memoryCapacity, matrixCap, StatUnit.none);
     }
 
@@ -50,17 +50,21 @@ public class MatrixBlock extends Block{
         return accessible();
     }
 
-    private static final int len = 8;
-
-    private static String numberCut(double a){
+    static final int truncateLength = 8;
+    static String numberStringTruncate(double a){
         final String s = String.valueOf(a);
-        final int l = s.length(), ePart;
-        if(l <= len) return s;
-        if((ePart = s.indexOf("E")) != -1){
-            final int elength = l - ePart;
-            return s.substring(0, len - elength).concat(s.substring(ePart));
+
+        if(s.length() <= truncateLength) return s;
+
+        final int ETextPos = s.indexOf('E');
+        if(ETextPos == -1){
+            return s.substring(0, truncateLength);
         }
-        return s.substring(0, len);
+
+        final int ETextLength = s.length() - ETextPos;
+        
+        return s.substring(truncateLength - ETextLength)
+                .concat(s.substring(ETextPos));
     }
 
     public class MatrixBuild extends Building{
@@ -193,7 +197,7 @@ public class MatrixBlock extends Block{
                             cell[0].tooltip(v + ", " + v.length());
                         }).size(cellWidth * textScale, cellHeight * textScale).right().tooltip(lastVal[0] + ", " + String.valueOf(lastVal[0]).length());
                     }else{
-                        Label lab = new Label(numberCut(lastVal[0]));
+                        Label lab = new Label(numberStringTruncate(lastVal[0]));
                         lab.setFontScale(textScale);
                         lab.setScale(textScale);
                         lab.setAlignment(Align.center);
