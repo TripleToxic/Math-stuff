@@ -36,6 +36,7 @@ public class Polynomial extends Function{
             }
             c1 *= a;
         }
+        
         if(b != 0d){
             c2 = exec.num(coefficents[L - 1])/(double)L;
             for(int i=L-2; i>=0; i--){

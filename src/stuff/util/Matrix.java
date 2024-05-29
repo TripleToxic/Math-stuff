@@ -76,7 +76,7 @@ public class Matrix{
 
     public void mulMatrix(Matrix A, double a){
         for(int i=0; i<A.mem.length; i++){
-            mem[i] = A.mem[i];
+            mem[i] = A.mem[i] * a;
         }
     }
 
@@ -93,6 +93,7 @@ public class Matrix{
         }
     }
 
+    
     public void mulMatrixSafe(Matrix A, Matrix B){
         double sum = 0;
         final boolean identical = this == A;
@@ -116,10 +117,11 @@ public class Matrix{
     /**
      * @Return the inverse of a matrix, or an identity matrix if the matrix A is non-invertable
      */
+    static final short one = 1;
     public void invMatrix(Matrix A){
         int rowSelected = 0;
         double pivot;
-        short inactive = 0, one = 1;
+        short inactive = 0; // Using a bit set of 16 to save memory instead of boolean array
 
         set(A);
 
@@ -138,7 +140,7 @@ public class Matrix{
             }
 
             pivot = get(rowSelected, rowSelected);
-            inactive |= one << rowSelected;
+            inactive |= one << rowSelected; // Set the bit corresponding with the selected row to 1;
 
             mem[rowSelected + rowSelected * column] = 1;
             for(int j=0; j<column; j++){
