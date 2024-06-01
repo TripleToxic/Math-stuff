@@ -6,7 +6,6 @@ import static java.lang.Math.*;
 
 /**
  * A class for matrices or arrays using Matrix Block type.
- * 
  * <p>All methods are assumed that matrices are checked before performing matrix operations.
  */
 public class Matrix{
@@ -114,21 +113,22 @@ public class Matrix{
         }
     }
 
+    static final short one = 1;
+    
     /**
      * @Return the inverse of a matrix, or an identity matrix if the matrix A is non-invertable
      */
-    static final short one = 1;
     public void invMatrix(Matrix A){
         int rowSelected = 0;
         double pivot;
-        short inactive = 0; // Using a bit set of 16 to save memory instead of boolean array
+        short isInactive = 0; // Using a bit set of 16 to save memory instead of boolean array
 
         set(A);
 
         for(int i=0; i<row; i++){
             pivot = 0;
             for(int j=0; j<row; j++){
-                if((abs(get(j, j)) > pivot) && (((inactive >> j) & one) != one)){
+                if((abs(get(j, j)) > pivot) && (((isInactive >> j) & one) != one)){
                     pivot = abs(get(j, j));
                     rowSelected = j;
                 }
@@ -140,7 +140,7 @@ public class Matrix{
             }
 
             pivot = get(rowSelected, rowSelected);
-            inactive |= one << rowSelected; // Set the bit corresponding with the selected row to 1;
+            isInactive |= one << rowSelected; // Set the bit corresponding with the selected row to 1;
 
             mem[rowSelected + rowSelected * column] = 1;
             for(int j=0; j<column; j++){

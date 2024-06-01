@@ -11,7 +11,7 @@ public class NormalFunction extends Function{
     final int id1, id2;
     final FunctionEnum op;
     boolean unchecked = true;
-    NormalFunction f1, f2, topFunction;
+    NormalFunction f1, f2, parentFunction;
     private static final ForkJoinPool p = ForkJoinPool.commonPool();
 
     static final int length = 5;
@@ -21,10 +21,10 @@ public class NormalFunction extends Function{
     double val;
     int i;
 
-    NormalFunction set(){
-        exec = topFunction.exec;
-        val = topFunction.val;
-        i = topFunction.i + 1;
+    NormalFunction init(){
+        exec = parentFunction.exec;
+        val = parentFunction.val;
+        i = parentFunction.i + 1;
 
         return this;
     }
@@ -54,8 +54,8 @@ public class NormalFunction extends Function{
 
     public double evaluate(){
         if(unchecked){
-            f1 = exec.obj(id1) instanceof NormalFunction f ? (f.search() ? null : f.setTop(this)) : null;
-            f2 = exec.obj(id2) instanceof NormalFunction f ? (f.search() ? null : f.setTop(this)) : null;
+            f1 = exec.obj(id1) instanceof NormalFunction f ? (f.search() ? null : f.setParent(this)) : null;
+            f2 = exec.obj(id2) instanceof NormalFunction f ? (f.search() ? null : f.setParent(this)) : null;
             
             unchecked = false;
         }
@@ -63,7 +63,7 @@ public class NormalFunction extends Function{
         if(op.isUnary){
             return op.eval.eval(
                 f1 != null && i < length - 1 ?
-                    f1.set().evaluate()
+                    f1.init().evaluate()
                     :
                     id1 == 0 ? val : exec.num(id1)
             );
@@ -71,31 +71,29 @@ public class NormalFunction extends Function{
 
         double left = 0;
         final boolean b = f1 != null && i < length - 1;
-        if(b)
-            f1.set().fork();
-        else
-            left = id1 == 0 ? val : exec.num(id1);
+
+        if(b) f1.init().fork();
+        else left = id1 == 0 ? val : exec.num(id1);
         
         double right = f2 != null && i < length - 1 ?
-            f2.set().evaluate()
+            f2.init().evaluate()
             :
             id2 == 0 ? val : exec.num(id2);
-
 
         return op.evals.eval(b ? f1.join() : left, right);
     }
 
-    NormalFunction setTop(NormalFunction top){
-        this.topFunction = top;
+    NormalFunction setParent(NormalFunction parent){
+        parentFunction = parent;
         return this;
     }
 
     boolean search(){
-        NormalFunction check = topFunction;
+        NormalFunction check = parentFunction;
         while(true){
             if(check == null) return false;
             if(check == this) return true;
-            check = check.topFunction;
+            check = check.parentFunction;
         }
     }
 
