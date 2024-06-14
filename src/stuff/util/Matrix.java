@@ -27,18 +27,18 @@ public class Matrix{
         System.arraycopy(A.mem, 0, mem, 0, A.mem.length);
     }
 
-    public int getp(int x, int y){
+    public int getpos(int x, int y){
         return x + y * column;
     }
 
     public double get(int x, int y){
-        return mem[getp(x, y)];
+        return mem[getpos(x, y)];
     }
 
     public void setIdentity(){
         for(int i=0; i<row; i++){
             for(int j=0; j<column; j++){
-                mem[getp(j, i)] = i == j ? 1.0 : 0.0;
+                mem[getpos(j, i)] = i == j ? 1.0 : 0.0;
             }
         }
     }
@@ -56,7 +56,7 @@ public class Matrix{
     public void outerProduct(Matrix A, Matrix B){
         for(int i = 0; i<A.row; i++){
             for(int j=0; j<B.column; j++){
-                mem[getp(j, i)] = A.mem[i] * B.mem[j];
+                mem[getpos(j, i)] = A.mem[i] * B.mem[j];
             }
         }
     }
@@ -144,17 +144,17 @@ public class Matrix{
 
             mem[rowSelected + rowSelected * column] = 1;
             for(int j=0; j<column; j++){
-                mem[getp(j, rowSelected)] /= pivot;
+                mem[getpos(j, rowSelected)] /= pivot;
             }
 
             for(int j=0; j<row; j++){
                 if(j == rowSelected) continue;
                 pivot = get(rowSelected, j);
 
-                mem[getp(rowSelected, j)] = 0;
+                mem[getpos(rowSelected, j)] = 0;
 
                 for(int k=0; k<column; k++){
-                    mem[getp(k, j)] -= get(k, rowSelected) * pivot;
+                    mem[getpos(k, j)] -= get(k, rowSelected) * pivot;
                 }
             }
         }
